@@ -130,7 +130,7 @@ PRINCIPAL RISKS AND MITIGATIONS
 
 Several Saudi government portals apply bot protection or render client-side. Mitigated by using captured JSON endpoints and paid scraping fallbacks priced in advance, rather than fighting protections live during the build.
 
-Arabic to English product normalisation is the critical technical path, so it is prototyped in the first hours and everything else is scheduled behind it.
+Arabic to English product normalisation is the critical technical path, so it is spiked on twenty hand-picked lines in the first hours, in parallel with the data ingest, before anything is built on top of it.
 
 Published figures conflict across sources, including national catalogue counts and mandatory-list sizes. Every number presented on stage is reconciled to a single cited source beforehand.
 
@@ -269,7 +269,7 @@ The graph is an asset that compounds. Each refresh cycle improves coverage witho
 
 عدة بوابات حكومية سعودية تطبّق حماية ضد الروبوتات أو تُصيّر محتواها من جهة العميل. وتُعالَج باستخدام واجهات JSON المرصودة وبدائل استخلاص مدفوعة مُسعَّرة مسبقاً، بدل مصارعة الحمايات أثناء البناء.
 
-توحيد أسماء المنتجات بين العربية والإنجليزية هو المسار التقني الحرج، ولهذا يُبنى نموذجه الأولي في الساعات الأولى ويُجدوَل كل ما عداه خلفه.
+توحيد أسماء المنتجات بين العربية والإنجليزية هو المسار التقني الحرج، ولهذا يُختبر على عشرين بنداً منتقاة في الساعات الأولى، بالتوازي مع استيعاب البيانات، قبل أن يُبنى عليه شيء.
 
 الأرقام المنشورة متضاربة بين المصادر، ومنها أعداد الكتالوج الوطني وأحجام القوائم الإلزامية. ولهذا يُسنَد كل رقم يُعرض على المنصة إلى مصدر واحد مذكور، مسبقاً.
 

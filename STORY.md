@@ -42,7 +42,7 @@ Picture a phone book where you only get listed if you mail in a form. Now think 
 
 And this isn't a hunch. The Kingdom has **12,946 factories**. The national product catalogue lists **3,153** of them. **9,793 factories, 76%, don't appear even there**, let alone on anyone's approved-vendor list.
 
-### Half two, we don't know what we're buying
+### Half two, the same item under three different names
 
 The second half is stranger, and PIF has said it out loud: they have *limited visibility into aggregated demand.*
 
@@ -104,15 +104,15 @@ The system doesn't wait to be asked. It starts **the moment a purchase request i
 
 ### 1. The Coordinator
 
-A request arrives in either language: *"2-inch stainless ball valve, 12 units."* She works out what the object actually is and tags it with an HS code, the same numbering customs uses.
+A request arrives in either language: *"2-inch stainless ball valve, 12 units."* They work out what the object actually is and tags it with an HS code, the same numbering customs uses.
 
-**And here's the unlock:** because she can see that three different descriptions are one object, she can **pool them**. One company wants 12, another wrote `BALL VLV 2IN SS` and wants 40, a third is on a spreadsheet and wants 5. Out comes **one aggregated order**: 57 units now, 40,000 a year once you read the history.
+**And here's the unlock:** because they can see that three different descriptions are one object, they can **pool them**. One company wants 12, another wrote `BALL VLV 2IN SS` and wants 40, a third is on a spreadsheet and wants 5. Out comes **one aggregated order**: 57 units now, 40,000 a year once you read the history.
 
 > Demand was fragmented because nobody could see it was the same demand.
 
 ### 2. The Detective
 
-He takes the aggregated order and hunts: company websites, the commercial register, who has won comparable contracts on Etimad, certifications, catalogues.
+They take the aggregated order and hunt: company websites, the commercial register, who has won comparable contracts on Etimad, certifications, catalogues.
 
 **The question has changed.** Not *"who makes this?"* but **"who could serve 40,000 units a year?"**, which opens up suppliers a single company's order would never have justified.
 
@@ -120,13 +120,13 @@ One rule: never say anything without saying where you learned it.
 
 ### 3. The Auditor
 
-He verifies each candidate **to classify, not to strike off**: manufacturer, assembler, authorised distributor, or trader, each with a different local-content weight.
+They verify each candidate **to classify, not to strike off**: manufacturer, assembler, authorised distributor, or trader, each with a different local-content weight.
 
 Because a local trader **is still a local supplier**, Saudi employees, local assets, margin that stays in the country. Lower local content, not zero. That gradient is exactly what LCGPA's methodology measures, so classifying beats gatekeeping.
 
-### 4. The Strategist
+### 4. The Advisor
 
-He works where the answer is **nobody**. What is the pooled order worth annually? Does regulation require it local? Which existing plant could supply it if asked?
+They work where the answer is **nobody**. What is the pooled order worth annually? Does regulation require it local? Which existing plant could supply it if asked?
 
 **This is where aggregation pays off.** A gap used to be a fact. Now it's an investment case, because the demand is pooled and forward-looking: a volume worth tooling up for.
 
@@ -166,7 +166,7 @@ So when the system says it's confident, that isn't a feeling. It means: *backed 
 ## The one-line version
 
 > **MUSAHAMA knows who registered.**
-> **KAMIN knows what the country can make.**
+> **KAMIN knows who never raised a hand.**
 
 One is a list of people who put their hand up. The other is a map of what's actually out there, including everyone who never did.
 
