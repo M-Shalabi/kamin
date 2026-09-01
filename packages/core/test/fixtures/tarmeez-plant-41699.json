@@ -1,0 +1,19 @@
+{
+  "Id": 41699,
+  "Title": { "Ar": "مصنع شركة يوسف بن أحمد كانو للصمامات والمضخات", "En": "sharikat yusuf bin ahmad kano lilsamamat walmadkhat Factory" },
+  "CommercialRecordNo": "2055024776",
+  "Email": null,
+  "LegalAuthority": { "Ar": "", "En": "" },
+  "Location": { "Ar": "الجبيل", "En": "AlJubail" },
+  "MobileNo": null,
+  "PhoneNo": null,
+  "WebSiteUrl": null,
+  "Symbol": { "Ar": "10003066", "En": "10003066" },
+  "MainActivity": null,
+  "Governorate": { "Ar": "المنطقة الشرقية", "En": "Eastern Region" },
+  "InvestmentType": { "Ar": "استثمار  مشترك", "En": "Mutual Investment" },
+  "Products": [
+    { "Id": 0, "Title": { "Ar": "848100000000 - حنفيات وصنابير وصمامات", "En": "848100000000 - Taps- cocks- valves and similar appliances for pipes" }, "Amount": 150.0, "Unit": { "Ar": "طن", "En": "Ton" }, "Symbol": { "Ar": "848100000000", "En": "848100000000" } },
+    { "Id": 0, "Title": { "Ar": "848100000000 - حنفيات وصنابير وصمامات", "En": "848100000000 - Taps- cocks- valves and similar appliances for pipes" }, "Amount": 200.0, "Unit": { "Ar": "قطعة", "En": "Piece" }, "Symbol": { "Ar": "848100000000", "En": "848100000000" } }
+  ]
+}
