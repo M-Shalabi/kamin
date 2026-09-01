@@ -1,0 +1,378 @@
+{
+ "pages": [
+  {
+   "id": "page-1",
+   "name": "العرض"
+  },
+  {
+   "id": "page-2",
+   "name": "ملحق"
+  }
+ ],
+ "artboards": [
+  {
+   "file": "Main.dc.html",
+   "title": "١ الغلاف",
+   "x": 0,
+   "y": 0,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "Question.dc.html",
+   "title": "٢ السؤال",
+   "x": 1760,
+   "y": 0,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "Blind.dc.html",
+   "title": "٣ لا أحد يفرّق",
+   "x": 3520,
+   "y": 0,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "WhoMakes.dc.html",
+   "title": "٤ اللي يرفع يده",
+   "x": 5280,
+   "y": 0,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "WhatWeBuy.dc.html",
+   "title": "٥ اختلاف المسمّى",
+   "x": 0,
+   "y": 1160,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "WhatChanged.dc.html",
+   "title": "٦ ما تغيّر",
+   "x": 1760,
+   "y": 1160,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "TheWall.dc.html",
+   "title": "٧ جدار ٥ سنوات",
+   "x": 3520,
+   "y": 1160,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "Solution.dc.html",
+   "title": "٨ والحل؟",
+   "x": 5280,
+   "y": 1160,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "TheTeam.dc.html",
+   "title": "٩ نوظّف فريق",
+   "x": 0,
+   "y": 2320,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "Coordinator.dc.html",
+   "title": "١٠ المنسّق",
+   "x": 1760,
+   "y": 2320,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "Detective.dc.html",
+   "title": "١١ المحقّق",
+   "x": 3520,
+   "y": 2320,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "Auditor.dc.html",
+   "title": "١٢ المدقّق",
+   "x": 5280,
+   "y": 2320,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "Strategist.dc.html",
+   "title": "١٣ المستشار",
+   "x": 0,
+   "y": 3480,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "TheReveal.dc.html",
+   "title": "١٤ الانكشاف",
+   "x": 1760,
+   "y": 3480,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "TheMap.dc.html",
+   "title": "١٥ الخريطة",
+   "x": 3520,
+   "y": 3480,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "Journey.dc.html",
+   "title": "١٦ رحلة الطلب",
+   "x": 5280,
+   "y": 3480,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "TheMath.dc.html",
+   "title": "١٧ الحساب",
+   "x": 0,
+   "y": 4640,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "TheClose.dc.html",
+   "title": "١٨ الختام",
+   "x": 1760,
+   "y": 4640,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "Team.dc.html",
+   "title": "١٩ الفريق",
+   "x": 3520,
+   "y": 4640,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "AsIs.dc.html",
+   "title": "ملحق · بدوننا",
+   "x": 0,
+   "y": 0,
+   "w": 1600,
+   "h": 900,
+   "page": "page-2"
+  },
+  {
+   "file": "EN_Main.dc.html",
+   "title": "1 Cover",
+   "x": 0,
+   "y": 8120,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_Question.dc.html",
+   "title": "2 The Question",
+   "x": 1760,
+   "y": 8120,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_Blind.dc.html",
+   "title": "3 Nobody Can Tell",
+   "x": 3520,
+   "y": 8120,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_WhoMakes.dc.html",
+   "title": "4 Raise Your Hand",
+   "x": 5280,
+   "y": 8120,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_WhatWeBuy.dc.html",
+   "title": "5 Different Names",
+   "x": 0,
+   "y": 9280,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_WhatChanged.dc.html",
+   "title": "6 What Changed",
+   "x": 1760,
+   "y": 9280,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_TheWall.dc.html",
+   "title": "7 The 5-Year Wall",
+   "x": 3520,
+   "y": 9280,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_Solution.dc.html",
+   "title": "8 So What Now",
+   "x": 5280,
+   "y": 9280,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_TheTeam.dc.html",
+   "title": "9 Hire A Team",
+   "x": 0,
+   "y": 10440,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_Coordinator.dc.html",
+   "title": "10 Coordinator",
+   "x": 1760,
+   "y": 10440,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_Detective.dc.html",
+   "title": "11 Detective",
+   "x": 3520,
+   "y": 10440,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_Auditor.dc.html",
+   "title": "12 Auditor",
+   "x": 5280,
+   "y": 10440,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_Strategist.dc.html",
+   "title": "13 Advisor",
+   "x": 0,
+   "y": 11600,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_TheReveal.dc.html",
+   "title": "14 The Reveal",
+   "x": 1760,
+   "y": 11600,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_TheMap.dc.html",
+   "title": "15 The Map",
+   "x": 3520,
+   "y": 11600,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_Journey.dc.html",
+   "title": "16 One Request",
+   "x": 5280,
+   "y": 11600,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_TheMath.dc.html",
+   "title": "17 The Math",
+   "x": 0,
+   "y": 12760,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_TheClose.dc.html",
+   "title": "18 The Close",
+   "x": 1760,
+   "y": 12760,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_Team.dc.html",
+   "title": "19 The Team",
+   "x": 3520,
+   "y": 12760,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_AsIs.dc.html",
+   "title": "Appendix · Without Us",
+   "x": 1760,
+   "y": 0,
+   "w": 1600,
+   "h": 900,
+   "page": "page-2"
+  }
+ ],
+ "launch": {
+  "view": "canvas",
+  "page": "page-1"
+ }
+}
