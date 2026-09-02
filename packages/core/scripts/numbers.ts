@@ -55,6 +55,7 @@ await add("Annual value in supply gaps", "select coalesce(sum(annual_value_usd),
 await add("Gaps on the announced Mandatory List tranche", "select count(*) as v from pooled_orders where gap_kind <> 'covered' and mandatory and title not like 'test %'");
 await add("Investment cases written by the Advisor", "select count(*) as v from gap_cases");
 await add("Matches written", "select count(*) as v from matches m join pooled_orders o on o.id = m.pooled_order_id where o.title not like 'test %'");
+await add("Discovery lift: suppliers absent from Tarmeez with a supported capability in the slice", `select count(distinct c.supplier_id) as v from capabilities c join suppliers s on s.id = c.supplier_id where not s.in_tarmeez and s.id not like 'test:%' and c.verdict = 'supported' and ${SECTOR}`);
 await add("Discovery lift: pooled orders whose best match is a supplier absent from Tarmeez", "select count(distinct m.pooled_order_id) as v from matches m join capabilities c on c.id = m.capability_id join suppliers s on s.id = c.supplier_id join pooled_orders o on o.id = m.pooled_order_id where m.rank = 1 and not s.in_tarmeez and o.title not like 'test %'");
 const perf = await sql<{ role: string; runs: number; avg_s: number; tok_in: number; tok_out: number }[]>`
   select r.role, count(distinct r.id)::int as runs, avg(extract(epoch from (r.finished_at - r.started_at)))::float as avg_s,

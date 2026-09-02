@@ -22,11 +22,13 @@ That the ledger holds two gaps is a property of this demand set at category leve
 
 ## Discovery lift
 
-The long-tail hunt searched for valve, pump and fitting makers in no registry, found 26 candidates and created 17 suppliers, each investigated by a Detective and audited. Eleven of them hold at least one supported capability, among them Covna Valves, Arabian Pumps, Lamah and New World Horizon. Registry-only suppliers (MLCP, Made in Saudi) added none in this slice: four mention the sector in their activity text and none makes valves or pumps.
+The long-tail hunt searched for valve, pump and fitting makers in no registry, found 26 candidates and created 17 suppliers, each investigated by a Detective and audited. Thirteen of them hold at least one supported capability, among them Covna Valves, Arabian Pumps, Lamah and New World Horizon. Registry-only suppliers (MLCP, Made in Saudi) added none in this slice: four mention the sector in their activity text and none makes valves or pumps.
 
 ## What the swarm cost
 
-Sixty Detective runs took 93 minutes and 279 audits took 168 minutes on one 16 GB laptop with `qwen3.5:9b`, every call serialised through one local Ollama. The audit path was switched to JSON text mid-run, which halved the average audit from about fifty to about seventeen seconds. `bun run cost` prints per-role seconds and tokens and the equivalent paid-model cost.
+Sixty Detective runs took 93 minutes and 279 audits took 168 minutes on one 16 GB laptop with `qwen3.5:9b`, every call serialised through one local Ollama. The audit path was switched to JSON text mid-run, which halved the average audit from about fifty to about seventeen seconds. Over the whole day `bun run cost` reports, per successful run: Detective 98 s and about USD 0.05 at Claude Opus 5 prices (USD 0.02 at Sonnet 5), Auditor 22 s and about USD 0.01, Coordinator 66 s and about USD 0.02, Advisor 63 s and about USD 0.03. Local marginal cost is electricity.
+
+The Coordinator's 66 s against the 47 s of the milestone-1 spike is the machine, not the model: Ollama runs with `OLLAMA_MAX_LOADED_MODELS=1`, and every Coordinator call embeds with `bge-m3` before generating with `qwen3.5:9b`, so the two models swap on every line. Allowing two loaded models (both fit in 16 GB) removes the swap. The Detective and Auditor averages also include hours in which tests and recordings competed for the same model.
 
 ## Defects found by the first live runs, all fixed under test the same day
 
