@@ -60,7 +60,7 @@ await add("Discovery lift: pooled orders whose best match is a supplier absent f
 const perf = await sql<{ role: string; runs: number; avg_s: number; tok_in: number; tok_out: number }[]>`
   select r.role, count(distinct r.id)::int as runs, avg(extract(epoch from (r.finished_at - r.started_at)))::float as avg_s,
          coalesce(sum(s.tokens_in), 0)::float / greatest(count(distinct r.id), 1) as tok_in, coalesce(sum(s.tokens_out), 0)::float / greatest(count(distinct r.id), 1) as tok_out
-  from runs r left join run_steps s on s.run_id = r.id where r.status = 'ok' group by r.role order by r.role`;
+  from runs r left join run_steps s on s.run_id = r.id where r.status = 'ok' and r.input_ref not like 'test%' group by r.role order by r.role`;
 for (const p of perf) rows.push({ what: `${p.role}: seconds per run on ${process.env[`${p.role.toUpperCase()}_MODEL`] ?? "ollama:qwen3.5:9b"} (${p.runs} runs)`, value: `${p.avg_s.toFixed(0)} s, ${Math.round(p.tok_in).toLocaleString("en-US")} tokens in, ${Math.round(p.tok_out).toLocaleString("en-US")} out`, source: "runs and run_steps (bun run cost)" });
 
 console.log(`# Numbers as measured\n\nGenerated ${new Date().toISOString().slice(0, 16).replace("T", " ")} UTC by \`bun run numbers\` from the live database. Regenerate after any run; never edit the values by hand.\n`);

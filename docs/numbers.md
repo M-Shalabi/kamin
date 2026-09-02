@@ -57,7 +57,7 @@ Generated 2026-09-02 13:59 UTC by `bun run numbers` from the live database. Rege
 | Discovery lift: pooled orders whose best match is a supplier absent from Tarmeez | 0 | `select count(distinct m.pooled_order_id) as v from matches m join capabilities c on c.id = m.capability_id join suppliers s on s.id = c.supplier_id join pooled_orders o on o.id = m.pooled_order_id where m.rank = 1 and not s.in_tarmeez and o.title not like 'test %'` |
 | advisor: seconds per run on ollama:qwen3.5:9b (3 runs) | 63 s, 1,342 tokens in, 983 out | `runs and run_steps (bun run cost)` |
 | auditor: seconds per run on ollama:qwen3.5:9b (338 runs) | 22 s, 1,045 tokens in, 261 out | `runs and run_steps (bun run cost)` |
-| coordinator: seconds per run on ollama:qwen3.5:9b (136 runs) | 65 s, 4,133 tokens in, 322 out | `runs and run_steps (bun run cost)` |
+| coordinator: seconds per run on ollama:qwen3.5:9b (123 runs) | 69 s, 4,570 tokens in, 356 out | `runs and run_steps (bun run cost)` |
 | detective: seconds per run on ollama:qwen3.5:9b (97 runs) | 98 s, 5,697 tokens in, 934 out | `runs and run_steps (bun run cost)` |
 
 ## Reconciliation with the deliverables' older figures
