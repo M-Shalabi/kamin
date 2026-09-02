@@ -47,13 +47,14 @@ describe("evidenceTier", () => {
     expect(evidenceTier("https://www.bariqgroup.com/certificates", "certification", own, 3)).toBe(3);
     expect(evidenceTier("https://bariqgroup.com/products/valves", "catalogue", own, 3)).toBe(3);
   });
-  test("third-party certification or award is Tier 1, registries and directories Tier 2", () => {
-    expect(evidenceTier("https://saso.gov.sa/cert/123", "certification", own, 2)).toBe(1);
+  test("the host decides: a certifier or registry host gives its tier, an unknown or social host never beats Tier 3", () => {
+    expect(evidenceTier("https://saso.gov.sa/cert/123", "certification", own, 1)).toBe(1);
     expect(evidenceTier("https://lc.mcci.org.sa/Home/FactoryDetails/1", "registry", own, 2)).toBe(2);
-    expect(evidenceTier("https://directory.example.com/x", "directory", own, 3)).toBe(2);
+    expect(evidenceTier("https://sa.linkedin.com/company/x", "certification", own, 3)).toBe(3);
+    expect(evidenceTier("https://news.example.com/a", "award", own, 3)).toBe(3);
   });
-  test("news and marketplace pages about the company never beat Tier 3 unless the page tier says so", () => {
-    expect(evidenceTier("https://news.example.com/a", "news", own, 3)).toBe(3);
+  test("a recognised host keeps its tier even when the model labels the kind loosely", () => {
     expect(evidenceTier("https://madeinsaudi.sa/members/9", "website", own, 1)).toBe(1);
+    expect(evidenceTier("https://directory.example.com/x", "website", own, 2)).toBe(2);
   });
 });

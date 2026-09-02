@@ -3,6 +3,8 @@ import type { SupplierProfile } from "./queries";
 import type { DetectiveFindingsT } from "./schema";
 import type { PageCandidate } from "./select";
 import { anchorFinding, evidenceTier, ownHosts } from "./anchor";
+import { nameTokens } from "./queries";
+import { classifyUrl } from "./select";
 
 export async function loadProfile(db: Sql, supplierId: string): Promise<SupplierProfile> {
   const [s] = await db<{ id: string; name_ar: string | null; name_en: string | null; city_en: string | null; region_en: string | null; website: string | null; cr_number: string | null }[]>`
@@ -18,7 +20,9 @@ export async function loadProfile(db: Sql, supplierId: string): Promise<Supplier
 export async function mergeFindings(db: Sql, profile: SupplierProfile, f: DetectiveFindingsT, runId: string, pages: PageCandidate[]): Promise<{ capabilities: number; evidence: number; created: number }> {
   const pageTier = new Map(pages.map((p) => [p.url, p.tier]));
   const own = ownHosts(profile.website, f.website, ...pages.filter((p) => p.kind === "own_site").map((p) => p.url));
-  const tierFor = (url: string, kind: string): 1 | 2 | 3 => evidenceTier(url, kind, own, pageTier.get(url) ?? 3);
+  const tokens = nameTokens(profile);
+  // A cited URL that was never fetched is still classified by its host, so a certifier's or registry's page keeps its tier.
+  const tierFor = (url: string, kind: string): 1 | 2 | 3 => evidenceTier(url, kind, own, pageTier.get(url) ?? classifyUrl(url, tokens).tier);
   let evidenceCount = 0, created = 0, touched = 0;
   await db.begin(async (tx) => {
     await tx`delete from evidence where run_id = ${runId}`;
@@ -38,7 +42,7 @@ export async function mergeFindings(db: Sql, profile: SupplierProfile, f: Detect
       } else {
         const [row] = await tx<{ id: string; inserted: boolean }[]>`
           insert into capabilities (supplier_id, tariff_code, hs6, product_title, spec_attrs, class, origin)
-          values (${profile.id}, null, ${hs6 ?? "000000"}, ${cap.product}, ${tx.json(attrs as never)}, ${cls ?? (profile.declared.length ? "manufacturer" : "trader")}, 'detective')
+          values (${profile.id}, null, ${hs6 ?? "000000"}, ${cap.product.trim().replace(/\s+/g, " ")}, ${tx.json(attrs as never)}, ${cls ?? (profile.declared.length ? "manufacturer" : "trader")}, 'detective')
           on conflict (supplier_id, hs6, lower(product_title)) where tariff_code is null do update set updated_at = now()
           returning id, (xmax = 0) as inserted`;
         id = row!.id;

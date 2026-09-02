@@ -87,14 +87,14 @@ export function ownHosts(...urls: (string | null | undefined)[]): string[] {
   return [...new Set(urls.map((u) => (u ? hostOf(/^https?:\/\//i.test(u) ? u : `https://${u}`) : null)).filter((h): h is string => !!h))];
 }
 
-const TIER_BY_KIND: Record<string, 1 | 2 | 3> = { certification: 1, award: 1, registry: 2, directory: 2, catalogue: 3, website: 3, news: 3 };
-
 /**
- * Evidence tier for one record. Anything on the supplier's own domain is self-published, Tier 3,
- * whatever it claims to be. Elsewhere the kind and the page classification each cap the tier.
+ * Evidence tier for one record. The host decides: anything on the supplier's own domain is
+ * self-published, Tier 3, whatever it claims to be; a recognised certifier or registry host gives
+ * its page tier; an unknown, social or news host never beats Tier 3. The model's kind label is kept
+ * as source_type for display but cannot raise the tier.
  */
-export function evidenceTier(url: string, kind: string, own: string[], pageTier: 1 | 2 | 3): 1 | 2 | 3 {
+export function evidenceTier(url: string, _kind: string, own: string[], pageTier: 1 | 2 | 3): 1 | 2 | 3 {
   const host = hostOf(url);
   if (host && own.some((o) => host === o || host.endsWith(`.${o}`))) return 3;
-  return Math.min(pageTier, TIER_BY_KIND[kind] ?? 3) as 1 | 2 | 3;
+  return pageTier;
 }

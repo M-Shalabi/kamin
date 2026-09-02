@@ -21,7 +21,7 @@ describe.skipIf(!process.env.DATABASE_URL)("mergeFindings", () => {
       website: "https://testvalves.example", is_same_company: true,
       capabilities: [
         { product: "stainless ball valves", hs6_guess: "848180", class_guess: "manufacturer", spec_attrs: [{ key: "size", value: "1/2 to 12 inch" }], evidence: [{ url: "https://testvalves.example/products", excerpt: "ball valves", kind: "catalogue" }] },
-        { product: "centrifugal pumps", hs6_guess: "841370", class_guess: "authorised_distributor", spec_attrs: [], evidence: [{ url: "https://www.dnb.com/x", excerpt: "distributes pumps", kind: "directory" }] },
+        { product: "  centrifugal   pumps ", hs6_guess: "841370", class_guess: "authorised_distributor", spec_attrs: [], evidence: [{ url: "https://www.dnb.com/x", excerpt: "distributes pumps", kind: "directory" }] },
         { product: "Gate Valves (Model B7000)", hs6_guess: null, class_guess: "manufacturer", spec_attrs: [], evidence: [{ url: "https://testvalves.example/gate", excerpt: "gate valves", kind: "website" }] },
       ],
       certifications: [{ name: "ISO 9001", url: "https://testvalves.example/iso", excerpt: "certified" }, { name: "SASO", url: "https://saso.gov.sa/cert/1", excerpt: "listed" }],
