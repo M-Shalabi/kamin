@@ -52,3 +52,35 @@ describe("fetchText", () => {
     expect(await fetchText("https://x.example/b", { fetchImpl: failing, cacheDir: dir })).toBeNull();
   });
 });
+
+/** A minimal one-page PDF with one text object, offsets computed so the xref table is valid. */
+export function minimalPdf(text: string): Uint8Array {
+  const objs = [
+    "<< /Type /Catalog /Pages 2 0 R >>",
+    "<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+    "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>",
+    null,
+    "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>",
+  ];
+  const stream = `BT /F1 12 Tf 72 712 Td (${text.replace(/[()\\]/g, "\\$&")}) Tj ET`;
+  objs[3] = `<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`;
+  let out = "%PDF-1.4\n";
+  const offsets: number[] = [];
+  objs.forEach((o, i) => { offsets.push(out.length); out += `${i + 1} 0 obj\n${o}\nendobj\n`; });
+  const xref = out.length;
+  out += `xref\n0 ${objs.length + 1}\n0000000000 65535 f \n${offsets.map((o) => `${String(o).padStart(10, "0")} 00000 n \n`).join("")}trailer\n<< /Size ${objs.length + 1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF\n`;
+  return new TextEncoder().encode(out);
+}
+
+describe("fetchText with a PDF", () => {
+  test("extracts the text of a PDF document and titles it from the file name", async () => {
+    const { mkdtemp } = await import("node:fs/promises");
+    const { tmpdir } = await import("node:os");
+    const dir = await mkdtemp(`${tmpdir()}/kamin-pdf-`);
+    const fake = (async () => new Response(new Blob([minimalPdf("Ball valves PN16 DN15 to DN300 stainless steel 316") as unknown as BlobPart]), { status: 200, headers: { "content-type": "application/pdf" } })) as unknown as typeof fetch;
+    const r = await fetchText("https://example.com/downloads/valve-catalogue.pdf", { fetchImpl: fake, cacheDir: dir });
+    expect(r?.text).toContain("Ball valves PN16");
+    expect(r?.text).toContain("stainless steel 316");
+    expect(r?.title).toBe("valve-catalogue.pdf");
+  });
+});

@@ -2,7 +2,7 @@ import type { Sql } from "postgres";
 
 export type StepKind = "llm_call" | "tool_call" | "retrieval" | "note" | "error";
 export type StepInput = { kind: StepKind; name: string; input?: unknown; output?: unknown; durationMs?: number; tokensIn?: number; tokensOut?: number };
-export type RunMeta = { role: "coordinator" | "detective" | "auditor" | "advisor"; inputRef: string; model: string };
+export type RunMeta = { role: "coordinator" | "detective" | "specifier" | "auditor" | "advisor"; inputRef: string; model: string };
 
 export async function startRun(db: Sql, meta: RunMeta): Promise<string> {
   const [row] = await db<{ id: string }[]>`insert into runs (role, input_ref, model) values (${meta.role}, ${meta.inputRef}, ${meta.model}) returning id`;

@@ -6,7 +6,7 @@ import { ChatOllama, OllamaEmbeddings } from "@langchain/ollama";
 import { ChatOpenAI } from "@langchain/openai";
 
 export type Provider = "ollama" | "anthropic" | "openai" | "deepseek";
-export type Role = "coordinator" | "detective" | "auditor" | "advisor";
+export type Role = "coordinator" | "detective" | "specifier" | "auditor" | "advisor";
 const PROVIDERS: Provider[] = ["ollama", "anthropic", "openai", "deepseek"];
 const DEFAULT_CHAT = "ollama:qwen3.5:9b";
 const DEFAULT_EMBED = "ollama:bge-m3";

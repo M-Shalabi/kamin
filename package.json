@@ -24,6 +24,7 @@
     "load:mis": "bun run packages/core/scripts/load-made-in-saudi.ts",
     "swarm": "bun run packages/core/scripts/swarm.ts",
     "hunt": "bun run packages/core/scripts/hunt.ts",
+    "spec:pass": "bun run packages/core/scripts/spec-pass.ts",
     "cost": "bun run packages/core/scripts/cost-report.ts",
     "ingest:comtrade": "bun run packages/core/scripts/ingest-comtrade.ts",
     "ingest:mining": "bun run packages/core/scripts/ingest-mining.ts",

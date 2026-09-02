@@ -30,6 +30,7 @@ The capability graph, its ingests, the four agent roles (Coordinator, Detective,
 | `bun run auditor <capabilityId>` | Audits one capability through the three lenses (real, at spec, local) and writes the verdict and class |
 | `bun run swarm [n]` | Detective then Auditor over the sector suppliers, `n` at a time, skipping what is already done; resumable |
 | `bun run hunt` | Long-tail discovery: searches for sector suppliers absent from every registry and adds them as `discovered:*` |
+| `bun run spec:pass [limit] [--hs6 848180]` | The Specifier: reads catalogues and datasheets (PDF included) of the supported suppliers that could close the most demand and writes stated sizes, ratings, materials and connections onto their capabilities |
 | `bun run ingest:mlcp` | Loads the Madinah chamber's factory directory and links it to Tarmeez suppliers by CR then by name |
 | `bun run capture:mis` / `bun run load:mis` | Captures the public Made in Saudi member pages, then links them (CR first, name similarity second) and writes Tier 1 evidence |
 | `bun run cost` | Seconds and tokens per role from the trajectory store, and what the same runs would cost on paid models |

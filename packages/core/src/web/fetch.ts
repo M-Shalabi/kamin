@@ -37,9 +37,15 @@ export async function fetchText(url: string, opts: { fetchImpl?: typeof fetch; c
   } catch {}
   let result: { url: string; title: string | null; text: string } | null = null;
   try {
-    const res = await (opts.fetchImpl ?? fetch)(url, { headers: { "user-agent": "KAMIN research client (PIF Innovate Hackathon)", accept: "text/html,application/xhtml+xml" }, signal: AbortSignal.timeout(20_000), redirect: "follow" });
+    const res = await (opts.fetchImpl ?? fetch)(url, { headers: { "user-agent": "KAMIN research client (PIF Innovate Hackathon)", accept: "text/html,application/xhtml+xml,application/pdf" }, signal: AbortSignal.timeout(20_000), redirect: "follow" });
     const type = res.headers.get("content-type") ?? "";
-    if (res.ok && /html|xml|text\/plain/i.test(type)) {
+    if (res.ok && (/pdf/i.test(type) || /\.pdf(?:$|[?#])/i.test(url))) {
+      // Catalogues and datasheets: extract the text of every page, merged.
+      const { extractText } = await import("unpdf");
+      const { text } = await extractText(new Uint8Array(await res.arrayBuffer()), { mergePages: true });
+      const name = decodeURIComponent(new URL(url).pathname.split("/").pop() ?? "") || null;
+      result = { url, title: name, text: String(text).replace(/\s+/g, " ").trim().slice(0, maxChars) };
+    } else if (res.ok && /html|xml|text\/plain/i.test(type)) {
       const html = await res.text();
       result = { url, title: htmlTitle(html), text: htmlToText(html).slice(0, maxChars) };
     }
