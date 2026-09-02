@@ -74,7 +74,7 @@ The standing of one piece of evidence. Tier 1, third-party verified: an Etimad a
 _Avoid_: Primary/secondary/marketing, strongest/weakest, source type
 
 **Verdict**:
-The Auditor's finding on one capability: supported or refuted. Refuted means not real or not at specification. Being a trader is never grounds for refutation; that is a class.
+The Auditor's finding on one capability: supported or refuted. Refuted means not real. A product that is real but not at its stated specification stays supported at category level, with the unsubstantiated attributes removed. Being a trader is never grounds for refutation; that is a class.
 _Avoid_: Kill (fine on stage, not in code), rejected, failed, passed
 
 **Supported capability**:

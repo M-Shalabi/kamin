@@ -125,7 +125,7 @@ OUTPUT       { verdict: supported | refuted, class, confidence: 0-1,
                reasoning, killer_evidence? }
 ```
 
-Run the three lenses as separate auditors rather than one. The real and spec lenses can refute; the local lens only classifies. A majority of refuting lenses kills the capability, which is the auditor-kill moment in demo step 5. A capability counts toward coverage only when supported **and** backed by at least one Tier 1 or Tier 2 evidence; Tier 3-only support stays on the supplier as unverified and is queued for the next Detective pass.
+Run the three lenses as separate auditors rather than one. The real and spec lenses can refute; the local lens only classifies. Only a refuted real lens kills the capability, which is the auditor-kill moment in demo step 5; a refuted spec lens strips the unsubstantiated attributes and keeps the product at category level. A capability counts toward coverage only when supported **and** backed by at least one Tier 1 or Tier 2 evidence; Tier 3-only support stays on the supplier as unverified and is queued for the next Detective pass.
 
 **Scope discipline:** several hundred entities fully enriched in one or two priority sectors beats three thousand shallow rows. **Chosen slice: valves, pumps and pipe fittings** (HS 8481, 8413, 7307). It is the running example in every deliverable, it sits on the Mandatory List's August 2027 tranche, imports are large, and adjacency is natural: a fittings plant can make valve bodies. Say "depth over breadth, deliberately" on stage before a judge says it for you.
 

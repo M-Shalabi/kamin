@@ -168,8 +168,11 @@ Every decision below is written into `CONTEXT.md` (names), `docs/adr/` (reasonin
   Postgres plus a terminal stream; Langfuse self-hosted as dev viewer. Tavily search. Next.js UI.
 - **Entity model:** `Supplier` replaces `Factory`. Class (manufacturer / assembler / authorised
   distributor / trader) lives on each capability, not on the supplier.
-- **Auditor rule:** refute only on is-it-real and is-it-at-spec; is-it-local outputs a class.
-  Majority of refuting lenses kills the capability. That kill is demo step 5.
+- **Auditor rule (refined 2026-09-02 after the first live audits):** only a refuted is-it-real lens
+  kills a capability, and that kill is demo step 5. A refuted is-it-at-spec lens on a real product
+  strips the unsubstantiated attributes and keeps it supported at category level with discounted
+  confidence; a claim that states no attributes has no spec lens to fail. Is-it-local outputs a class.
+  `bun run reverdict` recomputes stored verdicts from saved lenses when this rule changes.
 - **Evidence:** tiers 1 to 4 from `SUBMISSION.md` are canonical. BUILD_PLAN's
   primary/secondary/marketing and STORY's strongest-to-weakest are retired as names.
 - **Threshold:** a capability counts toward coverage only when supported and backed by Tier 1 or 2.
