@@ -1,0 +1,65 @@
+# Langfuse v3 self-hosted, the developer trace viewer beside KAMIN's own trajectory store (ADR 0003).
+# Not started by default; it pulls about four gigabytes of images. When disk allows:
+#   docker compose -f docker-compose.langfuse.yml up -d
+# then open http://localhost:3001, create a project, put LANGFUSE_PUBLIC_KEY, LANGFUSE_SECRET_KEY and
+# LANGFUSE_BASEURL=http://localhost:3001 in .env, and add the Langfuse callback handler beside the
+# TrajectoryHandler in packages/core/src/trajectory/handler.ts (`withRun` accepts extra callbacks).
+# Secrets: set LANGFUSE_NEXTAUTH_SECRET, LANGFUSE_SALT and LANGFUSE_ENCRYPTION_KEY (64 hex chars) in .env.
+services:
+  langfuse-web:
+    image: langfuse/langfuse:3
+    ports: ["3001:3000"]
+    depends_on: [langfuse-postgres, clickhouse, redis, minio]
+    environment: &langfuse-env
+      DATABASE_URL: postgresql://langfuse:langfuse@langfuse-postgres:5432/langfuse
+      SALT: ${LANGFUSE_SALT:?set LANGFUSE_SALT in .env}
+      ENCRYPTION_KEY: ${LANGFUSE_ENCRYPTION_KEY:?set LANGFUSE_ENCRYPTION_KEY in .env}
+      NEXTAUTH_SECRET: ${LANGFUSE_NEXTAUTH_SECRET:?set LANGFUSE_NEXTAUTH_SECRET in .env}
+      NEXTAUTH_URL: http://localhost:3001
+      TELEMETRY_ENABLED: "false"
+      CLICKHOUSE_MIGRATION_URL: clickhouse://clickhouse:9000
+      CLICKHOUSE_URL: http://clickhouse:8123
+      CLICKHOUSE_USER: clickhouse
+      CLICKHOUSE_PASSWORD: clickhouse
+      CLICKHOUSE_CLUSTER_ENABLED: "false"
+      LANGFUSE_S3_EVENT_UPLOAD_BUCKET: langfuse
+      LANGFUSE_S3_EVENT_UPLOAD_REGION: auto
+      LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID: minio
+      LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY: miniosecret
+      LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT: http://minio:9000
+      LANGFUSE_S3_EVENT_UPLOAD_FORCE_PATH_STYLE: "true"
+      LANGFUSE_S3_EVENT_UPLOAD_PREFIX: events/
+      LANGFUSE_S3_MEDIA_UPLOAD_BUCKET: langfuse
+      LANGFUSE_S3_MEDIA_UPLOAD_REGION: auto
+      LANGFUSE_S3_MEDIA_UPLOAD_ACCESS_KEY_ID: minio
+      LANGFUSE_S3_MEDIA_UPLOAD_SECRET_ACCESS_KEY: miniosecret
+      LANGFUSE_S3_MEDIA_UPLOAD_ENDPOINT: http://localhost:9090
+      LANGFUSE_S3_MEDIA_UPLOAD_FORCE_PATH_STYLE: "true"
+      LANGFUSE_S3_MEDIA_UPLOAD_PREFIX: media/
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      REDIS_AUTH: myredissecret
+  langfuse-worker:
+    image: langfuse/langfuse-worker:3
+    depends_on: [langfuse-postgres, clickhouse, redis, minio]
+    environment: *langfuse-env
+  langfuse-postgres:
+    image: postgres:17
+    environment: { POSTGRES_USER: langfuse, POSTGRES_PASSWORD: langfuse, POSTGRES_DB: langfuse }
+    volumes: [langfuse_pg:/var/lib/postgresql/data]
+  clickhouse:
+    image: clickhouse/clickhouse-server
+    user: "101:101"
+    environment: { CLICKHOUSE_DB: default, CLICKHOUSE_USER: clickhouse, CLICKHOUSE_PASSWORD: clickhouse }
+    volumes: [langfuse_ch:/var/lib/clickhouse, langfuse_ch_logs:/var/log/clickhouse-server]
+  redis:
+    image: redis:7
+    command: ["redis-server", "--requirepass", "myredissecret"]
+  minio:
+    image: minio/minio
+    entrypoint: sh
+    command: -c 'mkdir -p /data/langfuse && minio server --address ":9000" --console-address ":9001" /data'
+    ports: ["9090:9000"]
+    environment: { MINIO_ROOT_USER: minio, MINIO_ROOT_PASSWORD: miniosecret }
+    volumes: [langfuse_minio:/data]
+volumes: { langfuse_pg: {}, langfuse_ch: {}, langfuse_ch_logs: {}, langfuse_minio: {} }

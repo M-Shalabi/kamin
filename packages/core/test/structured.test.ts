@@ -1,7 +1,8 @@
 import { describe, expect, test } from "bun:test";
 import { AIMessage } from "@langchain/core/messages";
 import { z } from "zod";
-import { extractCandidate } from "../src/models/structured";
+import { extractCandidate, invokeStructured } from "../src/models/structured";
+import type { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { HsChoiceLoose, NormalizedSpecLoose } from "../src/coordinator/loose";
 
 describe("extractCandidate", () => {
@@ -15,6 +16,16 @@ describe("extractCandidate", () => {
   });
   test("strips code fences and leading prose", () => {
     expect(extractCandidate(new AIMessage({ content: 'Here you go:\n```json\n{"a": 3}\n```' }))).toEqual({ a: 3 });
+  });
+  test("revives nested JSON strings inside tool-call arguments, leaving plain strings alone", () => {
+    const msg = new AIMessage({ content: "", tool_calls: [{ name: "out", args: { items: '[{"x": 1}]', meta: '{"k": "v"}', plain: "text", num: "5", nested: { deep: '["a"]' } }, id: "x", type: "tool_call" }] });
+    expect(extractCandidate(msg)).toEqual({ items: [{ x: 1 }], meta: { k: "v" }, plain: "text", num: "5", nested: { deep: ["a"] } });
+  });
+  test("repairs a reply missing one closing brace before a trailing key, and a reply cut off mid-object", () => {
+    const missing = '{"analysis":"x","real":{"verdict":"supported","reasoning":"r","killer_evidence":null},"at_spec":{"verdict":"unknown","reasoning":"s"},"local":{"class":"trader","reasoning":"imports","confidence":0.95}';
+    expect(extractCandidate(new AIMessage({ content: missing }))).toEqual({ analysis: "x", real: { verdict: "supported", reasoning: "r", killer_evidence: null }, at_spec: { verdict: "unknown", reasoning: "s" }, local: { class: "trader", reasoning: "imports" }, confidence: 0.95 });
+    const cut = '{"analysis":"x","real":{"verdict":"supported","reasoning":"r"},"at_spec":{"verdict":"unknown","reasoning":"long text that was cut';
+    expect(extractCandidate(new AIMessage({ content: cut }))).toEqual({ analysis: "x", real: { verdict: "supported", reasoning: "r" }, at_spec: { verdict: "unknown", reasoning: "long text that was cut" } });
   });
   test("returns undefined when nothing parses", () => {
     expect(extractCandidate(new AIMessage({ content: "no json here" }))).toBeUndefined();
@@ -55,5 +66,45 @@ describe("HsChoiceLoose", () => {
   });
   test("accepts dotted codes and clamps confidence", () => {
     expect(HsChoiceLoose.parse({ hs6: "8481.80", confidence: 1.4, reasoning: "" })).toEqual({ hs6: "848180", confidence: 1, reasoning: "" });
+  });
+});
+
+describe("invokeStructured preferJsonText", () => {
+  test("skips tool binding entirely and asks for JSON text from the first call", async () => {
+    const calls: string[] = [];
+    const fake = {
+      bindTools: () => { calls.push("bind"); return { invoke: async () => { calls.push("tool"); return new AIMessage({ content: "" }); } }; },
+      invoke: async (msgs: { content: unknown }[]) => { calls.push("plain"); expect(String(msgs[0]!.content)).toContain("JSON schema"); return new AIMessage({ content: '{"a": 7}' }); },
+    } as unknown as BaseChatModel;
+    const r = await invokeStructured(fake, [], { name: "out", toolSchema: z.object({ a: z.number() }), parseSchema: z.object({ a: z.number() }), preferJsonText: true });
+    expect(r).toEqual({ a: 7 });
+    expect(calls).toEqual(["plain"]);
+  });
+});
+
+describe("invokeStructured with a prose reply", () => {
+  test("a reply holding no JSON object is a failure even for a lenient schema, and the retry is used", async () => {
+    const replies = [new AIMessage({ content: "Based on the text, here are the companies:\n1. **Alpha Valves**" }), new AIMessage({ content: '{"companies": [{"name": "Alpha Valves"}]}' })];
+    let calls = 0;
+    const fake = { invoke: async () => { calls++; return replies.shift()!; } } as unknown as BaseChatModel;
+    const lenient = z.preprocess((raw) => ({ companies: (raw as { companies?: unknown[] } | undefined)?.companies ?? [] }), z.object({ companies: z.array(z.object({ name: z.string() })) }));
+    const retries: string[] = [];
+    const r = await invokeStructured(fake, [], { name: "out", toolSchema: z.object({ companies: z.array(z.object({ name: z.string() })) }), parseSchema: lenient, preferJsonText: true, onRetry: (i) => { retries.push(i); } });
+    expect(r).toEqual({ companies: [{ name: "Alpha Valves" }] });
+    expect(calls).toBe(2);
+    expect(retries[0]).toContain("no JSON object");
+  });
+});
+
+describe("invokeStructured fallback", () => {
+  test("falls back to JSON-in-text when the provider rejects the tool call as malformed XML", async () => {
+    const calls: string[] = [];
+    const fake = {
+      bindTools: () => ({ invoke: async () => { calls.push("tool"); throw new Error("XML syntax error on line 14: element <parameter> closed by </function>"); } }),
+      invoke: async (msgs: { content: unknown }[]) => { calls.push("plain"); expect(String(msgs[0]!.content)).toContain("JSON"); return new AIMessage({ content: '{"a": 42}' }); },
+    } as unknown as BaseChatModel;
+    const r = await invokeStructured(fake, [], { name: "out", toolSchema: z.object({ a: z.number() }), parseSchema: z.object({ a: z.number() }) });
+    expect(r).toEqual({ a: 42 });
+    expect(calls).toEqual(["tool", "plain"]);
   });
 });

@@ -1,7 +1,10 @@
 {
   "name": "kamin",
   "private": true,
-  "workspaces": ["packages/*", "apps/*"],
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
   "scripts": {
     "db:up": "docker compose up -d db",
     "db:down": "docker compose down",
@@ -13,6 +16,33 @@
     "ingest:plants": "bun run packages/core/scripts/ingest-tarmeez-plants.ts",
     "embed:hs": "bun run packages/core/scripts/embed-hs.ts",
     "coordinator": "bun run packages/core/scripts/coordinator.ts",
-    "spike": "bun run packages/core/eval/coordinator-spike.ts"
+    "spike": "bun run packages/core/eval/coordinator-spike.ts",
+    "detective": "bun run packages/core/scripts/detective.ts",
+    "auditor": "bun run packages/core/scripts/auditor.ts",
+    "ingest:mlcp": "bun run packages/core/scripts/ingest-mlcp.ts",
+    "capture:mis": "bun run packages/core/scripts/capture-made-in-saudi.ts",
+    "load:mis": "bun run packages/core/scripts/load-made-in-saudi.ts",
+    "swarm": "bun run packages/core/scripts/swarm.ts",
+    "hunt": "bun run packages/core/scripts/hunt.ts",
+    "cost": "bun run packages/core/scripts/cost-report.ts",
+    "ingest:comtrade": "bun run packages/core/scripts/ingest-comtrade.ts",
+    "ingest:mining": "bun run packages/core/scripts/ingest-mining.ts",
+    "seed:mandatory": "bun run packages/core/scripts/seed-mandatory-list.ts",
+    "demand:generate": "bun run packages/core/scripts/generate-demand.ts",
+    "demand:resolve": "bun run packages/core/scripts/resolve-demand.ts",
+    "match": "bun run packages/core/scripts/match.ts",
+    "coverage": "bun run packages/core/scripts/coverage.ts",
+    "advisor": "bun run packages/core/scripts/advisor.ts",
+    "gaps": "bun run packages/core/scripts/gaps.ts",
+    "numbers": "bun run packages/core/scripts/numbers.ts",
+    "reverdict": "bun run packages/core/scripts/reverdict.ts",
+    "retier": "bun run packages/core/scripts/retier.ts",
+    "web:dev": "KAMIN_ROOT=$PWD bun run --cwd apps/web dev",
+    "web:build": "KAMIN_ROOT=$PWD bun run --cwd apps/web build",
+    "typecheck:web": "cd apps/web && tsc --noEmit",
+    "demo": "bun run db:up && bun run web:dev",
+    "record-cold-miss": "bun run packages/core/scripts/record-cold-miss.ts",
+    "db:snapshot": "bun run packages/core/scripts/db-snapshot.ts",
+    "db:restore": "bun run packages/core/scripts/db-restore.ts"
   }
 }

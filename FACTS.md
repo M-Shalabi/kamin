@@ -49,6 +49,20 @@ capability of any class. Definitions in `CONTEXT.md`, mechanics in `BUILD_PLAN.m
   valve scenario, the two gate valves, the two centrifugal pumps and the two elbows each pooled. About
   53 seconds per line on a 16 GB laptop. Evidence in `docs/eval/2026-09-02-coordinator-spike-qwen3.5-9b.md`.
   The `qwen3:8b` A/B did not run (model removed from the machine); pull it and re-run before quoting a comparison.
+- **Detective and Auditor swarm, measured 2026-09-02:** 86 suppliers investigated (60 in the swarm at 93 min,
+  the rest from tests, the stage recordings and the hunt), 323 slice capabilities audited: 206 supported,
+  13 refuted, 104 pending. 17 suppliers discovered by the long-tail hunt in no registry, 13 of them with a
+  supported capability. Per successful run on `qwen3.5:9b`: Detective 98 s, Auditor 22 s (17 s once the
+  audit went to JSON text), Coordinator 66 s (47 s in the milestone-1 spike; the difference is `bge-m3`
+  and `qwen3.5:9b` swapping in one Ollama slot), Advisor 63 s; at Claude Opus 5 prices a Detective run
+  would cost about $0.05 and an audit about $0.01, so the "$0.30 per factory" estimate is high by
+  roughly five times. Evidence in
+  `docs/eval/2026-09-02-coverage-and-gaps.md` and `docs/numbers.md`.
+- **Coverage, measured 2026-09-02:** 96 simulated lines pooled into 72 orders worth USD 357.9M a year.
+  **At the stated specification: 0.0%.** At category level (a verified plant declares the subheading):
+  98.9% of spend, 70 of 72 orders. Two supply gaps (carbon-steel butt-weld tees, USD 4.1M a year) with
+  Advisor cases, no manufacturing gaps. Say both figures on stage; the distance between them is the
+  blind spot. This framing was decided without Mohammed and needs his confirmation.
 - **⚠️ 2026-09-02, the Tarmeez re-count breaks the headline.** The catalogue API reports **14,873
   plants** and **59,611 products** (`DATA_SOURCES.md`, re-test table). 14,873 is larger than the
   12,946 "operating factories" figure, so "3,153 of 12,946, 76% absent" cannot be said until both
@@ -68,7 +82,8 @@ capability of any class. Definitions in `CONTEXT.md`, mechanics in `BUILD_PLAN.m
   invites the wrong argument.
   Note (2026-09-02): the build runs on local Ollama models first, so measure twice: once on
   the local path (electricity, effectively zero marginal cost) and once on a paid API, and say
-  which one the $0.30 refers to.
+  which one the $0.30 refers to. Measured the same evening: about $0.06 per supplier for one
+  Detective run plus one audit at Opus 5 prices (`bun run cost`).
 - Tarmeez product count: **52,824 (AR view) vs 12,641 (EN view)**, superseded 2026-09-02 by the
   API: 59,611 product registrations collapsing to 4,834 distinct tariff codes. Say "59,611 registered
   product lines" or "4,834 distinct products", never the old numbers.
@@ -168,13 +183,19 @@ Every decision below is written into `CONTEXT.md` (names), `docs/adr/` (reasonin
   Postgres plus a terminal stream; Langfuse self-hosted as dev viewer. Tavily search. Next.js UI.
 - **Entity model:** `Supplier` replaces `Factory`. Class (manufacturer / assembler / authorised
   distributor / trader) lives on each capability, not on the supplier.
-- **Auditor rule:** refute only on is-it-real and is-it-at-spec; is-it-local outputs a class.
-  Majority of refuting lenses kills the capability. That kill is demo step 5.
+- **Auditor rule (refined 2026-09-02 after the first live audits):** only a refuted is-it-real lens
+  kills a capability, and that kill is demo step 5. A refuted is-it-at-spec lens on a real product
+  strips the unsubstantiated attributes and keeps it supported at category level with discounted
+  confidence; a claim that states no attributes has no spec lens to fail. Is-it-local outputs a class.
+  `bun run reverdict` recomputes stored verdicts from saved lenses when this rule changes.
 - **Evidence:** tiers 1 to 4 from `SUBMISSION.md` are canonical. BUILD_PLAN's
   primary/secondary/marketing and STORY's strongest-to-weakest are retired as names.
-- **Threshold:** a capability counts toward coverage only when supported and backed by Tier 1 or 2.
-- **Coverage:** spend-weighted share of pooled annual demand value, portfolio level. Line coverage
-  is secondary.
+- **Threshold:** a capability counts toward coverage only when supported and backed by Tier 1 or 2,
+  at the order's own subheading and with no stated attribute in conflict (refined 2026-09-02 after the
+  first matching run let a pressure-reducing valve line "cover" a ball-valve order at heading level).
+- **Coverage:** spend-weighted share of pooled annual demand value, portfolio level, **at the stated
+  specification** (refined 2026-09-02: with attribute-less registry declarations counting, coverage read
+  98.9% while not one order was verified at spec). Category-level coverage and line coverage are secondary.
 - **Gap kinds:** manufacturing gap (ledger default) and supply gap (toggle).
 - **LC scoring:** G1 implemented and input-gated; LC signals shown per capability meanwhile.
 - **Sector:** valves, pumps and pipe fittings (HS 8481, 8413, 7307).

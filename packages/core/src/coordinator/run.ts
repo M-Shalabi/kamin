@@ -7,7 +7,7 @@ import { withRun, type TrajectoryHandler } from "../trajectory/handler";
 import { anchorNode, normalizeNode, retrieveCandidates } from "./nodes";
 import { NormalizedSpec, type NormalizedSpecT } from "./schema";
 
-export type CoordinatorInput = { rawText: string; portco: string; sourceSystem?: string };
+export type CoordinatorInput = { rawText: string; portco: string; sourceSystem?: string; demandLineId?: string };
 export type CoordinatorResult = { runId: string; demandLineId: string; normalized: NormalizedSpecT; candidates: HsHit[]; hs6: string; confidence: number; reasoning: string };
 
 const State = new StateSchema({
@@ -40,10 +40,16 @@ export async function runCoordinator(db: Sql, input: CoordinatorInput): Promise<
     const run = buildCoordinatorRun(db, runId, handler);
     const out = await run.invoke({ rawText: input.rawText });
     const normalized = out.normalized!;
-    const [line] = await db<{ id: string }[]>`
-      insert into demand_lines (raw_text, portco, source_system, language, normalized_spec, hs6, confidence, run_id)
-      values (${input.rawText}, ${input.portco}, ${input.sourceSystem ?? null}, ${normalized.source_language}, ${db.json(normalized as never)}, ${out.hs6!}, ${out.confidence!}, ${runId})
-      returning id`;
-    return { runId, demandLineId: line!.id, normalized, candidates: out.candidates!, hs6: out.hs6!, confidence: out.confidence!, reasoning: out.reasoning! };
+    let demandLineId = input.demandLineId;
+    if (demandLineId) {
+      await db`update demand_lines set language = ${normalized.source_language}, normalized_spec = ${db.json(normalized as never)}, hs6 = ${out.hs6!}, confidence = ${out.confidence!}, run_id = ${runId} where id = ${demandLineId}`;
+    } else {
+      const [line] = await db<{ id: string }[]>`
+        insert into demand_lines (raw_text, portco, source_system, language, normalized_spec, hs6, confidence, run_id, simulated)
+        values (${input.rawText}, ${input.portco}, ${input.sourceSystem ?? null}, ${normalized.source_language}, ${db.json(normalized as never)}, ${out.hs6!}, ${out.confidence!}, ${runId}, false)
+        returning id`;
+      demandLineId = line!.id;
+    }
+    return { runId, demandLineId, normalized, candidates: out.candidates!, hs6: out.hs6!, confidence: out.confidence!, reasoning: out.reasoning! };
   });
 }

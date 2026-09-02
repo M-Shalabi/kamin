@@ -70,15 +70,15 @@ One cited source behind one capability, with its tier. A capability without evid
 _Avoid_: Proof, citation (as the noun), source record
 
 **Evidence tier**:
-The standing of one piece of evidence. Tier 1, third-party verified: an Etimad award, Made in Saudi certification, ISO or SASO. Tier 2, official registry declaration: Tarmeez, commercial register activity, MLCP. Tier 3, self-published: the supplier's own site and catalogues. Tier 4, inferred: adjacency and equipment signals, never standing alone.
+The standing of one piece of evidence. Tier 1, third-party verified: an Etimad award, Made in Saudi certification, ISO or SASO. Tier 2, official registry declaration: Tarmeez, commercial register activity, MLCP. Tier 3, self-published: the supplier's own site and catalogues. Tier 4, inferred: adjacency and equipment signals, never standing alone. Where a page lives decides the tier before what it claims: a certificate shown on the supplier's own site is Tier 3, the certifier's or the registry's page for it is Tier 1 or 2.
 _Avoid_: Primary/secondary/marketing, strongest/weakest, source type
 
 **Verdict**:
-The Auditor's finding on one capability: supported or refuted. Refuted means not real or not at specification. Being a trader is never grounds for refutation; that is a class.
+The Auditor's finding on one capability: supported or refuted. Refuted means not real. A product that is real but not at its stated specification stays supported at category level, with the unsubstantiated attributes removed. Being a trader is never grounds for refutation; that is a class.
 _Avoid_: Kill (fine on stage, not in code), rejected, failed, passed
 
 **Supported capability**:
-A capability whose verdict is supported and which holds at least one Tier 1 or Tier 2 evidence. Only supported capabilities count toward coverage and close gaps.
+A capability whose verdict is supported and which holds at least one Tier 1 or Tier 2 evidence. Only supported capabilities count toward coverage and close gaps, and only at the pooled order's own subheading with no stated attribute in conflict with the envelope; a sibling subheading or a conflicting attribute is a lead, never coverage.
 _Avoid_: Verified (loose stage word), confirmed, validated
 
 **Unverified capability**:
@@ -109,6 +109,8 @@ _Avoid_: Gap register, gap list, gap analysis
 **Coverage** (نسبة التغطية):
 The share of pooled annual demand value, in riyals, for which at least one supported capability exists. Spend-weighted and portfolio-level, never per company.
 _Avoid_: Coverage rate, localization coverage, coverage percentage
+
+The headline coverage is **at the stated specification**: the best supported supplier states at least one attribute that agrees with the pooled envelope and none that conflicts, and names the object class on a catch-all subheading. **Category-level coverage** is the secondary figure: a verified supplier declares the subheading with nothing in conflict but no specification on record. Each pooled order carries a spec status: verified at spec, declared only, or nobody.
 
 **Line coverage**:
 The share of pooled orders with at least one supported capability. A secondary, operational metric; the header shows coverage.

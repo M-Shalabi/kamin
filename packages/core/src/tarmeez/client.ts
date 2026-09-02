@@ -4,7 +4,7 @@ import pLimit from "p-limit";
 import type { TarmeezCategory } from "../hs/codes";
 
 export const TARMEEZ_BASE = "https://psnr.mim.gov.sa/CatalogApi/api/v1";
-const REPO_ROOT = join(import.meta.dir, "../../../..");
+import { REPO_ROOT } from "../paths";
 
 export type Bilingual = { Ar: string; En: string };
 export type PlantListItem = { Id: number; Title: Bilingual };

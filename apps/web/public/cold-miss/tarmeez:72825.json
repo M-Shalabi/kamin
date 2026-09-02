@@ -1,0 +1,86 @@
+{
+ "supplierId": "tarmeez:72825",
+ "recordedAt": "2026-09-02T08:44:03.172Z",
+ "events": [
+  {
+   "t": 0,
+   "line": "▷ cold miss: tarmeez:72825 is on the map with declared capabilities only. Investigating."
+  },
+  {
+   "t": 25,
+   "line": "▶ run a1bb0fa3-4926-42e6-9ecb-b2ff81cea1ef detective on ollama:qwen3.5:9b: tarmeez:72825"
+  },
+  {
+   "t": 107296,
+   "line": "[llm_call] extract 107.2s 5042→1218 tok → {\"tool_calls\":[{\"name\":\"detective_findings\",\"args\":{\"website\":\"https://bariqgroup.com\",\"is_same_company\":true,\"capabilities\":[{\"class_guess\":\"manufacturer\",\"evidence\":[{\"excerpt\":\"High-performance valve manufacturing with trusted quality control. WAZEN-90 Balancing Valve delivers accurate flow contr…"
+  },
+  {
+   "t": 107443,
+   "line": "■ run a1bb0fa3-4926-42e6-9ecb-b2ff81cea1ef ok"
+  },
+  {
+   "t": 107444,
+   "line": "▷ auditing 3 capabilities in the valve, pump and fitting slice"
+  },
+  {
+   "t": 107448,
+   "line": "▶ run c570e102-e54c-4640-a4d3-ec8937a0a50b auditor on ollama:qwen3.5:9b: ab63047f-cdbf-4324-8f92-70d1066b4665"
+  },
+  {
+   "t": 153747,
+   "line": "[error] audit 46.3s → XML syntax error on line 15: element <parameter> closed by </function>"
+  },
+  {
+   "t": 187839,
+   "line": "[llm_call] audit 34.1s 1722→296 tok → {\"analysis\":\"The company exists and is active as a manufacturer in Dammam. The website explicitly lists the WAZEN-90 Balancing Valve, confirming real capability. However, while 'Bronze' material is mentioned for other products (Ball Valves), there is no specific evidence linking PN16 rating or Brass…"
+  },
+  {
+   "t": 187862,
+   "line": "■ run c570e102-e54c-4640-a4d3-ec8937a0a50b ok"
+  },
+  {
+   "t": 187862,
+   "line": "▷ Balancing Valves (WAZEN-90): pending, manufacturer, confidence 0.30"
+  },
+  {
+   "t": 187866,
+   "line": "▶ run 905486b4-63f5-40f4-acb1-e82eaf03f63d auditor on ollama:qwen3.5:9b: 4d37b9a6-3969-4ac7-bf48-fdf078915ea9"
+  },
+  {
+   "t": 221745,
+   "line": "[llm_call] audit 33.9s 1625→321 tok → {\"tool_calls\":[{\"name\":\"audit_verdict\",\"args\":{\"analysis\":\"The company name and CR number are consistent with a Saudi entity. Tier-2 registry evidence explicitly lists the HS code category \\\"Taps, cocks, valves...\\\" confirming real is supported. The website confirms ISO 9001, CE, WRAS, SASO/SABER ce…"
+  },
+  {
+   "t": 221764,
+   "line": "■ run 905486b4-63f5-40f4-acb1-e82eaf03f63d ok"
+  },
+  {
+   "t": 221764,
+   "line": "▷ Taps- cocks- valves and similar appliances for pipes: pending, manufacturer, confidence 0.81"
+  },
+  {
+   "t": 221773,
+   "line": "▶ run 54082145-936b-46b3-ac94-f8518600636b auditor on ollama:qwen3.5:9b: 437810ce-02b9-4787-aacf-e0c4aad39ecb"
+  },
+  {
+   "t": 271407,
+   "line": "[error] audit 49.6s → XML syntax error on line 15: element <parameter> closed by </function>"
+  },
+  {
+   "t": 303769,
+   "line": "[llm_call] audit 32.3s 1268→155 tok → {\"analysis\":\"The company is registered as a manufacturer in Dammam with specific product listings for bronze swing check valves on their website. The tier 2 registry explicitly lists 'Check valves' (including the Arabic term for swing/check) and declares an annual capacity of 2000 Ton/Unit, which al…"
+  },
+  {
+   "t": 303784,
+   "line": "■ run 54082145-936b-46b3-ac94-f8518600636b ok"
+  },
+  {
+   "t": 303784,
+   "line": "▷ Check valves: supported, manufacturer, confidence 0.42"
+  },
+  {
+   "t": 303784,
+   "line": "▷ done: 17 evidence records and 3 verdicts written to the map"
+  }
+ ]
+}

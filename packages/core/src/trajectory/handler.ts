@@ -65,9 +65,10 @@ export class TrajectoryHandler extends BaseCallbackHandler {
   override handleToolError(err: Error, runId: string) { this.close(runId, "error", err.message); }
 }
 
-export async function withRun<T>(db: Sql, meta: RunMeta, fn: (runId: string, handler: TrajectoryHandler) => Promise<T>): Promise<T> {
+export async function withRun<T>(db: Sql, meta: RunMeta, fn: (runId: string, handler: TrajectoryHandler) => Promise<T>, opts: { sink?: (line: string) => void } = {}): Promise<T> {
   const runId = await startRun(db, meta);
   const handler = new TrajectoryHandler(db, runId);
+  if (opts.sink) handler.sink = opts.sink;
   handler.sink(`▶ run ${runId} ${meta.role} on ${meta.model}: ${meta.inputRef}`);
   try {
     const out = await fn(runId, handler);
