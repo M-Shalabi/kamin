@@ -45,9 +45,12 @@ export class TrajectoryHandler extends BaseCallbackHandler {
     this.open(runId, runName ?? "llm", prompts);
   }
   override handleLLMEnd(output: LLMResult, runId: string) {
-    const gen = output.generations[0]?.[0] as { text?: string; message?: { usage_metadata?: { input_tokens?: number; output_tokens?: number } } } | undefined;
+    const gen = output.generations[0]?.[0] as { text?: string; message?: { usage_metadata?: { input_tokens?: number; output_tokens?: number }; tool_calls?: { name: string; args: unknown }[] } } | undefined;
     const usage = gen?.message?.usage_metadata;
-    this.close(runId, "llm_call", gen?.text ?? null, { tokensIn: usage?.input_tokens, tokensOut: usage?.output_tokens });
+    const text = gen?.text ?? "";
+    const calls = gen?.message?.tool_calls ?? [];
+    const result = text.length ? text : calls.length ? { tool_calls: calls.map((c) => ({ name: c.name, args: c.args })) } : null;
+    this.close(runId, "llm_call", result, { tokensIn: usage?.input_tokens, tokensOut: usage?.output_tokens });
   }
   override handleLLMError(err: Error, runId: string) { this.close(runId, "error", err.message); }
   override handleChainStart(_chain: Serialized, inputs: ChainValues, runId: string, _parentRunId?: string, _tags?: string[], _metadata?: Record<string, unknown>, _runType?: string, runName?: string) {
