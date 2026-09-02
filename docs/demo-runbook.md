@@ -18,9 +18,9 @@ Seven minutes, seven steps, one laptop. Everything below is local: Postgres in D
 | 2 | Purchase requests, pooled | `/orders/<id>` from a ledger row: the lines in their ERP formats and the envelope they pooled into |
 | 3 | Who can supply it, at spec, with evidence | Same page, the match table: class, verdict, tier, score |
 | 4 | The map, filtered | `/suppliers?family=valve&verdict=supported`, then a supplier page |
-| 5 | The Auditor killing a claim | `/evidence/<id>` of a refuted capability: the lens that refuted it and its killer evidence |
+| 5 | The Auditor killing a claim | `/evidence/548d017f-0072-4923-867d-98cfb925cf8f`, KSB Pumps Arabia's declared check valves, refuted on the real lens with killer evidence; any row with verdict refuted in `/suppliers?verdict=refuted` works too |
 | 6 | The cold miss | The recorded supplier's page, Play recording; or a pending supplier's page, Investigate live |
-| 7 | The gap ledger and an investment case | `/?kind=manufacturing_gap`, open the top gap, read the Advisor's case and the pivot candidates |
+| 7 | The gap ledger and an investment case | `/?kind=supply_gap`, open the 4-inch carbon steel butt weld tee, read the Advisor's case and its pivot candidates; then `/?kind=covered` to show that "covered" means declared, spec unverified |
 
 ## Cold miss suppliers
 
