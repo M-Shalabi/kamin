@@ -48,6 +48,10 @@ export function selectDocuments(profile: SupplierProfile, results: TavilyResult[
     let host = ""; try { host = new URL(r.url).hostname.toLowerCase().replace(/^www\./, ""); } catch { continue; }
     const isOwn = own.some((o) => host === o || host.endsWith(`.${o}`)) || kind === "own_site";
     const isPdf = /\.pdf(?:$|[?#])/i.test(r.url);
+    // A third-party document is only about this supplier when it names it; regulations and generic catalogues are not evidence.
+    const haystack = `${r.url} ${r.title} ${r.content}`.toLowerCase();
+    const named = tokens.some((t) => t.length >= 4 && haystack.includes(t.toLowerCase()));
+    if (!isOwn && !named) continue;
     const productish = /product|catalog|catalogue|datasheet|data-sheet|download|brochure|valve|pump|fitting|flange/i.test(`${r.url} ${r.title}`);
     if (!isPdf && !productish && !isOwn) continue;
     if (!isPdf && !productish) continue;

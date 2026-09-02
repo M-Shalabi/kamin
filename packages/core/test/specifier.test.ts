@@ -33,6 +33,13 @@ describe("selectDocuments", () => {
     expect(docs.map((d) => d.url)).toEqual(["https://bariqgroup.com/downloads/ball-valve-catalogue.pdf", "https://third-party.example.com/bareq-valves-datasheet.pdf", "https://bariqgroup.com/products/gate-valves"]);
     expect(docs[0]!.kind).toBe("pdf");
   });
+  test("drops third-party documents that never mention the supplier, even PDFs on a certifier's host", () => {
+    const docs = selectDocuments(profile, [
+      r("https://saso.gov.sa/en/Documents/TR-BM-Part5-Pipes.pdf", "Technical regulation: pipes", "pipes used in water networks"),
+      r("https://bariqgroup.com/downloads/catalogue.pdf", "Catalogue"),
+    ], 4);
+    expect(docs.map((d) => d.url)).toEqual(["https://bariqgroup.com/downloads/catalogue.pdf"]);
+  });
 });
 
 describe("toSpecAttrs", () => {
