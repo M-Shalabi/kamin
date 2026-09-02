@@ -2,6 +2,7 @@ import { beforeAll, describe, expect, test } from "bun:test";
 import { sql } from "../src/db/client";
 import { migrate } from "../src/db/migrate";
 import { loadProfile, mergeFindings } from "../src/detective/persist";
+import type { DetectiveFindingsT } from "../src/detective/schema";
 
 describe.skipIf(!process.env.DATABASE_URL)("mergeFindings", () => {
   beforeAll(async () => {
@@ -16,7 +17,7 @@ describe.skipIf(!process.env.DATABASE_URL)("mergeFindings", () => {
     const [run] = await sql<{ id: string }[]>`insert into runs (role, input_ref, model) values ('detective', 'test:det', 'm') returning id`;
     const profile = await loadProfile(sql, "test:det");
     expect(profile.declared).toHaveLength(1);
-    const merged = await mergeFindings(sql, profile, {
+    const findings: DetectiveFindingsT = {
       website: "https://testvalves.example", is_same_company: true,
       capabilities: [
         { product: "stainless ball valves", hs6_guess: "848180", class_guess: "manufacturer", spec_attrs: [{ key: "size", value: "1/2 to 12 inch" }], evidence: [{ url: "https://testvalves.example/products", excerpt: "ball valves", kind: "catalogue" }] },
@@ -24,7 +25,8 @@ describe.skipIf(!process.env.DATABASE_URL)("mergeFindings", () => {
       ],
       certifications: [{ name: "ISO 9001", url: "https://testvalves.example/iso", excerpt: "certified" }],
       signals: { employees: "80", capacity: null, facility: null }, summary: "A valve maker.",
-    }, run!.id, [{ url: "https://testvalves.example/products", title: "Products", snippet: "", text: null, kind: "own_site", tier: 3, score: 1 }]);
+    };
+    const merged = await mergeFindings(sql, profile, findings, run!.id, [{ url: "https://testvalves.example/products", title: "Products", snippet: "", text: null, kind: "own_site", tier: 3, score: 1 }]);
     expect(merged.created).toBe(1);
     const caps = await sql<{ hs6: string; origin: string; class: string; product_title: string | null }[]>`select hs6, origin, class, product_title from capabilities where supplier_id = 'test:det' order by hs6`;
     expect(Array.from(caps)).toEqual([{ hs6: "841370", origin: "detective", class: "authorised_distributor", product_title: "centrifugal pumps" }, { hs6: "848180", origin: "tarmeez", class: "manufacturer", product_title: null }]);
@@ -38,7 +40,8 @@ describe.skipIf(!process.env.DATABASE_URL)("mergeFindings", () => {
     const [run] = await sql<{ id: string }[]>`select detective_run_id as id from suppliers where id = 'test:det'`;
     const before = await sql<{ n: number }[]>`select count(*)::int as n from evidence e join capabilities c on c.id = e.capability_id where c.supplier_id = 'test:det'`;
     const profile = await loadProfile(sql, "test:det");
-    await mergeFindings(sql, profile, { website: null, is_same_company: true, capabilities: [{ product: "stainless ball valves", hs6_guess: "848180", class_guess: "manufacturer", spec_attrs: [], evidence: [{ url: "https://testvalves.example/products", excerpt: "ball valves", kind: "catalogue" }] }], certifications: [], signals: { employees: null, capacity: null, facility: null }, summary: "" }, run!.id, []);
+    const again: DetectiveFindingsT = { website: null, is_same_company: true, capabilities: [{ product: "stainless ball valves", hs6_guess: "848180", class_guess: "manufacturer", spec_attrs: [], evidence: [{ url: "https://testvalves.example/products", excerpt: "ball valves", kind: "catalogue" }] }], certifications: [], signals: { employees: null, capacity: null, facility: null }, summary: "" };
+    await mergeFindings(sql, profile, again, run!.id, []);
     const after = await sql<{ n: number }[]>`select count(*)::int as n from evidence e join capabilities c on c.id = e.capability_id where c.supplier_id = 'test:det'`;
     expect(after[0]!.n).toBeLessThanOrEqual(before[0]!.n);
   });
