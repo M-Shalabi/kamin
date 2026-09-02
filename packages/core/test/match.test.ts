@@ -14,6 +14,16 @@ describe("scoring", () => {
     expect(specCompatible(env, { material: "cast iron" }).conflicts).toContain("material");
     expect(specCompatible(env, {}).ok).toBe(true);
   });
+  test("specCompatible counts pressure ratings, connections and fraction-glyph sizes", () => {
+    expect(specCompatible(env, { rating: "PN40", connection: "flanged" }).hits).toEqual(["pressure"]);
+    const flanged = { ...env, connection: "flanged" };
+    expect(specCompatible(flanged, { "end connection": "flanged RF" }).hits).toEqual(["connection"]);
+    expect(specCompatible(flanged, { ends: "threaded NPT" }).conflicts).toEqual(["connection"]);
+    expect(specCompatible(env, { "pressure rating": "PN16" }).conflicts).toEqual(["pressure"]);
+    expect(specCompatible(env, { "pressure rating": "class 300" }).hits).toEqual(["pressure"]);
+    expect(specCompatible(env, { size: "½” to 12”" }).hits).toEqual(["size"]);
+    expect(specCompatible(env, { "size range": "DN15 - DN300" }).hits).toEqual(["size"]);
+  });
   test("class, verdict and tier weights order candidates as the glossary says", () => {
     const maker = scoreCapability({ hs6: "848180", envelope: env }, cap({})).score;
     const trader = scoreCapability({ hs6: "848180", envelope: env }, cap({ class: "trader" })).score;
