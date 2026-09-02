@@ -31,7 +31,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ k
             <Td><Money v={r.annual_value_usd} /></Td>
             <Td>{r.mandatory ? <span style={{ color: "var(--accent)" }}>2027 tranche</span> : "no"}</Td>
             <Td><Kind k={r.gap_kind} /></Td>
-            <Td className="text-xs">{r.spec_status === "at_spec" ? <span style={{ color: "#1f7a3a" }}>verified at spec</span> : r.spec_status === "category" ? <span style={{ color: "var(--accent)" }}>declared, spec unverified</span> : r.spec_status === "none" ? "nobody" : "-"}</Td>
+            <Td className="text-xs">{r.spec_status === "at_spec" ? <span style={{ color: "#1f7a3a" }}>verified at spec</span> : r.spec_status === "type" ? <span style={{ color: "#8a6d00" }}>type verified, spec unverified</span> : r.spec_status === "category" ? <span style={{ color: "var(--accent)" }}>declared, spec unverified</span> : r.spec_status === "none" ? "nobody" : "-"}</Td>
             <Td><Int v={r.supported_count} /></Td>
             <Td>{r.pivots ?? "-"}</Td>
           </tr>

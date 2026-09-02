@@ -58,9 +58,15 @@ capability of any class. Definitions in `CONTEXT.md`, mechanics in `BUILD_PLAN.m
   would cost about $0.05 and an audit about $0.01, so the "$0.30 per factory" estimate is high by
   roughly five times. Evidence in
   `docs/eval/2026-09-02-coverage-and-gaps.md` and `docs/numbers.md`.
+- **Hunt hygiene, 2026-09-02:** seven of the seventeen suppliers the long-tail hunt created were Indian or
+  Chinese exporters with Saudi landing pages, or a duplicate; removed from the map and the hunt now
+  requires a plant, office, warehouse or stock inside the Kingdom. Discovery lift figures before this
+  note counted them.
 - **Coverage, measured 2026-09-02:** 96 simulated lines pooled into 72 orders worth USD 357.9M a year.
-  **At the stated specification: 0.0%.** At category level (a verified plant declares the subheading):
-  98.9% of spend, 70 of 72 orders. Two supply gaps (carbon-steel butt-weld tees, USD 4.1M a year) with
+  **At the stated specification: 0.0%.** Product type verified (the supplier names the order's product
+  type, nothing in conflict): 70.5% of spend, 54 of 72 orders, after the Specifier pass over forty
+  suppliers' catalogues. At category level (a verified plant declares the subheading): 98.9% of spend,
+  70 of 72 orders. Two supply gaps (carbon-steel butt-weld tees, USD 4.1M a year) with
   Advisor cases, no manufacturing gaps. Say both figures on stage; the distance between them is the
   blind spot. This framing was decided without Mohammed and needs his confirmation.
 - **⚠️ 2026-09-02, the Tarmeez re-count breaks the headline.** The catalogue API reports **14,873

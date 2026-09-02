@@ -35,8 +35,10 @@ describe("anchorFinding", () => {
     expect(anchorFinding("Y-Type Strainers (Model 5000)", declared)).toBeNull();
     expect(anchorFinding("Office furniture", [])).toBeNull();
   });
-  test("keeps a valid model guess", () => {
+  test("keeps a valid model guess, except when the keyword table knows the type within the same heading", () => {
     expect(anchorFinding("anything", declared, "848180")).toEqual({ hs6: "848180", via: "model" });
+    expect(anchorFinding("Cast Iron Globe Valve", [], "848120")).toEqual({ hs6: "848180", via: "keyword" });
+    expect(anchorFinding("Y strainer", [], "842129")).toEqual({ hs6: "842129", via: "model" });
     expect(anchorFinding("Check valves", declared, "8481")).toEqual({ hs6: "848130", via: "declared" });
   });
 });

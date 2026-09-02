@@ -14,7 +14,7 @@ Seven minutes, seven steps, one laptop. Everything below is local: Postgres in D
 
 | # | Say | Show |
 |---|---|---|
-| 1 | The number PIF has never been able to state | Header: coverage at the stated specification, with category-level coverage under it. Say both: nearly every order has a verified plant declaring the subheading, almost none is verified at spec. That distance is the blind spot, and the Detectives close it |
+| 1 | The number PIF has never been able to state | Header: coverage at the stated specification, with the type-verified and category-level figures under it. Say all three: nearly every order has a verified plant declaring the subheading, seven in ten have a supplier that names the product type, none is verified at size and rating. That ladder is the blind spot, and the Detectives and the Specifier climb it |
 | 2 | Purchase requests, pooled | `/orders/<id>` from a ledger row: the lines in their ERP formats and the envelope they pooled into |
 | 3 | Who can supply it, at spec, with evidence | Same page, the match table: class, verdict, tier, score |
 | 4 | The map, filtered | `/suppliers?family=valve&verdict=supported`, then a supplier page |
@@ -25,7 +25,7 @@ Seven minutes, seven steps, one laptop. Everything below is local: Postgres in D
 ## Cold miss suppliers
 
 - **Recorded:** `tarmeez:72825` (مصنع صمامات بارق للصناعة, Bareq valve factory). Its page shows Play recording; the recording is `apps/web/public/cold-miss/tarmeez:72825.json`.
-- **Live:** `tarmeez:91094` (OMB Valves Saudi Arabia, AlKhobar), still pending. Investigate live runs the Detective and the Auditor and reloads the page when the verdicts land, four to six minutes on the local model (the recordings ran 244 to 339 seconds).
+- **Live:** `tarmeez:91094` (OMB Valves Saudi Arabia, AlKhobar), still pending for the Detective; the Specifier already attached one catalogue line to it, which the live run will build on. Investigate live runs the Detective and the Auditor and reloads the page when the verdicts land, four to six minutes on the local model (the recordings ran 244 to 339 seconds).
 - Any other pending supplier works for the live path: `select s.id, s.name_en from suppliers s join capabilities c on c.supplier_id = s.id where s.detective_status = 'pending' and c.hs6 like '8481%' order by random() limit 5;`
 
 ## If something fails

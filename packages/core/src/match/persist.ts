@@ -1,6 +1,6 @@
 import type { Sql } from "postgres";
 import type { Envelope } from "../coordinator/pool";
-import { atSpec, isSupported, scoreCapability, specCompatible, splitShares, type CapabilityCandidate } from "./score";
+import { atSpec, atType, isSupported, scoreCapability, specCompatible, splitShares, type CapabilityCandidate } from "./score";
 
 export async function candidatesFor(db: Sql, hs6: string, onlySupplierIds?: string[]): Promise<CapabilityCandidate[]> {
   const heading = hs6.slice(0, 4) + "%";
@@ -13,7 +13,7 @@ export async function candidatesFor(db: Sql, hs6: string, onlySupplierIds?: stri
     where c.hs6 like ${heading} and c.verdict <> 'refuted' ${filter}`;
 }
 
-export async function matchOrder(db: Sql, orderId: string, opts: { onlySupplierIds?: string[] } = {}): Promise<{ matches: number; supported: number; gap_kind: "covered" | "manufacturing_gap" | "supply_gap"; spec_status: "at_spec" | "category" | "none" }> {
+export async function matchOrder(db: Sql, orderId: string, opts: { onlySupplierIds?: string[] } = {}): Promise<{ matches: number; supported: number; gap_kind: "covered" | "manufacturing_gap" | "supply_gap"; spec_status: "at_spec" | "type" | "category" | "none" }> {
   const [order] = await db<{ id: string; hs6: string; spec_envelope: Envelope; qty_annual: number | null }[]>`select id, hs6, spec_envelope, qty_annual::float as qty_annual from pooled_orders where id = ${orderId}`;
   if (!order) throw new Error(`pooled order ${orderId} not found`);
   const cands = await candidatesFor(db, order.hs6, opts.onlySupplierIds);
@@ -25,7 +25,8 @@ export async function matchOrder(db: Sql, orderId: string, opts: { onlySupplierI
   const supported = scored.filter(closes);
   const makers = supported.filter((x) => x.cap.class === "manufacturer" || x.cap.class === "assembler");
   const gap_kind = makers.length ? "covered" : supported.length ? "manufacturing_gap" : "supply_gap";
-  const spec_status: "at_spec" | "category" | "none" = supported.some((x) => atSpec({ hs6: order.hs6, envelope: order.spec_envelope }, x.cap)) ? "at_spec" : supported.length ? "category" : "none";
+  const o = { hs6: order.hs6, envelope: order.spec_envelope };
+  const spec_status: "at_spec" | "type" | "category" | "none" = supported.some((x) => atSpec(o, x.cap)) ? "at_spec" : supported.some((x) => atType(o, x.cap)) ? "type" : supported.length ? "category" : "none";
   const [mandatory] = await db<{ n: number }[]>`select count(*)::int as n from mandatory_list where hs4 = ${order.hs6.slice(0, 4)}`;
   await db.begin(async (tx) => {
     await tx`delete from matches where pooled_order_id = ${orderId}`;
