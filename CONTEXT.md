@@ -114,7 +114,7 @@ _Avoid_: Gap register, gap list, gap analysis
 The share of pooled annual demand value, in riyals, for which at least one supported capability exists. Spend-weighted and portfolio-level, never per company.
 _Avoid_: Coverage rate, localization coverage, coverage percentage
 
-The headline coverage is **at the stated specification**: the best supported supplier states at least one attribute that agrees with the pooled envelope and none that conflicts, and names the object class on a catch-all subheading. **Category-level coverage** is the secondary figure: a verified supplier declares the subheading with nothing in conflict but no specification on record. Each pooled order carries a spec status: verified at spec, declared only, or nobody.
+The headline coverage is **at the stated specification**: the best supported supplier states at least one attribute that agrees with the pooled envelope and none that conflicts, and names the object class on a catch-all subheading. **Type-verified coverage** sits between: the best supported supplier names the order's product type in its title or stated type with nothing in conflict, but no size or rating is confirmed. **Category-level coverage** is the secondary figure: a verified supplier declares the subheading with nothing in conflict but no specification on record. Each pooled order carries a spec status: verified at spec, type verified, declared only, or nobody.
 
 **Line coverage**:
 The share of pooled orders with at least one supported capability. A secondary, operational metric; the header shows coverage.

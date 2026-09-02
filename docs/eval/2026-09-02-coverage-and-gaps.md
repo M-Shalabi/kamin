@@ -14,6 +14,18 @@ The demand side is simulated on real Comtrade import values under real PIF portf
 
 The distance between the two figures is the blind spot the deck describes: self-declared tariff lines with a tonnage and no specification. It is also the Detectives' queue. The 28 orders at HS 848180 (other valves, USD 223.9M a year) are where a specification pass pays first.
 
+## The Specifier pass, run the same night
+
+`bun run spec:pass 40` read catalogues, datasheets and product pages (PDF included) of the forty supported suppliers that could close the most pooled demand, in thirty minutes: 22 capabilities now carry attributes stated in a catalogue, backed by 50 catalogue evidence records, and 22 re-audits landed 17 supported. What the pages state is mostly the product type (butterfly, globe, gate, centrifugal) and rarely a size range or a pressure rating, so coverage at the stated specification stayed at 0.0% while a third rung appeared between category level and at spec:
+
+| Rung | Meaning | Spend | Orders |
+|---|---|---|---|
+| At stated specification | a stated size, rating, material or connection agrees with the envelope | 0.0% | 0 of 72 |
+| Product type verified | the supplier names the order's product type, nothing in conflict | 70.5% | 54 of 72 |
+| Category level | a verified plant declares the subheading | 98.9% | 70 of 72 |
+
+The only attribute hits on closing matches were stainless lug butterfly valves against ball-valve orders, correctly rejected on type. What would move the top rung: the 848180 ball-valve orders (USD 224M a year) need a supplier whose datasheet states sizes and PN or class ratings; the pass found none among the Saudi plants' public pages, and most product pages hold under 600 characters of text. Two directions: read the supplier's PDF catalogue links one level deeper than the product page, and ask the plant directly, which is the capability-confirmation ping in the roadmap.
+
 ## The gap ledger
 
 Two supply gaps, both carbon-steel butt-weld tees (4 inch and 2 inch, USD 4.1M a year together): no supported supplier of any class at those subheadings. The Advisor wrote an investment case for each, naming Eastern Region valve makers with pipe-fitting capability as pivot candidates. No manufacturing gaps: wherever a supported supplier exists at category level, at least one is a manufacturer.
@@ -42,6 +54,6 @@ The Coordinator's 66 s against the 47 s of the milestone-1 spike is the machine,
 
 ## Numbers still owed
 
-- Coverage at specification is 0.0% because the Detectives found few stated attributes on thin Saudi SME web pages. The next pass should target product catalogues and datasheets (PDF) rather than home pages.
+- Coverage at specification is 0.0% after the Specifier pass as well: Saudi plants publish product types, not datasheets. The next pass should follow PDF catalogue links one level deeper and, beyond that, ask the plant.
 - The `qwen3:8b` A/B for the Coordinator did not run.
 - The Tarmeez plant count (14,873) still needs reconciling with the 12,946 operating-factories headline; see `FACTS.md` section 2.
