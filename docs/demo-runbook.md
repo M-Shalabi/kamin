@@ -25,7 +25,7 @@ Seven minutes, seven steps, one laptop. Everything below is local: Postgres in D
 ## Cold miss suppliers
 
 - **Recorded:** `tarmeez:72825` (مصنع صمامات بارق للصناعة, Bareq valve factory). Its page shows Play recording; the recording is `apps/web/public/cold-miss/tarmeez:72825.json`.
-- **Live:** `tarmeez:91094` (OMB Valves Saudi Arabia, AlKhobar), still pending. Investigate live runs the Detective and the Auditor and reloads the page when the verdicts land, about LIVE_SECONDS seconds on the local model.
+- **Live:** `tarmeez:91094` (OMB Valves Saudi Arabia, AlKhobar), still pending. Investigate live runs the Detective and the Auditor and reloads the page when the verdicts land, four to six minutes on the local model (the recordings ran 244 to 339 seconds).
 - Any other pending supplier works for the live path: `select s.id, s.name_en from suppliers s join capabilities c on c.supplier_id = s.id where s.detective_status = 'pending' and c.hs6 like '8481%' order by random() limit 5;`
 
 ## If something fails
