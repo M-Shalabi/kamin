@@ -36,14 +36,24 @@ authorised distributor, or trader, each carrying its own local-content weight. T
 deck (AR slide 12 and EN slide 12), `SUBMISSION.md`, `SUBMISSION_AR.md`, `ANSWERS.md`, both story
 files, both pitch files, and `BUILD_PLAN.md`.
 
-**Still owed:** the gap ledger is not yet split into *no local manufacturing* vs *no local supply at
-all*. Today it says "nobody can supply the pooled order", which is the second claim. The first is the
-sharper one for an industrial investment case, and a MoI judge may ask for it by name.
+**Resolved 2026-09-02:** two named gaps. *Manufacturing gap* = no supported manufacturer or
+assembler capability, the ledger's default view and the investment case. *Supply gap* = no supported
+capability of any class. Definitions in `CONTEXT.md`, mechanics in `BUILD_PLAN.md`.
 
 ---
 
 ## 2. Numbers that need a citable source before going on stage
 
+- **⚠️ 2026-09-02, the Tarmeez re-count breaks the headline.** The catalogue API reports **14,873
+  plants** and **59,611 products** (`DATA_SOURCES.md`, re-test table). 14,873 is larger than the
+  12,946 "operating factories" figure, so "3,153 of 12,946, 76% absent" cannot be said until both
+  populations are defined. Two ways out: (a) pin 12,946 to its source and explain that the catalogue
+  also holds traders and non-operating plants, then recount; (b) re-base the blind spot on capability
+  depth (self-declared tariff lines with a tonnage, no specification, no web presence in a 25-plant
+  sample) rather than on registry presence. Deck slides 6, 7 and 14, STORY, SUBMISSION and ANSWERS all
+  carry the old numbers.
+- **Mandatory List, a fourth figure:** 965 products / 14 sectors (2026 expansion, SPA and local
+  press). Four metrics to reconcile now, not three.
 - **12,946 factories (end of 2025)**, user-supplied, plausible, **source not pinned**.
   Likely Ministry of Industry / NIIC or GASTAT. Note the two counts measure different things:
   12,946 = licensed/operating factories; 3,153 = factories with *registered products* in Tarmeez.
@@ -51,8 +61,12 @@ sharper one for an industrial investment case, and a MoI judge may ask for it by
 - **$0.30 per factory of AI compute**, my estimate, never measured. Run 10 real factories
   end to end and quote the measured cost. A measured number is unattackable; an estimate
   invites the wrong argument.
-- Tarmeez product count: **52,824 (AR view) vs 12,641 (EN view)**, unresolved, do not cite
-  either until reconciled.
+  Note (2026-09-02): the build runs on local Ollama models first, so measure twice: once on
+  the local path (electricity, effectively zero marginal cost) and once on a paid API, and say
+  which one the $0.30 refers to.
+- Tarmeez product count: **52,824 (AR view) vs 12,641 (EN view)**, superseded 2026-09-02 by the
+  API: 59,611 product registrations collapsing to 4,834 distinct tariff codes. Say "59,611 registered
+  product lines" or "4,834 distinct products", never the old numbers.
 - Mandatory List size: **1,444 vs 233 vs 116** are three different metrics, not three estimates.
 
 ---
@@ -133,3 +147,42 @@ sharper one for an industrial investment case, and a MoI judge may ask for it by
   against these three by name.
 - **Open question for the user:** the title reads "AI-Native **Principle** Engineer" as supplied.
   If *Principal* was meant, it changes in the deck, both PDFs, both pitch files and the canvas.
+
+---
+
+## 8. Engineering decisions, 2026-09-02 (grilling session)
+
+Every decision below is written into `CONTEXT.md` (names), `docs/adr/` (reasoning) and
+`BUILD_PLAN.md` (mechanics). Listed here so nothing is re-litigated by accident.
+
+- **Timing:** window is weeks away, pre-build allowed. Hour numbers are a build order, not a clock.
+  Claude Code writes the code; the three own probes, purchases, data hunting, product and pitch.
+- **Stack:** TypeScript end to end. LangGraph.js. Per-role model registry, Ollama first
+  (`qwen3.5:9b`), switchable to Claude, OpenAI or DeepSeek. `bge-m3` embeddings. Postgres + pgvector
+  in Docker (OrbStack) holding graph, vectors, pg-boss queue and checkpoints. Trajectories in
+  Postgres plus a terminal stream; Langfuse self-hosted as dev viewer. Tavily search. Next.js UI.
+- **Entity model:** `Supplier` replaces `Factory`. Class (manufacturer / assembler / authorised
+  distributor / trader) lives on each capability, not on the supplier.
+- **Auditor rule:** refute only on is-it-real and is-it-at-spec; is-it-local outputs a class.
+  Majority of refuting lenses kills the capability. That kill is demo step 5.
+- **Evidence:** tiers 1 to 4 from `SUBMISSION.md` are canonical. BUILD_PLAN's
+  primary/secondary/marketing and STORY's strongest-to-weakest are retired as names.
+- **Threshold:** a capability counts toward coverage only when supported and backed by Tier 1 or 2.
+- **Coverage:** spend-weighted share of pooled annual demand value, portfolio level. Line coverage
+  is secondary.
+- **Gap kinds:** manufacturing gap (ledger default) and supply gap (toggle).
+- **LC scoring:** G1 implemented and input-gated; LC signals shown per capability meanwhile.
+- **Sector:** valves, pumps and pipe fittings (HS 8481, 8413, 7307).
+- **Pooling rule:** equivalent units and ratings pool; subtypes tighten the envelope; a missing
+  attribute is compatible.
+- **Demand names:** real PIF portfolio company names, with a global "demand is simulated"
+  disclosure rather than a per-line badge. Chosen for vividness over my recommendation of personas.
+- **Cold miss on stage:** a Tarmeez supplier with declared capabilities only, enriched live.
+
+**Deck drift to fix at the next regeneration** (`deck/gen2.py` + `deck/tr_en.py`): slides 15 and
+16 say "Gap register" in English, canonical is "Gap ledger"; `deck/Strategist.dc.html` and its EN
+twin are the Advisor slide under its old name. `SUBMISSION.md` §5 said "Scout" and "Resolver";
+fixed to Detective and Coordinator on 2026-09-02.
+
+**Machine note:** the data volume was at 96% on 2026-09-02. Langfuse is deferred until space is
+freed; Postgres runs first.

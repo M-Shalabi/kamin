@@ -1,8 +1,9 @@
 # KAMIN, 48-Hour Build Plan
 
 > Track 1, Live Map of National Capabilities.
-> Read with `DATA_SOURCES.md` (every endpoint, access caveat and risk) and `SUBMISSION.md` (the pitch).
+> Read with `DATA_SOURCES.md` (every endpoint, access caveat and risk), `SUBMISSION.md` (the pitch), `CONTEXT.md` (the glossary, canonical names) and `docs/adr/` (engineering decisions).
 > Written for the team of three (Mohammed, Ali, Abdulaziz). Four-person split and a two-person collapse at the end.
+> Decided 2026-09-02: the window is weeks away and pre-building is allowed, so the hour numbers are a build order, not a clock. Code is written by Claude Code in this repo; the three own what a human must do.
 
 ---
 
@@ -17,7 +18,7 @@
                                     │ pooled order          │
                                     ▼                       │
    Tarmeez API ───────►┌─────────────────────────────────┐  │
-   MLCP (CR nums)─────►│ DETECTIVE AGENTS (per provider) │  │
+   MLCP (CR nums)─────►│ DETECTIVE AGENTS (per supplier) │  │
    Made in Saudi ─────►│ crawl · CR · awards · certs     │  │
    Long-tail hunt ────►│ → who can serve THIS volume     │  │
                        └─────────────────────────────────┘  │
@@ -27,16 +28,16 @@
                        │  adversarial: REFUTE this       │►│  GRAPH           │
                        │  then CLASSIFY: maker /         │ │  (persisted)     │
                        │  assembler / distributor/trader │ │                  │
-                       └─────────────────────────────────┘ │  factory         │
+                       └─────────────────────────────────┘ │  supplier        │
                                                            │  ├─ capability   │
-   Comtrade HS ───────►┌─────────────────────────────────┐ │  │  ├─ evidence  │
-   import values       │  ADVISOR AGENTS (per gap)       │◄┤  │  ├─ class     │
-                       │  pooled annual value ·adjacency │ │  │  └─ confidence│
+   Comtrade HS ───────►┌─────────────────────────────────┐ │  │  ├─ class     │
+   import values       │  ADVISOR AGENTS (per gap)       │◄┤  │  ├─ evidence  │
+                       │  pooled annual value ·adjacency │ │  │  └─ verdict   │
                        │  who could pivot → investment   │ │  ├─ region       │
                        └─────────────────────────────────┘ │  └─ CR number    │
                                     │                      └──────────────────┘
                                     ▼
-     VETTED PROVIDER LIST   ·   GAP LEDGER   ·   COVERAGE %
+     VETTED SUPPLIER LIST   ·   GAP LEDGER   ·   COVERAGE %
 ```
 
 **Design rule:** the graph is the product. Agents write into it; the UI reads from it. A cold miss triggers a live detective that *writes back*. Never query-time-only, see the reasoning in `SUBMISSION.md`.
@@ -59,21 +60,24 @@ The single highest-risk hours. Everything downstream depends on which endpoints 
 
 ## Hour 2–8, The spine
 
-**Graph schema** (keep it small, six node types, resist the urge to model everything):
+**Graph schema** (keep it small, seven node types, resist the urge to model everything). Names are fixed in `CONTEXT.md`: Supplier, never Factory; class lives on the Capability; every Evidence carries a tier; the Auditor's verdict is supported or refuted; Run is the trajectory store (ADR 0003):
 
 ```
-Factory   { id, name_ar, name_en, cr_number?, region, geo?, source, fetched_at }
-Product   { id, description_ar, description_en, hs_code?, category }
-Capability{ factory_id, product_id, spec_attrs{}, confidence, status }
-Evidence  { capability_id, source_url, source_type, excerpt, fetched_at }
-DemandLine{ id, raw_text, portco, normalized_spec, hs_code, confidence, pool_id? }
-PooledOrder{ id, hs_code, spec, qty_now, qty_annual, portco_count }
+Supplier   { id, name_ar, name_en, cr_number?, region, geo?, in_tarmeez, in_made_in_saudi, in_mlcp, source, fetched_at }
+Product    { id, description_ar, description_en, hs_code?, category }
+Capability { supplier_id, product_id, spec_attrs{}, class, verdict, confidence, status }
+Evidence   { capability_id, tier (1-4), source_url, excerpt, fetched_at }
+DemandLine { id, raw_text, portco, normalized_spec, hs_code, confidence, pool_id? }
+PooledOrder{ id, hs_code, spec_envelope, qty_now, qty_annual, portco_count }
+Run        { id, role, input_ref, model, steps[], started_at, finished_at }
 ```
 
 `cr_number` is the join key across every source. Populate it wherever available (MLCP gives it outright), it is what makes a future Wathq integration a drop-in rather than a rebuild.
 
+**Stack (decided 2026-09-02, reasoning in `docs/adr/`):** TypeScript end to end. LangGraph.js for the agent runtimes, with a registry that maps each role to a provider and model from the environment: Ollama first (`qwen3.5:9b` default; the spike A/Bs `qwen3:8b`, and ALLaM and Cohere's Arabic Command R7B remain to try), switchable per role to Claude, OpenAI or DeepSeek. `bge-m3` through Ollama for embeddings. Postgres with pgvector in Docker holds the graph, the vectors, the pg-boss job queue and the LangGraph checkpoints. Every run's trajectory is written to Postgres and streamed to the terminal; Langfuse self-hosted is the dev trace viewer. Tavily is the Detective's search tool. Next.js for the three screens. In code, agent workflows are called runs, never graphs.
+
 **Work:**
-1. Ingest Tarmeez → Factory + Product + baseline Capability (status: `declared`, confidence: low). This alone is thousands of real nodes.
+1. Ingest Tarmeez → Supplier + Product + baseline Capability (class: manufacturer, verdict: pending, one Tier 2 evidence each). This alone is thousands of real nodes.
 2. Ingest MLCP → CR numbers, merge on name similarity, flag conflicts for review.
 3. Ingest Made in Saudi via `api.saudimade.sa` (SPA, capture the XHR, the HTML shell is empty) → `certified_local` flag, ≥40% value-add rule.
 4. Load Mandatory List → flag products government/state-owned entities must source locally.
@@ -98,8 +102,10 @@ STEPS   1. Find and read the company's own web presence
         3. Find certifications (ISO, SASO, sector-specific)
         4. Read product literature / catalogues for specifications
         5. Look for equipment, capacity, headcount signals
-OUTPUT  Capability claims, each with: spec attributes, source URL,
-        excerpt, source_type (primary | secondary | marketing)
+OUTPUT  Capabilities, each with: spec attributes, a class guess, and
+        evidence records carrying source URL, excerpt and tier
+        (1 third-party verified · 2 official registry · 3 self-published
+         · 4 inferred, never standing alone)
 RULE    Never assert a capability without an evidence record.
         Absence of evidence is a valid output. Say "unknown".
 ```
@@ -107,19 +113,21 @@ RULE    Never assert a capability without an evidence record.
 **Auditor agent**, one per claim, adversarial, runs immediately after its detective (pipeline, no barrier, item A can audit while item B is still being investigated):
 
 ```
-INSTRUCTION  Try to REFUTE this capability claim. Default to refuted
-             when uncertain.
-CHECKS       Manufacturer or trading company reselling imports behind
-             a Saudi CR? · Is the evidence primary or marketing copy? ·
-             Does the CR activity code support the claim? · Does claimed
-             capacity match observable facility scale? · Any contradicting
-             source?
-OUTPUT       { refuted: bool, confidence: 0-1, reasoning, killer_evidence? }
+INSTRUCTION  Try to REFUTE this capability. Default to refuted when
+             uncertain whether it is real or at specification. Being a
+             trader is never grounds for refutation: classify it.
+LENSES       is-it-real: dead CR? no such product? contradicting source?
+             is-it-at-spec: category-level only? size, material, rating?
+             is-it-local: manufacturer / assembler / authorised
+             distributor / trader, from CR activity, facility scale,
+             brand ownership
+OUTPUT       { verdict: supported | refuted, class, confidence: 0-1,
+               reasoning, killer_evidence? }
 ```
 
-Run 2–3 auditors per claim with **different lenses** (is-it-real · is-it-local · is-it-at-spec) rather than three identical refuters. Diversity catches failure modes redundancy cannot. Majority refutation kills the claim.
+Run the three lenses as separate auditors rather than one. The real and spec lenses can refute; the local lens only classifies. A majority of refuting lenses kills the capability, which is the auditor-kill moment in demo step 5. A capability counts toward coverage only when supported **and** backed by at least one Tier 1 or Tier 2 evidence; Tier 3-only support stays on the supplier as unverified and is queued for the next Detective pass.
 
-**Scope discipline:** several hundred entities fully enriched in one or two priority sectors beats three thousand shallow rows. Pick sectors where the Mandatory List and import values are both high, that is where the gap ledger will have teeth. Say "depth over breadth, deliberately" on stage before a judge says it for you.
+**Scope discipline:** several hundred entities fully enriched in one or two priority sectors beats three thousand shallow rows. **Chosen slice: valves, pumps and pipe fittings** (HS 8481, 8413, 7307). It is the running example in every deliverable, it sits on the Mandatory List's August 2027 tranche, imports are large, and adjacency is natural: a fittings plant can make valve bodies. Say "depth over breadth, deliberately" on stage before a judge says it for you.
 
 **Long-tail discovery** (this is the headline claim, protect the time for it): agents that hunt manufacturers appearing in *no* registry, chamber directories, trade listings, industrial-area presence, supplier mentions in tender documents. Every one found is a point of Discovery Lift.
 
@@ -138,16 +146,19 @@ STEPS   1. Identify the object class (ball valve)
         3. Resolve to HS anchor (8481.80)
         4. Retrieve candidate capabilities from the graph
         5. Rank by spec fit, confidence, evidence quality, region
-OUTPUT  normalized_spec, hs_code, confidence, ranked candidates
+OUTPUT  normalized_spec, hs_code, confidence, the pooled order's
+        spec_envelope, ranked candidates
 ```
 
 **Arabic↔English normalisation** is the genuine technical contribution. Realistic 48h approach: embedding-based fuzzy matching of product descriptions against HS descriptions, with an LLM adjudicating ambiguity. The 20-line spike from hour 2 to 8 is what de-risks this; here it scales to the full demand set and gains pooling.
 
 **Category-level matching is worthless.** "Valves" is not a match. Match at spec level or state that you cannot.
 
-**Demand set construction:** synthesise realistic portfolio purchase lines, but anchor every value to genuine HS-level Saudi import data from Comtrade. Deliberately include messy cases, Arabic free text, misspellings, mixed-language lines, inconsistent units, because handling them is the point.
+**Pooling rule.** Lines pool into one order when their specifications are compatible: equivalent units and ratings are equal (DN50 = 2 inch, PN40 = 40 bar), a subtype tightens the pooled envelope (SS316 within stainless), and a missing attribute is compatible, never a difference. The pooled order carries the tightest envelope and suppliers are matched against that.
 
-**Local content scoring:** implement LCGPA G1 as a real function from the published PDF. Label every score with which template and mechanism it uses (G1 entity-level vs G2.2 minimum-threshold vs G2.3 commercial-evaluation weight). Cite the document. *"Our scoring is LCGPA-methodology-aligned"* is the most defensible sentence in the whole pitch, do not weaken it with an invented formula.
+**Demand set construction:** synthesise realistic portfolio purchase lines, but anchor every value to genuine HS-level Saudi import data from Comtrade. Purchase requests carry real PIF portfolio company names in realistic ERP formats; the "demand is simulated" disclosure is global, on every screen and said on stage, not a per-line badge. Deliberately include messy cases, Arabic free text, misspellings, mixed-language lines, inconsistent units, because handling them is the point.
+
+**Local content scoring:** implement LCGPA G1 as a real, documented function from the published PDF, **input-gated**: it runs only when a supplier's real inputs (Saudi salaries, local procurement, local assets, capability building) exist, and never from class-based estimates. Until then every capability shows its LC signals: class, Made in Saudi certification, Mandatory List membership, CR activity. Label every score with which template and mechanism it uses (G1 entity-level vs G2.2 minimum-threshold vs G2.3 commercial-evaluation weight). Cite the document. *"Our scoring is LCGPA-methodology-aligned"* is the most defensible sentence in the whole pitch, do not weaken it with an invented formula.
 
 ---
 
@@ -156,7 +167,8 @@ OUTPUT  normalized_spec, hs_code, confidence, ranked candidates
 **Advisor agent**, one per gap:
 
 ```
-INPUT   Demand line with no local capability above threshold
+INPUT   A manufacturing gap: a pooled order with no supported
+        manufacturer or assembler capability
 STEPS   1. Total pooled annual value at this HS line (Comtrade/GASTAT + pooled demand)
         2. Is it on the Mandatory List? (regulatory pressure = priority)
         3. Adjacent domestic capability, who makes something near this?
@@ -171,17 +183,17 @@ OUTPUT  Ranked gap with import value, regulatory flag, pivot candidates,
 **Raw materials layer** (Ta'adeen + Saudi Geological Survey): even shallow, it differentiates. The brief explicitly asks for raw materials and most teams will only do finished goods.
 
 **UI, three screens, no more:**
-1. **Gap ledger** (open here), ranked table, SAR import value, regulatory flag, pivot candidates
+1. **Gap ledger** (open here), ranked table opening on manufacturing gaps with a toggle to supply gaps, SAR annual value, regulatory flag, pivot candidates
 2. **Capability map**, geographic, filterable by product/region/confidence
 3. **Evidence drill-down**, one supplier claim, its full provenance chain, its confidence, its auditor verdict
 
-Coverage percentage as a persistent header figure. It is the number PIF has never been able to state, make it impossible to miss.
+Coverage, spend-weighted in SAR, as the persistent header figure; line coverage is secondary. It is the number PIF has never been able to state, make it impossible to miss.
 
 ---
 
 ## Hour 40–48, Rehearsal and hardening
 
-- **The live cold-miss must be rehearsed and must have a fallback.** Pre-record it. If the stage network fails, play the recording and say so.
+- **The live cold-miss is a known supplier with declared capabilities only.** Pick a Tarmeez supplier the swarm never enriched, run Detective then Auditor live, and watch evidence, class and verdict appear on its node. Bounded to about two minutes. Rehearse it and pre-record it. If the stage network fails, play the recording and say so.
 - **Reconcile every number** you will say out loud to one cited source.
 - **Prepare the three questions you will definitely be asked:**
   1. *How is this different from MUSAHAMA?* → Registration-based platforms see only who opted in. We are outside-in. We feed you; we do not replace you.
@@ -199,12 +211,14 @@ Coverage percentage as a persistent header figure. It is the number PIF has neve
 3. **Drill into one gap.** Import value, mandatory-list flag, and four factories that could pivot into it. "This is an investment pipeline, not a report." *(1.5m)*
 4. **Flip to a match.** Three messy purchase lines from three companies → one pooled order → three local providers. "Two of these are in no supplier registry, and none of them would have bid on 12 units." *(1.5m)*
 5. **Evidence chain.** Click one claim. Sources, confidence, auditor verdict. Then show a claim the auditor *killed*. "This is why you can believe the other one." *(1m)*
-6. **Live cold-miss.** New query, watch a verified node write itself into the graph. *(1m)*
+6. **Live cold-miss.** Pick an unenriched Tarmeez supplier; watch evidence, class and verdict write themselves onto its node. *(1m)*
 7. **Close.** "MUSAHAMA knows who registered. KAMIN knows who never raised a hand. We are the layer underneath." *(30s)*
 
 ---
 
 ## Team split
+
+**Who writes code:** Claude Code, in this repo, in the order above. The three own what a human must do: probes and purchases, data hunting, deck, demo and question prep.
 
 **Three people, as we actually are:**
 - **Abdulaziz Al Harthi, Data/graph + infra.** Tarmeez ingest, schema, joins, CR reconciliation, Comtrade, deployment. Owns the spine.
