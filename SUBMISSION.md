@@ -148,8 +148,8 @@ The build rests on data that is public and verifiable today, the demo can be che
 
 **Delivered in the hackathon window:**
 - **Real capability spine.** Ingest the Tarmeez national catalogue via its public endpoint: thousands of real factories with products, categories and regions. We arrive with substance, not placeholders.
-- **Scout + auditor swarm run at depth on a focused slice.** Several hundred entities in one or two priority sectors, fully enriched and adversarially audited, each capability carrying citations and confidence. Depth over breadth is deliberate and we will say so.
-- **Resolver working on real messy input.** Bilingual free-text demand lines resolved to normalised specs and HS anchors.
+- **Detective + Auditor swarm run at depth on a focused slice.** Several hundred entities in one or two priority sectors, fully enriched and adversarially audited, each capability carrying citations and confidence. Depth over breadth is deliberate and we will say so.
+- **Coordinator working on real messy input.** Bilingual free-text demand lines resolved to normalised specs and HS anchors.
 - **Demand set built on real import values.** Portfolio spend is confidential and will not be provided, so demand is simulated, but simulated on genuine HS-level Saudi import data, so every riyal figure traces to a real trade statistic. We state this explicitly on stage; a clearly-labelled seam is a stronger position than an unexplained dataset.
 - **Gap ledger and coverage view.** The primary interface, with drill-down from a gap to the evidence chain.
 - **Live cold-miss.** One query the graph has never seen, run on stage, writing a new verified node into the map while the judges watch.

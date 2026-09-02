@@ -1,0 +1,17 @@
+services:
+  db:
+    image: pgvector/pgvector:pg17
+    container_name: kamin-db
+    ports: ["5433:5432"]
+    environment:
+      POSTGRES_USER: kamin
+      POSTGRES_PASSWORD: kamin
+      POSTGRES_DB: kamin
+    volumes: ["kamin_pgdata:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kamin -d kamin"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+volumes:
+  kamin_pgdata: {}

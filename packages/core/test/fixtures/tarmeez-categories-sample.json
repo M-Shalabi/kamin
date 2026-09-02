@@ -1,0 +1,24 @@
+{
+  "TotalCount": 23,
+  "Items": [
+    {
+      "Title": { "Ar": "حيوانات حية ومنتجات المملكة الحيوانية", "En": "Live Animals; Animal Products" },
+      "Symbol": "01-05",
+      "Children": [
+        {
+          "Title": { "Ar": "حيوانات حية", "En": "Animals; live" },
+          "Symbol": "01",
+          "Children": [
+            {
+              "Title": { "Ar": "خيول وحمير وبغال و كوادن (نغال)، حيه", "En": "Horses, asses, mules and hinnies; live" },
+              "Symbol": "0101",
+              "Children": [
+                { "Title": { "Ar": "خيول وحمير وبغال و كوادن (نغال)، حيه", "En": "Horses, asses, mules and hinnies; live" }, "Symbol": "010100", "Children": null }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

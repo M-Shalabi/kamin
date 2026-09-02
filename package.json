@@ -1,0 +1,18 @@
+{
+  "name": "kamin",
+  "private": true,
+  "workspaces": ["packages/*", "apps/*"],
+  "scripts": {
+    "db:up": "docker compose up -d db",
+    "db:down": "docker compose down",
+    "migrate": "bun run packages/core/src/db/migrate.ts",
+    "test": "bun test packages/core/test",
+    "typecheck": "cd packages/core && tsc --noEmit -p tsconfig.json",
+    "ingest:hs": "bun run packages/core/scripts/ingest-tarmeez-hs.ts",
+    "ingest:products": "bun run packages/core/scripts/ingest-tarmeez-products.ts",
+    "ingest:plants": "bun run packages/core/scripts/ingest-tarmeez-plants.ts",
+    "embed:hs": "bun run packages/core/scripts/embed-hs.ts",
+    "coordinator": "bun run packages/core/scripts/coordinator.ts",
+    "spike": "bun run packages/core/eval/coordinator-spike.ts"
+  }
+}

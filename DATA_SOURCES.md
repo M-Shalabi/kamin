@@ -28,6 +28,7 @@
 - **[verified]** Front end passes `X-Locale` and `X-Api-Key` as **query-string params with base64 values** (`TEdfQUJPVVRfUFNOUg==` → `LG_ABOUT_PSNR`). Static non-secret front-end key → JSON directly harvestable.
 - Public, no login. Filters by activity, product, 14 regions. Paginated. AR + EN.
 - **Only public source linking product → classification → specific factory → region. That triple is Track 1.**
+- ➜ **Superseded on 2026-09-02** by the Saudi-IP re-test table at the end of this file: the catalogue is a documented REST API with no key, and the counts above are stale.
 
 ### A2. LCGPA local content measurement methodology (public PDFs)
 - G1 Baseline (entity level), GCC Baseline, G2.2 (contract, minimum LC threshold), G2.3 (contract, LC weight in commercial evaluation), all under `lcgpa.gov.sa/{en,ar}/LocalContent/Documents/`
@@ -215,6 +216,28 @@ Buildable entirely from public documents:
 - **The most valuable datasets are the closed ones**, LCGPA cert holders, SABER, ZATCA microdata. Name them explicitly as the "with government access this becomes 10x" slide. **LCGPA/DGA judges will respect that you know exactly what you're missing and why.**
 
 ---
+
+---
+
+## Re-test from a Saudi IP, 2026-09-02
+
+Every host below was probed from Mohammed's machine in Riyadh (STC). Datacenter-IP failures recorded above are superseded by this table.
+
+| Source | Result from a Saudi IP | What changed |
+|---|---|---|
+| **Tarmeez / PSNR (A1)** | **Documented REST API, no key needed.** OpenAPI spec at `https://psnr.mim.gov.sa/CatalogApi/swagger/v1/swagger.json`, base `https://psnr.mim.gov.sa/CatalogApi/api/v1/`. Plants: `factories/plants?pageIndex=&pageSize=` (pageSize 500 works, stable paging). Plant detail `factories/plants/{id}` carries **CommercialRecordNo, Location (city), Governorate (region), InvestmentType and a Products list where each line has a 12-digit tariff Symbol plus Amount and Unit, i.e. declared annual capacity**. Products: `factories/products` (59,611 product registrations, bilingual, each carrying a tariff Symbol; they collapse to 4,834 distinct tariff codes, so the catalogue's product count is registrations, not product lines). HS tree: `products/categories` (23 sections down to subheading, bilingual). Search: `products/products?searchQuery=صمام` gives 287 valve lines; `factories/plants?searchQuery=صمام` gives 18 plants. Activities (26, ISIC-like, with children), governorates (13), **`mining/companies` (40, with websites and emails)**. Swagger declares an `x-api-key` header; the server does not enforce it on GET. | The `X-Locale` / `X-Api-Key` query params in A1 belong to the portal's page links, not the catalogue API. **Counts: 14,873 plants** (`investmentTypeId=1` "National Investment" 3,635; `=3` "Mutual Investment" 11,238), not 3,153. **59,611 products**, not 52,824 or 12,641. In a 25-plant sample every plant had a CR number, none had a website, and product lines per plant ran from 0 to 47. See the population note below. |
+| **MLCP (A6)** | 200, server-rendered, 332 KB, 104 links on the first page. | As documented. |
+| **Made in Saudi (A8)** | Next.js front end over a **Strapi v3** backend at `api.saudimade.sa`. Anonymous `GET /members` returns 401. The front end signs every request with an `x-api-key` header computed client-side from a passphrase in its own bundle plus the current timestamp. | Ingest through a real browser (Playwright) paginating the public members page, rate-limited, rather than replicating the signing scheme. |
+| **Etimad (A7)** | The visitor page loads from a Saudi IP with F5 scripts present and no CAPTCHA. **`GET /Tender/AllSupplierTendersForVisitorAsync?PageSize=24&PageNumber=n` returns JSON once a session cookie exists** (totalCount 287,870; 40 fields per tender including agency, activity and dates). Page size is capped at 24 and deep pages return 400, so enumeration must be sliced by `AgencyCode`, `SubActivityId`, `PublishDateId`, `TenderTypeId` or `MultipleSearch`. `GetMainActivitiesAsync` (21), `GetSubActivitiesAsync`, `GetAllAgenciesAsync`, `GetAreasAsync` all answer. **Award results are not reachable anonymously**; every award-style path returns nothing, and `GetSupplierInfoByCR` is commented out client-side. | The list is a demand-side and activity signal, not capability evidence. Awards still need Apify or a login. Kill-list item 3 stands. |
+| **Comtrade (A5)** | **Public preview works with no key**: `https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=682&period=2024&cmdCode=848180&flowCode=M` returned 82 partner rows in 1.2 s. 500 records per call without a key. | Use the preview for the build; a free key lifts the cap. |
+| **LCGPA (A2, A3)** | The site is now a **Mendix SPA** (`mxclientsystem/mxui`), not SharePoint. Every path, including the old PDF deep links and `_api/` REST, returns the shell or a WAF rejection. Documents live at `https://lcgpa.gov.sa/p/ar_SA/MandatoryListNationalProducts/Documents` inside the app. The training platform `lcgpa.futurex.sa` hosts the G1 guideline and the Mandatory List PDF but requires a login (403 anonymously). Third-party copies of G1 v5.0 (15 Nov 2022) exist on Scribd and Studocu. | A human downloads the PDFs in a browser (Ali, per the plan) and commits them under `docs/sources/`. The G1 formula is implemented from the guideline's published structure, input-gated. |
+| **LCGPA Mandatory List size** | The 2026 expansion reported by SPA (`spa.gov.sa/N2644643`) and local press: **965 products across 14 sectors** now carry minimum local-content percentages. | A fourth figure next to 1,444 / 233 / 116. Reconcile before citing any of them. |
+| **MODON GIS (B2)** | `maps.modon.gov.sa` resolves to a CNAME but does not answer from a Saudi IP either. | Kill-list item 1 applied: region and city come from Tarmeez. |
+| **NIIC / industry.mim.gov.sa** | No A record from a Saudi resolver. | Dead hostnames, not geo-blocking. |
+| **open.data.gov.sa** | WAF "Request Rejected" with a browser UA from a Saudi IP. | Off the critical path, as documented. |
+| **KAPSARC (A10), Wathq portal, Ta'adeen, MUSAHAMA, Daleel** | All 200. Ta'adeen is server-rendered (170 KB). | As documented. |
+
+**Population note (supersedes the baseline at the top of this file).** The catalogue API lists 14,873 plants, more than the 12,946 "operating factories" the deliverables cite. Either the catalogue includes licensed but non-operating plants and traders that registered product lines (the first plant in the default listing is a trading company), or 12,946 measures a different population. Until InvestmentType and the 12,946 source are pinned, **the "3,153 of 12,946, 76% absent" claim is unsupported and must not be said on stage.** The defensible blind spot is different and still strong: the catalogue is self-declared, coarse (a tariff line and a tonnage, no specification) and carried no web presence for any sampled plant, so it says who registered a product line, not what anyone can supply to specification.
 
 ## Key links
 

@@ -1,1 +1,6 @@
 .DS_Store
+.env
+node_modules/
+data/raw/
+packages/core/eval/results/
+*.log
