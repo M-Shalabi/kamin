@@ -14,7 +14,7 @@ Seven minutes, seven steps, one laptop. Everything below is local: Postgres in D
 
 | # | Say | Show |
 |---|---|---|
-| 1 | The number PIF has never been able to state | Header coverage figure, `/` |
+| 1 | The number PIF has never been able to state | Header: coverage at the stated specification, with category-level coverage under it. Say both: nearly every order has a verified plant declaring the subheading, almost none is verified at spec. That distance is the blind spot, and the Detectives close it |
 | 2 | Purchase requests, pooled | `/orders/<id>` from a ledger row: the lines in their ERP formats and the envelope they pooled into |
 | 3 | Who can supply it, at spec, with evidence | Same page, the match table: class, verdict, tier, score |
 | 4 | The map, filtered | `/suppliers?family=valve&verdict=supported`, then a supplier page |
