@@ -21,6 +21,12 @@ describe("extractCandidate", () => {
     const msg = new AIMessage({ content: "", tool_calls: [{ name: "out", args: { items: '[{"x": 1}]', meta: '{"k": "v"}', plain: "text", num: "5", nested: { deep: '["a"]' } }, id: "x", type: "tool_call" }] });
     expect(extractCandidate(msg)).toEqual({ items: [{ x: 1 }], meta: { k: "v" }, plain: "text", num: "5", nested: { deep: ["a"] } });
   });
+  test("repairs a reply missing one closing brace before a trailing key, and a reply cut off mid-object", () => {
+    const missing = '{"analysis":"x","real":{"verdict":"supported","reasoning":"r","killer_evidence":null},"at_spec":{"verdict":"unknown","reasoning":"s"},"local":{"class":"trader","reasoning":"imports","confidence":0.95}';
+    expect(extractCandidate(new AIMessage({ content: missing }))).toEqual({ analysis: "x", real: { verdict: "supported", reasoning: "r", killer_evidence: null }, at_spec: { verdict: "unknown", reasoning: "s" }, local: { class: "trader", reasoning: "imports" }, confidence: 0.95 });
+    const cut = '{"analysis":"x","real":{"verdict":"supported","reasoning":"r"},"at_spec":{"verdict":"unknown","reasoning":"long text that was cut';
+    expect(extractCandidate(new AIMessage({ content: cut }))).toEqual({ analysis: "x", real: { verdict: "supported", reasoning: "r" }, at_spec: { verdict: "unknown", reasoning: "long text that was cut" } });
+  });
   test("returns undefined when nothing parses", () => {
     expect(extractCandidate(new AIMessage({ content: "no json here" }))).toBeUndefined();
     expect(schema.safeParse(undefined).success).toBe(false);

@@ -18,6 +18,46 @@ export function reviveJsonStrings(v: unknown): unknown {
   return v;
 }
 
+/**
+ * Parse JSON that a small model almost got right. Qwen regularly drops one closing brace before a
+ * trailing top-level key, and a reply can be cut off mid-string. Try the text as is, then a single
+ * `}` inserted before each trailing `,"key"` from the end, then closing every open string, bracket
+ * and brace. Returns undefined when nothing yields an object.
+ */
+export function parseJsonLoosely(text: string): unknown {
+  const attempt = (t: string): unknown => { try { const v = JSON.parse(t); return v && typeof v === "object" ? v : undefined; } catch { return undefined; } };
+  const direct = attempt(text);
+  if (direct !== undefined) return direct;
+  const cutOff = !text.trimEnd().endsWith("}");
+  const insertBrace = (): unknown => {
+    const commas = [...text.matchAll(/,\s*"[^"]+"\s*:/g)].map((m) => m.index!).reverse();
+    for (const i of commas.slice(0, 12)) {
+      const fixed = attempt(`${text.slice(0, i)}}${text.slice(i)}`);
+      if (fixed !== undefined) return fixed;
+    }
+    return undefined;
+  };
+  // A reply that ends with a brace is complete but unbalanced: a brace was dropped before a trailing key.
+  if (!cutOff) { const fixed = insertBrace(); if (fixed !== undefined) return fixed; }
+  // Cut-off reply: close an open string, drop a dangling partial token, then balance brackets.
+  let t = text.replace(/,\s*"[^"]*$/, "").replace(/,\s*$/, "");
+  const quotes = (t.match(/(?<!\\)"/g) ?? []).length;
+  if (quotes % 2 === 1) t += '"';
+  t = t.replace(/,\s*"[^"]*"\s*:?\s*$/, "");
+  const stack: string[] = [];
+  let inString = false;
+  for (let i = 0; i < t.length; i++) {
+    const ch = t[i]!;
+    if (inString) { if (ch === "\\") i++; else if (ch === '"') inString = false; continue; }
+    if (ch === '"') inString = true;
+    else if (ch === "{") stack.push("}");
+    else if (ch === "[") stack.push("]");
+    else if (ch === "}" || ch === "]") stack.pop();
+  }
+  const closed = attempt(t + stack.reverse().join(""));
+  return closed !== undefined ? closed : cutOff ? insertBrace() : undefined;
+}
+
 /** Pull a JSON-like candidate out of a model reply: the first tool call's arguments, else JSON found in the text. */
 export function extractCandidate(msg: AIMessage): unknown {
   const tc = msg.tool_calls?.[0];
@@ -26,13 +66,12 @@ export function extractCandidate(msg: AIMessage): unknown {
   const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/i);
   const body = fenced ? fenced[1]! : text;
   const start = body.indexOf("{");
-  const end = body.lastIndexOf("}");
-  if (start < 0 || end <= start) return undefined;
-  try {
-    return reviveJsonStrings(JSON.parse(body.slice(start, end + 1)));
-  } catch {
-    return undefined;
-  }
+  if (start < 0) return undefined;
+  const whole = body.slice(start).trimEnd();
+  const end = whole.lastIndexOf("}");
+  // A reply that stops after its last brace is taken up to that brace; a reply cut off mid-string is repaired whole.
+  const parsed = whole.endsWith("}") ? parseJsonLoosely(whole.slice(0, end + 1)) : parseJsonLoosely(whole);
+  return parsed === undefined ? undefined : reviveJsonStrings(parsed);
 }
 
 export type StructuredOptions<T> = {
