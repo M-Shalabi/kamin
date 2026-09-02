@@ -14,7 +14,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
     <div className="space-y-6">
       <div>
         <div className="text-xs uppercase tracking-wide" style={{ color: "var(--muted)" }}>Capability · <A href={`/suppliers/${encodeURIComponent(c.supplier_id)}`}>{c.supplier_name}</A> <Ar s={c.supplier_name_ar} /></div>
-        <h1 className="text-2xl font-semibold">{c.product} <span className="mono text-base" style={{ color: "var(--muted)" }}>HS {c.hs6}</span></h1>
+        <h1 className="text-2xl font-semibold">{c.product} <span className="mono text-base" style={{ color: "var(--muted)" }}>{c.hs6 === "000000" ? "HS unclassified" : `HS ${c.hs6}`}</span></h1>
         <p className="mt-1 text-sm"><ClassBadge c={c.class} /> · <Verdict v={c.verdict} /> · confidence <Pct v={c.confidence} /> · origin {c.origin}{c.declared_amount ? ` · declared ${c.declared_amount} ${c.declared_unit ?? ""} a year` : ""}</p>
         {Object.keys(c.spec_attrs ?? {}).length > 0 && <p className="mt-1 text-xs" style={{ color: "var(--muted)" }}>Stated: {Object.entries(c.spec_attrs).map(([k, v]) => `${k} ${v}`).join(" · ")}</p>}
       </div>

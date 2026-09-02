@@ -1,0 +1,82 @@
+{
+ "supplierId": "tarmeez:72825",
+ "recordedAt": "2026-09-02T08:35:50.116Z",
+ "events": [
+  {
+   "t": 0,
+   "line": "▷ cold miss: tarmeez:72825 is on the map with declared capabilities only. Investigating."
+  },
+  {
+   "t": 16,
+   "line": "▶ run 7ea86096-4e51-48f9-9f69-2fc0027e47d3 detective on ollama:qwen3.5:9b: tarmeez:72825"
+  },
+  {
+   "t": 116468,
+   "line": "[llm_call] extract 116.4s 5042→1218 tok → {\"tool_calls\":[{\"name\":\"detective_findings\",\"args\":{\"website\":\"https://bariqgroup.com\",\"is_same_company\":true,\"capabilities\":[{\"class_guess\":\"manufacturer\",\"evidence\":[{\"excerpt\":\"High-performance valve manufacturing with trusted quality control. WAZEN-90 Balancing Valve delivers accurate flow contr…"
+  },
+  {
+   "t": 116527,
+   "line": "■ run 7ea86096-4e51-48f9-9f69-2fc0027e47d3 ok"
+  },
+  {
+   "t": 116529,
+   "line": "▷ auditing 3 capabilities in the valve, pump and fitting slice"
+  },
+  {
+   "t": 116531,
+   "line": "▶ run 82f425ae-3c7b-426f-9856-bf6c6ee35457 auditor on ollama:qwen3.5:9b: ab63047f-cdbf-4324-8f92-70d1066b4665"
+  },
+  {
+   "t": 157526,
+   "line": "[llm_call] audit 41.0s 1564→430 tok → {\"tool_calls\":[{\"name\":\"audit_verdict\",\"args\":{\"analysis\":\"The claim specifies Balancing Valves (WAZEN-90) with attributes: Rating=PN16, Material=Bronze, Application=General industrial use, Seat Material=Brass. The website evidence confirms the WAZEN-90 model exists and is a balancing valve for HVAC…"
+  },
+  {
+   "t": 157561,
+   "line": "■ run 82f425ae-3c7b-426f-9856-bf6c6ee35457 ok"
+  },
+  {
+   "t": 157561,
+   "line": "▷ Balancing Valves (WAZEN-90): refuted, manufacturer, confidence 0.20"
+  },
+  {
+   "t": 157566,
+   "line": "▶ run 68e1e50e-1bfb-40e7-9448-3346b82ff253 auditor on ollama:qwen3.5:9b: 4d37b9a6-3969-4ac7-bf48-fdf078915ea9"
+  },
+  {
+   "t": 195126,
+   "line": "[llm_call] audit 37.6s 1455→400 tok → {\"tool_calls\":[{\"name\":\"audit_verdict\",\"args\":{\"analysis\":\"The company name and registry number are consistent with a real entity in Dammam. The tier-2 PSNR plant record explicitly lists the HS code category \\\"Taps-cocks-valves...\\\" matching the claim, supporting that they exist and offer this produ…"
+  },
+  {
+   "t": 195160,
+   "line": "■ run 68e1e50e-1bfb-40e7-9448-3346b82ff253 ok"
+  },
+  {
+   "t": 195160,
+   "line": "▷ Taps- cocks- valves and similar appliances for pipes: pending, manufacturer, confidence 0.72"
+  },
+  {
+   "t": 195162,
+   "line": "▶ run d6eace78-e0c5-4968-8517-0fad8603f2ea auditor on ollama:qwen3.5:9b: 437810ce-02b9-4787-aacf-e0c4aad39ecb"
+  },
+  {
+   "t": 241244,
+   "line": "[error] audit 46.1s → XML syntax error on line 17: element <parameter> closed by </function>"
+  },
+  {
+   "t": 277658,
+   "line": "[llm_call] audit 36.4s 1124→213 tok → {\"analysis\":\"The company BARIQ Valves Factory is registered in Dammam with a valid CR and listed on the Saudi plant registry (PSNR) as producing check valves. The website explicitly features 'BRONZE SWING CHECK VALVE' images and descriptions, confirming both the product type and material match the c…"
+  },
+  {
+   "t": 277673,
+   "line": "■ run d6eace78-e0c5-4968-8517-0fad8603f2ea ok"
+  },
+  {
+   "t": 277673,
+   "line": "▷ Check valves: pending, manufacturer, confidence 0.42"
+  },
+  {
+   "t": 277673,
+   "line": "▷ done: 17 evidence records and 3 verdicts written to the map"
+  }
+ ]
+}
