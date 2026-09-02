@@ -43,6 +43,8 @@ export type StructuredOptions<T> = {
   config?: RunnableConfig;
   maxRetries?: number;
   onRetry?: (issues: string) => Promise<void> | void;
+  /** Ask for JSON text from the first call instead of binding a tool. Set for roles whose long free-text fields trip Ollama's tool-call parser. */
+  preferJsonText?: boolean;
 };
 
 /**
@@ -53,19 +55,19 @@ export type StructuredOptions<T> = {
 export async function invokeStructured<T>(model: BaseChatModel, messages: BaseMessage[], opts: StructuredOptions<T>): Promise<T> {
   const jsonSchema = z.toJSONSchema(opts.toolSchema) as Record<string, unknown>;
   delete jsonSchema.$schema;
-  if (!model.bindTools) throw new Error("model does not support tool binding");
-  const tooled = model.bindTools([{ type: "function", function: { name: opts.name, description: opts.description ?? `Return the ${opts.name}`, parameters: jsonSchema } }]);
+  if (!opts.preferJsonText && !model.bindTools) throw new Error("model does not support tool binding");
+  const tooled = opts.preferJsonText ? null : model.bindTools!([{ type: "function", function: { name: opts.name, description: opts.description ?? `Return the ${opts.name}`, parameters: jsonSchema } }]);
   const history: BaseMessage[] = [...messages];
   let lastIssues = "";
   const jsonInstruction = new SystemMessage(`Respond with only one JSON object and nothing else. It must match this JSON schema exactly, with every property present and null for unknown values:\n${JSON.stringify(jsonSchema)}`);
-  let useJsonText = false;
+  let useJsonText = !!opts.preferJsonText;
   for (let attempt = 0; attempt <= (opts.maxRetries ?? 1); attempt++) {
     let msg: AIMessage;
     if (useJsonText) {
       msg = (await model.invoke([jsonInstruction, ...history], opts.config)) as AIMessage;
     } else {
       try {
-        msg = (await tooled.invoke(history, opts.config)) as AIMessage;
+        msg = (await tooled!.invoke(history, opts.config)) as AIMessage;
       } catch (err) {
         // Ollama parses Qwen's XML-shaped tool calls itself and rejects malformed ones; the plain JSON path avoids that template.
         if (/xml|tool call|parameter|function/i.test(String((err as Error).message))) {

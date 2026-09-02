@@ -63,6 +63,19 @@ describe("HsChoiceLoose", () => {
   });
 });
 
+describe("invokeStructured preferJsonText", () => {
+  test("skips tool binding entirely and asks for JSON text from the first call", async () => {
+    const calls: string[] = [];
+    const fake = {
+      bindTools: () => { calls.push("bind"); return { invoke: async () => { calls.push("tool"); return new AIMessage({ content: "" }); } }; },
+      invoke: async (msgs: { content: unknown }[]) => { calls.push("plain"); expect(String(msgs[0]!.content)).toContain("JSON schema"); return new AIMessage({ content: '{"a": 7}' }); },
+    } as unknown as BaseChatModel;
+    const r = await invokeStructured(fake, [], { name: "out", toolSchema: z.object({ a: z.number() }), parseSchema: z.object({ a: z.number() }), preferJsonText: true });
+    expect(r).toEqual({ a: 7 });
+    expect(calls).toEqual(["plain"]);
+  });
+});
+
 describe("invokeStructured fallback", () => {
   test("falls back to JSON-in-text when the provider rejects the tool call as malformed XML", async () => {
     const calls: string[] = [];

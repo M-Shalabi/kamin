@@ -43,7 +43,7 @@ export async function runAuditor(db: Sql, capabilityId: string, opts: { sink?: (
   return withRun(db, { role: "auditor", inputRef: capabilityId, model: modelRefFor("auditor") }, async (runId, handler) => {
     const p = auditorPrompt(cap);
     const lenses = await invokeStructured(getChatModel("auditor"), [new SystemMessage(p.system), new HumanMessage(p.human)], {
-      name: "audit_verdict", description: "The three-lens audit of one capability claim", toolSchema: AuditVerdict, parseSchema: AuditVerdictLoose,
+      name: "audit_verdict", description: "The three-lens audit of one capability claim", toolSchema: AuditVerdict, parseSchema: AuditVerdictLoose, preferJsonText: true,
       config: { callbacks: [handler], runName: "audit" },
       onRetry: (issues) => addStep(db, runId, { kind: "note", name: "audit_retry", output: { issues } }),
     });
