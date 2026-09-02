@@ -47,9 +47,12 @@ await add("… supply gaps (no supported capability of any class)", "select coun
 const cov = await coverage(sql);
 rows.push({ what: "Coverage at the stated specification, spend-weighted share of pooled annual demand (the headline figure)", value: pct(cov.coverage_spec), source: "packages/core/src/match/coverage.ts (bun run coverage)" });
 rows.push({ what: "… orders covered at the stated specification", value: pct(cov.line_coverage_spec), source: "same" });
+rows.push({ what: "Type-verified coverage: the supplier names the order's product type with nothing in conflict, rating and size not yet confirmed", value: pct(cov.coverage_type), source: "same" });
+rows.push({ what: "… orders with the product type verified", value: pct(cov.line_coverage_type), source: "same" });
 rows.push({ what: "Category-level coverage: a verified supplier declares the subheading with nothing in conflict, spec unverified", value: pct(cov.coverage), source: "same" });
 rows.push({ what: "… orders covered at category level", value: pct(cov.line_coverage), source: "same" });
-await add("Orders with a supplier only at category level (the Detectives' next queue)", "select count(*) as v from pooled_orders where spec_status = 'category' and title not like 'test %'");
+await add("Orders with a supplier only at category level (the Specifier's next queue)", "select count(*) as v from pooled_orders where spec_status = 'category' and title not like 'test %'");
+await add("Capabilities carrying attributes written by the Specifier from catalogues", "select count(distinct c.id) as v from capabilities c join evidence e on e.capability_id = c.id join runs r on r.id = e.run_id where r.role = 'specifier'");
 await add("Annual value in manufacturing gaps", "select coalesce(sum(annual_value_usd), 0) as v from pooled_orders where gap_kind = 'manufacturing_gap' and title not like 'test %'", usd);
 await add("Annual value in supply gaps", "select coalesce(sum(annual_value_usd), 0) as v from pooled_orders where gap_kind = 'supply_gap' and title not like 'test %'", usd);
 await add("Gaps on the announced Mandatory List tranche", "select count(*) as v from pooled_orders where gap_kind <> 'covered' and mandatory and title not like 'test %'");

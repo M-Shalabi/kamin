@@ -3,7 +3,7 @@ import { sql } from "./db";
 export type GapKind = "covered" | "manufacturing_gap" | "supply_gap";
 
 export async function coverageSummary() {
-  const [r] = await sql<{ spend_total: number; spend_covered: number; line_total: number; line_covered: number; manufacturing_gaps: number; supply_gaps: number; covered: number; spend_at_spec: number; line_at_spec: number }[]>`
+  const [r] = await sql<{ spend_total: number; spend_covered: number; line_total: number; line_covered: number; manufacturing_gaps: number; supply_gaps: number; covered: number; spend_at_spec: number; line_at_spec: number; spend_at_type: number; line_at_type: number }[]>`
     select coalesce(sum(annual_value_usd), 0)::float as spend_total,
            coalesce(sum(annual_value_usd) filter (where gap_kind in ('covered', 'manufacturing_gap')), 0)::float as spend_covered,
            count(*)::int as line_total,
@@ -12,7 +12,9 @@ export async function coverageSummary() {
            count(*) filter (where gap_kind = 'supply_gap')::int as supply_gaps,
            count(*) filter (where gap_kind = 'covered')::int as covered,
            coalesce(sum(annual_value_usd) filter (where spec_status = 'at_spec'), 0)::float as spend_at_spec,
-           count(*) filter (where spec_status = 'at_spec')::int as line_at_spec
+           count(*) filter (where spec_status = 'at_spec')::int as line_at_spec,
+           coalesce(sum(annual_value_usd) filter (where spec_status in ('at_spec', 'type')), 0)::float as spend_at_type,
+           count(*) filter (where spec_status in ('at_spec', 'type'))::int as line_at_type
     from pooled_orders where title not like 'test %'`;
   const row = r!;
   return {
@@ -21,6 +23,8 @@ export async function coverageSummary() {
     line_coverage: row.line_total ? row.line_covered / row.line_total : 0,
     coverage_spec: row.spend_total ? row.spend_at_spec / row.spend_total : 0,
     line_coverage_spec: row.line_total ? row.line_at_spec / row.line_total : 0,
+    coverage_type: row.spend_total ? row.spend_at_type / row.spend_total : 0,
+    line_coverage_type: row.line_total ? row.line_at_type / row.line_total : 0,
   };
 }
 
@@ -37,7 +41,7 @@ export async function stats() {
   return r!;
 }
 
-export type LedgerRow = { id: string; title: string; hs6: string; family: string | null; gap_kind: GapKind | null; spec_status: "at_spec" | "category" | "none" | null; mandatory: boolean; annual_value_usd: number | null; qty_annual: number | null; qty_unit: string | null; portco_count: number; line_count: number; pivots: number | null; headline: string | null; supported_count: number };
+export type LedgerRow = { id: string; title: string; hs6: string; family: string | null; gap_kind: GapKind | null; spec_status: "at_spec" | "type" | "category" | "none" | null; mandatory: boolean; annual_value_usd: number | null; qty_annual: number | null; qty_unit: string | null; portco_count: number; line_count: number; pivots: number | null; headline: string | null; supported_count: number };
 
 /** Orders and annual value per gap kind, for the ledger tabs and its empty state. */
 export async function ledgerCounts(): Promise<Record<string, { n: number; usd: number }>> {

@@ -66,8 +66,19 @@ export function atSpec(order: { hs6: string; envelope: Envelope }, cap: Capabili
   if (!CATCH_ALL.has(order.hs6)) return true;
   const wanted = headTokens(productTokens(order.envelope.object_class ?? ""));
   if (wanted.length === 0) return true;
-  const title = productTokens(cap.product_title ?? "");
-  return wanted.every((w) => title.includes(w));
+  const stated = productTokens(`${cap.product_title ?? ""} ${cap.spec_attrs?.type ?? ""}`);
+  return wanted.every((w) => stated.includes(w));
+}
+
+/** The order's object class named in the capability's title or stated type, with nothing in conflict: a rung between category level and at spec. */
+export function atType(order: { hs6: string; envelope: Envelope }, cap: CapabilityCandidate): boolean {
+  if (cap.hs6 !== order.hs6) return false;
+  if (!specCompatible(order.envelope, cap.spec_attrs ?? {}).ok) return false;
+  const wanted = headTokens(productTokens(order.envelope.object_class ?? ""));
+  if (wanted.length === 0) return true;
+  if (!CATCH_ALL.has(order.hs6)) return true;
+  const stated = productTokens(`${cap.product_title ?? ""} ${cap.spec_attrs?.type ?? ""}`);
+  return wanted.every((w) => stated.includes(w));
 }
 
 export function isSupported(cap: CapabilityCandidate): boolean {

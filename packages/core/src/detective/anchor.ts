@@ -65,7 +65,12 @@ export type Anchor = { hs6: string; via: "model" | "declared" | "keyword" };
  */
 export function anchorFinding(product: string, declared: { hs6: string; title_en: string }[], hs6Guess?: string | null): Anchor | null {
   const guess = (hs6Guess ?? "").replace(/[^\d]/g, "");
-  if (guess.length === 6 && guess !== "000000") return { hs6: guess, via: "model" };
+  if (guess.length === 6 && guess !== "000000") {
+    // Within a sector heading the keyword table knows the type better than a model's guess (a globe valve is not 8481.20).
+    const kw = keywordHs6(product);
+    if (kw && kw.slice(0, 4) === guess.slice(0, 4) && kw !== guess) return { hs6: kw, via: "keyword" };
+    return { hs6: guess, via: "model" };
+  }
   const tokens = productTokens(product);
   const own = head(tokens);
   let best: { hs6: string; size: number } | null = null;
