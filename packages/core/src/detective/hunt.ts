@@ -14,12 +14,17 @@ export const HUNT_QUERIES: Record<"valve" | "pump" | "fitting", string[]> = {
   fitting: ["مصنع وصلات ومواسير في السعودية فلنجات", "pipe fittings flanges manufacturer Saudi Arabia factory", "مصانع الفلنجات والوصلات السعودية"],
 };
 
-const Candidates = z.object({ companies: z.array(z.object({ name: z.string(), name_arabic: z.string().nullable(), url: z.string().nullable(), city: z.string().nullable(), what: z.string().describe("one line: what the page says they make or sell"), is_manufacturer_claim: z.boolean() })) });
+export const Candidates = z.object({ companies: z.array(z.object({
+  name: z.string(), name_arabic: z.string().nullable(), url: z.string().nullable(), city: z.string().nullable(),
+  what: z.string().describe("one line: what the page says they make or sell"),
+  based_in_saudi: z.boolean().describe("true only when the page shows a plant, office, warehouse or stock inside Saudi Arabia; a foreign manufacturer with a Saudi landing page is false"),
+})) });
 type CandidatesT = z.infer<typeof Candidates>;
-const CandidatesLoose: z.ZodType<CandidatesT> = z.preprocess((raw) => {
+const yes = (v: unknown): boolean => v === true || /^(true|yes|y)$/i.test(String(v).trim());
+export const CandidatesLoose: z.ZodType<CandidatesT> = z.preprocess((raw) => {
   const r = raw && typeof raw === "object" ? { ...(raw as Record<string, unknown>) } : {};
   const list = Array.isArray(r.companies) ? r.companies : [];
-  return { companies: list.map((c) => { const x = (c ?? {}) as Record<string, unknown>; return { name: String(x.name ?? "").trim(), name_arabic: x.name_arabic ? String(x.name_arabic) : null, url: x.url ? String(x.url) : null, city: x.city ? String(x.city) : null, what: String(x.what ?? ""), is_manufacturer_claim: x.is_manufacturer_claim === true || String(x.is_manufacturer_claim) === "true" }; }).filter((c) => c.name) };
+  return { companies: list.map((c) => { const x = (c ?? {}) as Record<string, unknown>; return { name: String(x.name ?? "").trim(), name_arabic: x.name_arabic ? String(x.name_arabic) : null, url: x.url ? String(x.url) : null, city: x.city ? String(x.city) : null, what: String(x.what ?? ""), based_in_saudi: x.based_in_saudi === undefined ? true : yes(x.based_in_saudi) }; }).filter((c) => c.name) };
 }, Candidates);
 
 export async function runHunt(db: Sql, family: "valve" | "pump" | "fitting"): Promise<{ queries: number; candidates: number; created: number }> {
@@ -33,12 +38,13 @@ export async function runHunt(db: Sql, family: "valve" | "pump" | "fitting"): Pr
     }
     const text = results.map((r, i) => `### ${i + 1}. ${r.title}\nURL: ${r.url}\n${(r.raw_content ?? r.content).slice(0, 2500)}`).join("\n\n").slice(0, 16_000);
     const found = await invokeStructured(getChatModel("detective"), [
-      new SystemMessage(`You extract company names from search results. List every Saudi company these pages say makes or sells ${family}s. One entry per company, Arabic name if shown, the URL of the page that mentions it, the city if stated. Do not invent companies. /no_think`),
+      new SystemMessage(`You extract company names from search results. List every company these pages say makes or sells ${family}s in Saudi Arabia. One entry per company, Arabic name if shown, the URL of the page that mentions it, the city if stated. Mark based_in_saudi true only when the page shows a plant, office, warehouse or stock inside the Kingdom; an Indian, Chinese or other foreign manufacturer with a Saudi landing page or "supplier in Saudi Arabia" page is based_in_saudi false. Do not invent companies. /no_think`),
       new HumanMessage(text),
     ], { name: "hunt_candidates", toolSchema: Candidates, parseSchema: CandidatesLoose, preferJsonText: true, config: { callbacks: [handler], runName: "hunt_extract" } });
     const known = await db<{ id: string; name_ar: string | null; name_en: string | null }[]>`select id, name_ar, name_en from suppliers`;
     let created = 0;
     for (const c of found.companies) {
+      if (!c.based_in_saudi) continue;
       const dup = known.find((k) => Math.max(k.name_en ? nameSimilarity(c.name, k.name_en) : 0, k.name_ar && c.name_arabic ? nameSimilarity(c.name_arabic, k.name_ar) : 0, k.name_ar ? nameSimilarity(c.name, k.name_ar) : 0) >= 0.6);
       if (dup) continue;
       const id = `hunt:${family}:${c.name.toLowerCase().replace(/[^a-z0-9؀-ۿ]+/g, "-").slice(0, 60)}`;
