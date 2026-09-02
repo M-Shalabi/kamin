@@ -33,6 +33,13 @@
     "match": "bun run packages/core/scripts/match.ts",
     "coverage": "bun run packages/core/scripts/coverage.ts",
     "advisor": "bun run packages/core/scripts/advisor.ts",
-    "gaps": "bun run packages/core/scripts/gaps.ts"
+    "gaps": "bun run packages/core/scripts/gaps.ts",
+    "web:dev": "KAMIN_ROOT=$PWD bun run --cwd apps/web dev",
+    "web:build": "KAMIN_ROOT=$PWD bun run --cwd apps/web build",
+    "typecheck:web": "cd apps/web && tsc --noEmit",
+    "demo": "bun run db:up && bun run web:dev",
+    "record-cold-miss": "bun run packages/core/scripts/record-cold-miss.ts",
+    "db:snapshot": "bun run packages/core/scripts/db-snapshot.ts",
+    "db:restore": "bun run packages/core/scripts/db-restore.ts"
   }
 }

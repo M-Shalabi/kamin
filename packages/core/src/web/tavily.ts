@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
-const REPO_ROOT = join(import.meta.dir, "../../../..");
+import { REPO_ROOT } from "../paths";
 export type TavilyResult = { title: string; url: string; content: string; raw_content: string | null; score: number };
 
 export async function searchTavily(query: string, opts: { maxResults?: number; fetchImpl?: typeof fetch; cacheDir?: string } = {}): Promise<TavilyResult[]> {

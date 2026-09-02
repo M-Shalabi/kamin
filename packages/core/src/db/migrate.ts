@@ -2,7 +2,9 @@ import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
 import type { Sql } from "postgres";
 
-const dir = join(import.meta.dir, "migrations");
+import { REPO_ROOT } from "../paths";
+
+const dir = join(REPO_ROOT, "packages/core/src/db/migrations");
 
 export async function migrate(db: Sql): Promise<string[]> {
   await db`create table if not exists schema_migrations (name text primary key, applied_at timestamptz not null default now())`;

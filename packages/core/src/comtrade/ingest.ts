@@ -3,7 +3,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import type { Sql } from "postgres";
 
-const REPO_ROOT = join(import.meta.dir, "../../../..");
+import { REPO_ROOT } from "../paths";
 export type ImportRow = { hs6: string; year: number; value_usd: number; net_wgt: number | null; qty: number | null };
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 

@@ -3,7 +3,7 @@ import { join } from "node:path";
 import type { Sql } from "postgres";
 import { lastPageNumber, parseDetailPage, parseListPage } from "./parse";
 
-const REPO_ROOT = join(import.meta.dir, "../../../..");
+import { REPO_ROOT } from "../paths";
 const BASE = "https://lc.mcci.org.sa";
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 

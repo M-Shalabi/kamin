@@ -38,7 +38,7 @@ export function auditorPrompt(cap: CapabilityForAudit): { system: string; human:
   };
 }
 
-export async function runAuditor(db: Sql, capabilityId: string): Promise<{ runId: string; verdict: "supported" | "refuted" | "pending"; class: string; confidence: number }> {
+export async function runAuditor(db: Sql, capabilityId: string, opts: { sink?: (line: string) => void } = {}): Promise<{ runId: string; verdict: "supported" | "refuted" | "pending"; class: string; confidence: number }> {
   const cap = await loadCapability(db, capabilityId);
   return withRun(db, { role: "auditor", inputRef: capabilityId, model: modelRefFor("auditor") }, async (runId, handler) => {
     const p = auditorPrompt(cap);
@@ -51,5 +51,5 @@ export async function runAuditor(db: Sql, capabilityId: string): Promise<{ runId
     await db`update capabilities set verdict = ${result.verdict}, class = ${result.class}, confidence = ${result.confidence}, class_confidence = ${lenses.confidence}, lenses = ${db.json(lenses as never)}, audit_run_id = ${runId}, audited_at = now(), status = 'audited', updated_at = now() where id = ${capabilityId}`;
     await addStep(db, runId, { kind: "note", name: "verdict", output: { ...result, killer_evidence: lenses.real.killer_evidence } });
     return { runId, ...result };
-  });
+  }, { sink: opts.sink });
 }

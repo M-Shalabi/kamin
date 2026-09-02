@@ -33,7 +33,7 @@ export function detectivePrompt(profile: SupplierProfile, pages: PageCandidate[]
   };
 }
 
-export async function runDetective(db: Sql, supplierId: string): Promise<{ runId: string; findings: DetectiveFindingsT; merged: { capabilities: number; evidence: number; created: number } }> {
+export async function runDetective(db: Sql, supplierId: string, opts: { sink?: (line: string) => void } = {}): Promise<{ runId: string; findings: DetectiveFindingsT; merged: { capabilities: number; evidence: number; created: number } }> {
   const profile = await loadProfile(db, supplierId);
   return withRun(db, { role: "detective", inputRef: supplierId, model: modelRefFor("detective") }, async (runId, handler) => {
     const queries = buildQueries(profile);
@@ -78,7 +78,7 @@ export async function runDetective(db: Sql, supplierId: string): Promise<{ runId
     }
     await addStep(db, runId, { kind: "note", name: "merged", output: { ...merged, is_same_company: findings.is_same_company, website: findings.website } });
     return { runId, findings, merged };
-  }).catch(async (err) => {
+  }, { sink: opts.sink }).catch(async (err) => {
     await db`update suppliers set detective_status = 'error', detective_at = now() where id = ${supplierId}`;
     throw err;
   });

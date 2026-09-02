@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
-const REPO_ROOT = join(import.meta.dir, "../../../..");
+import { REPO_ROOT } from "../paths";
 const ENTITIES: Record<string, string> = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: " ", ndash: "-", mdash: "-", hellip: "...", laquo: "«", raquo: "»", copy: "©", reg: "®", trade: "™" };
 
 export function decodeEntities(s: string): string {

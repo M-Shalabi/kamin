@@ -42,4 +42,11 @@ describe.skipIf(!process.env.DATABASE_URL)("trajectory", () => {
     const rows = await sql<{ n: number; d: number }[]>`select count(*)::int as n, count(distinct seq)::int as d from run_steps where run_id = ${runId}`;
     expect(rows[0]).toEqual({ n: 20, d: 20 });
   });
+
+  test("withRun routes trajectory lines to a provided sink", async () => {
+    const lines: string[] = [];
+    await withRun(sql, { role: "coordinator", inputRef: "test-sink", model: "m" }, async (_runId, handler) => { handler.sink("hello sink"); return 1; }, { sink: (l) => lines.push(l) });
+    expect(lines.some((l) => l.includes("hello sink"))).toBe(true);
+    expect(lines.some((l) => l.startsWith("▶ run"))).toBe(true);
+  });
 });

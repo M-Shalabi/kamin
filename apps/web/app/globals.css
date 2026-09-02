@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+:root { --ink: #14110f; --paper: #f7f4ee; --accent: #e8541e; --muted: #6b655c; --line: #e2dcd2; }
+html { background: var(--paper); color: var(--ink); }
+body { font-family: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif; }
+.mono { font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; }
+[dir="auto"] { unicode-bidi: plaintext; }

@@ -2,7 +2,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { chromium } from "playwright";
 
-const REPO_ROOT = join(import.meta.dir, "../../../..");
+import { REPO_ROOT } from "../paths";
 const OUT_DIR = join(REPO_ROOT, "data/raw/saudimade");
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
