@@ -45,9 +45,11 @@ await add("… covered (a supported manufacturer or assembler at spec, Tier 1 or
 await add("… manufacturing gaps (supplied locally, nobody manufactures it)", "select count(*) as v from pooled_orders where gap_kind = 'manufacturing_gap' and title not like 'test %'");
 await add("… supply gaps (no supported capability of any class)", "select count(*) as v from pooled_orders where gap_kind = 'supply_gap' and title not like 'test %'");
 const cov = await coverage(sql);
-rows.push({ what: "Coverage, spend-weighted share of pooled annual demand a supported local capability can supply", value: pct(cov.coverage), source: "packages/core/src/match/coverage.ts (bun run coverage)" });
-rows.push({ what: "Line coverage, share of pooled orders with a supported local capability", value: pct(cov.line_coverage), source: "same" });
-await add("… covered orders where a closing match also matches at least one stated attribute (spec-level, not only subheading)", "select count(distinct o.id) as v from pooled_orders o join matches m on m.pooled_order_id = o.id join capabilities c on c.id = m.capability_id where o.gap_kind = 'covered' and o.title not like 'test %' and c.hs6 = o.hs6 and c.verdict = 'supported' and m.reasons->>'spec' like 'ok (%' and m.reasons->>'spec' <> 'ok (no stated attributes)'");
+rows.push({ what: "Coverage at the stated specification, spend-weighted share of pooled annual demand (the headline figure)", value: pct(cov.coverage_spec), source: "packages/core/src/match/coverage.ts (bun run coverage)" });
+rows.push({ what: "… orders covered at the stated specification", value: pct(cov.line_coverage_spec), source: "same" });
+rows.push({ what: "Category-level coverage: a verified supplier declares the subheading with nothing in conflict, spec unverified", value: pct(cov.coverage), source: "same" });
+rows.push({ what: "… orders covered at category level", value: pct(cov.line_coverage), source: "same" });
+await add("Orders with a supplier only at category level (the Detectives' next queue)", "select count(*) as v from pooled_orders where spec_status = 'category' and title not like 'test %'");
 await add("Annual value in manufacturing gaps", "select coalesce(sum(annual_value_usd), 0) as v from pooled_orders where gap_kind = 'manufacturing_gap' and title not like 'test %'", usd);
 await add("Annual value in supply gaps", "select coalesce(sum(annual_value_usd), 0) as v from pooled_orders where gap_kind = 'supply_gap' and title not like 'test %'", usd);
 await add("Gaps on the announced Mandatory List tranche", "select count(*) as v from pooled_orders where gap_kind <> 'covered' and mandatory and title not like 'test %'");

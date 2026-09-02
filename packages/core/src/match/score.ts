@@ -1,7 +1,8 @@
+import { headTokens, productTokens } from "../detective/anchor";
 import type { Envelope } from "../coordinator/pool";
 import { canonMaterial, parseSizeToken } from "../coordinator/units";
 
-export type CapabilityCandidate = { id: string; supplier_id: string; hs6: string; class: string; verdict: string; confidence: number | null; best_tier: number | null; spec_attrs: Record<string, string>; declared_amount: number | null; declared_unit: string | null; region_en: string | null; in_made_in_saudi: boolean };
+export type CapabilityCandidate = { product_title?: string | null; id: string; supplier_id: string; hs6: string; class: string; verdict: string; confidence: number | null; best_tier: number | null; spec_attrs: Record<string, string>; declared_amount: number | null; declared_unit: string | null; region_en: string | null; in_made_in_saudi: boolean };
 
 const CLASS_W: Record<string, number> = { manufacturer: 1, assembler: 0.9, authorised_distributor: 0.6, trader: 0.4 };
 const VERDICT_W: Record<string, number> = { supported: 1, pending: 0.5, refuted: 0 };
@@ -22,6 +23,25 @@ export function specCompatible(env: Envelope, attrs: Record<string, string>): { 
     }
   }
   return { ok: conflicts.length === 0, hits, conflicts };
+}
+
+/** Subheadings that are catch-alls ("other valves", "other pumps", "other fittings"): the product title must name the order's object class there. */
+const CATCH_ALL = new Set(["848100", "848180", "841300", "841381", "841370", "730700", "730710", "730729", "730790", "730799"]);
+
+/**
+ * Matched at the stated specification: same subheading, at least one stated attribute agreeing with
+ * the envelope and none conflicting, and on a catch-all subheading the product title naming the
+ * order's object class (a stainless gate valve does not cover a stainless ball valve order).
+ */
+export function atSpec(order: { hs6: string; envelope: Envelope }, cap: CapabilityCandidate): boolean {
+  if (cap.hs6 !== order.hs6) return false;
+  const spec = specCompatible(order.envelope, cap.spec_attrs ?? {});
+  if (!spec.ok || spec.hits.length === 0) return false;
+  if (!CATCH_ALL.has(order.hs6)) return true;
+  const wanted = headTokens(productTokens(order.envelope.object_class ?? ""));
+  if (wanted.length === 0) return true;
+  const title = productTokens(cap.product_title ?? "");
+  return wanted.every((w) => title.includes(w));
 }
 
 export function isSupported(cap: CapabilityCandidate): boolean {

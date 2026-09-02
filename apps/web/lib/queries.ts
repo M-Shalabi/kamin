@@ -3,17 +3,25 @@ import { sql } from "./db";
 export type GapKind = "covered" | "manufacturing_gap" | "supply_gap";
 
 export async function coverageSummary() {
-  const [r] = await sql<{ spend_total: number; spend_covered: number; line_total: number; line_covered: number; manufacturing_gaps: number; supply_gaps: number; covered: number }[]>`
+  const [r] = await sql<{ spend_total: number; spend_covered: number; line_total: number; line_covered: number; manufacturing_gaps: number; supply_gaps: number; covered: number; spend_at_spec: number; line_at_spec: number }[]>`
     select coalesce(sum(annual_value_usd), 0)::float as spend_total,
            coalesce(sum(annual_value_usd) filter (where gap_kind in ('covered', 'manufacturing_gap')), 0)::float as spend_covered,
            count(*)::int as line_total,
            count(*) filter (where gap_kind in ('covered', 'manufacturing_gap'))::int as line_covered,
            count(*) filter (where gap_kind = 'manufacturing_gap')::int as manufacturing_gaps,
            count(*) filter (where gap_kind = 'supply_gap')::int as supply_gaps,
-           count(*) filter (where gap_kind = 'covered')::int as covered
+           count(*) filter (where gap_kind = 'covered')::int as covered,
+           coalesce(sum(annual_value_usd) filter (where spec_status = 'at_spec'), 0)::float as spend_at_spec,
+           count(*) filter (where spec_status = 'at_spec')::int as line_at_spec
     from pooled_orders where title not like 'test %'`;
   const row = r!;
-  return { ...row, coverage: row.spend_total ? row.spend_covered / row.spend_total : 0, line_coverage: row.line_total ? row.line_covered / row.line_total : 0 };
+  return {
+    ...row,
+    coverage: row.spend_total ? row.spend_covered / row.spend_total : 0,
+    line_coverage: row.line_total ? row.line_covered / row.line_total : 0,
+    coverage_spec: row.spend_total ? row.spend_at_spec / row.spend_total : 0,
+    line_coverage_spec: row.line_total ? row.line_at_spec / row.line_total : 0,
+  };
 }
 
 export async function stats() {
@@ -29,7 +37,7 @@ export async function stats() {
   return r!;
 }
 
-export type LedgerRow = { id: string; title: string; hs6: string; family: string | null; gap_kind: GapKind | null; mandatory: boolean; annual_value_usd: number | null; qty_annual: number | null; qty_unit: string | null; portco_count: number; line_count: number; pivots: number | null; headline: string | null; supported_count: number };
+export type LedgerRow = { id: string; title: string; hs6: string; family: string | null; gap_kind: GapKind | null; spec_status: "at_spec" | "category" | "none" | null; mandatory: boolean; annual_value_usd: number | null; qty_annual: number | null; qty_unit: string | null; portco_count: number; line_count: number; pivots: number | null; headline: string | null; supported_count: number };
 
 /** Orders and annual value per gap kind, for the ledger tabs and its empty state. */
 export async function ledgerCounts(): Promise<Record<string, { n: number; usd: number }>> {
@@ -42,7 +50,7 @@ export async function ledgerCounts(): Promise<Record<string, { n: number; usd: n
 export async function ledger(kind: GapKind | "all"): Promise<LedgerRow[]> {
   const filter = kind === "all" ? sql`` : sql`and o.gap_kind = ${kind}`;
   return sql<LedgerRow[]>`
-    select o.id, o.title, o.hs6, o.family, o.gap_kind, o.mandatory, o.annual_value_usd::float as annual_value_usd, o.qty_annual::float as qty_annual, o.qty_unit, o.portco_count,
+    select o.id, o.title, o.hs6, o.family, o.gap_kind, o.spec_status, o.mandatory, o.annual_value_usd::float as annual_value_usd, o.qty_annual::float as qty_annual, o.qty_unit, o.portco_count,
            (select count(*)::int from demand_lines d where d.pooled_order_id = o.id) as line_count,
            jsonb_array_length(g."case"->'pivot_candidates') as pivots, g."case"->>'headline' as headline,
            (select count(*)::int from matches m join capabilities c on c.id = m.capability_id left join (select capability_id, min(tier) as best from evidence group by capability_id) e on e.capability_id = c.id where m.pooled_order_id = o.id and c.verdict = 'supported' and e.best <= 2) as supported_count
@@ -53,7 +61,7 @@ export async function ledger(kind: GapKind | "all"): Promise<LedgerRow[]> {
 
 export async function orderDetail(id: string) {
   const [o] = await sql<(LedgerRow & { spec_envelope: Record<string, unknown>; qty_now: number | null; gap_case: Record<string, unknown> | null; import_value_usd: number | null })[]>`
-    select o.id, o.title, o.hs6, o.family, o.gap_kind, o.mandatory, o.annual_value_usd::float as annual_value_usd, o.qty_annual::float as qty_annual, o.qty_now::float as qty_now, o.qty_unit, o.portco_count, o.spec_envelope,
+    select o.id, o.title, o.hs6, o.family, o.gap_kind, o.spec_status, o.mandatory, o.annual_value_usd::float as annual_value_usd, o.qty_annual::float as qty_annual, o.qty_now::float as qty_now, o.qty_unit, o.portco_count, o.spec_envelope,
            0 as line_count, jsonb_array_length(g."case"->'pivot_candidates') as pivots, g."case"->>'headline' as headline, g."case" as gap_case, 0 as supported_count,
            (select value_usd::float from imports i where i.hs6 = o.hs6 and i.year = 2024) as import_value_usd
     from pooled_orders o left join gap_cases g on g.pooled_order_id = o.id where o.id = ${id}`;

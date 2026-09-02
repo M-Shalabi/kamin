@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, test } from "bun:test";
 import { sql } from "../src/db/client";
 import { migrate } from "../src/db/migrate";
-import { isSupported, scoreCapability, specCompatible, splitShares, type CapabilityCandidate } from "../src/match/score";
+import { atSpec, isSupported, scoreCapability, specCompatible, splitShares, type CapabilityCandidate } from "../src/match/score";
 import { matchOrder } from "../src/match/persist";
 import { coverage } from "../src/match/coverage";
 
@@ -29,6 +29,16 @@ describe("scoring", () => {
     expect(isSupported(cap({}))).toBe(true);
     expect(isSupported(cap({ best_tier: 3 }))).toBe(false);
     expect(isSupported(cap({ verdict: "pending" }))).toBe(false);
+  });
+  test("atSpec needs a stated attribute hit and, on a catch-all subheading, the order's object class in the product title", () => {
+    const order = { hs6: "848180", envelope: env };
+    expect(atSpec(order, cap({ spec_attrs: {}, product_title: "Ball valves" }))).toBe(false);
+    expect(atSpec(order, cap({ spec_attrs: { material: "stainless steel 316" }, product_title: "Gate valves" }))).toBe(false);
+    expect(atSpec(order, cap({ spec_attrs: { material: "stainless steel 316" }, product_title: "Ball Valves (Model L400)" }))).toBe(true);
+    expect(atSpec(order, cap({ spec_attrs: { material: "cast iron" }, product_title: "Ball valves" }))).toBe(false);
+    const check = { hs6: "848130", envelope: { ...env, object_class: "check valve" } };
+    expect(atSpec(check, cap({ hs6: "848130", spec_attrs: { size: "1/2 to 4 inch" }, product_title: "Check valves" }))).toBe(true);
+    expect(atSpec(check, cap({ hs6: "848130", spec_attrs: { size: "1/2 to 4 inch" }, product_title: null }))).toBe(true);
   });
   test("splitShares allocates by declared capacity when units are comparable, else equally over the top three", () => {
     expect(splitShares({ qty_annual: 1000 }, [cap({ declared_amount: 600, declared_unit: "Piece" }), cap({ declared_amount: 400, declared_unit: "Piece" })])).toEqual([0.6, 0.4]);
@@ -58,6 +68,16 @@ describe.skipIf(!process.env.DATABASE_URL)("what closes a gap", () => {
     expect(conflicting.gap_kind).toBe("supply_gap");
     const exact = await matchOrder(sql, o!.id, { onlySupplierIds: ["test:mg3"] });
     expect(exact.gap_kind).toBe("covered");
+    expect(exact.spec_status).toBe("category");
+    const [row] = await sql<{ spec_status: string }[]>`select spec_status from pooled_orders where id = ${o!.id}`;
+    expect(row!.spec_status).toBe("category");
+    await sql`update capabilities set spec_attrs = '{"material": "stainless steel 316"}', product_title = 'stainless ball valves' where supplier_id = 'test:mg3'`;
+    const verified = await matchOrder(sql, o!.id, { onlySupplierIds: ["test:mg3"] });
+    expect(verified.spec_status).toBe("at_spec");
+    const c = await coverage(sql, { onlyOrderIds: [o!.id] });
+    expect(c.coverage_spec).toBeCloseTo(1, 5);
+    const none = await matchOrder(sql, o!.id, { onlySupplierIds: ["test:mg1"] });
+    expect(none.spec_status).toBe("none");
     await sql`delete from pooled_orders where id = ${o!.id}`;
     await sql`delete from suppliers where id like 'test:mg%'`;
   });

@@ -21,8 +21,9 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
               </nav>
             </div>
             <div className="text-right">
-              <div className="mono text-4xl font-semibold" style={{ color: "var(--accent)" }}>{fmtPct(c.coverage)}</div>
-              <div className="text-xs" style={{ color: "var(--muted)" }}>of {fmtMoney(c.spend_total)} a year in pooled portfolio demand has a supported local supplier. Line coverage {fmtPct(c.line_coverage)}.</div>
+              <div className="mono text-4xl font-semibold" style={{ color: "var(--accent)" }}>{fmtPct(c.coverage_spec)}</div>
+              <div className="text-xs" style={{ color: "var(--muted)" }}>of {fmtMoney(c.spend_total)} a year in pooled portfolio demand has a supported local supplier at the stated specification.</div>
+              <div className="text-xs" style={{ color: "var(--muted)" }}>At category level, a verified supplier declaring the subheading: {fmtPct(c.coverage)} of spend, {fmtPct(c.line_coverage)} of orders.</div>
             </div>
           </div>
         </header>

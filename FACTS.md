@@ -178,8 +178,9 @@ Every decision below is written into `CONTEXT.md` (names), `docs/adr/` (reasonin
 - **Threshold:** a capability counts toward coverage only when supported and backed by Tier 1 or 2,
   at the order's own subheading and with no stated attribute in conflict (refined 2026-09-02 after the
   first matching run let a pressure-reducing valve line "cover" a ball-valve order at heading level).
-- **Coverage:** spend-weighted share of pooled annual demand value, portfolio level. Line coverage
-  is secondary.
+- **Coverage:** spend-weighted share of pooled annual demand value, portfolio level, **at the stated
+  specification** (refined 2026-09-02: with attribute-less registry declarations counting, coverage read
+  98.9% while not one order was verified at spec). Category-level coverage and line coverage are secondary.
 - **Gap kinds:** manufacturing gap (ledger default) and supply gap (toggle).
 - **LC scoring:** G1 implemented and input-gated; LC signals shown per capability meanwhile.
 - **Sector:** valves, pumps and pipe fittings (HS 8481, 8413, 7307).

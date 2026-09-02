@@ -13,7 +13,9 @@ const FAMILY_WORDS = new Set(["valve", "tap", "cock", "similar", "appliance", "p
 export function productTokens(s: string): string[] {
   return s.toLowerCase().split(/[^a-z0-9]+/).filter((t) => t && !/\d/.test(t)).map((t) => (t.length > 3 && t.endsWith("s") && !t.endsWith("ss") ? t.slice(0, -1) : t)).filter((t) => !["model", "type", "series", "general", "etc", "nes"].includes(t));
 }
-const head = (tokens: string[]) => tokens.filter((t) => !FAMILY_WORDS.has(t));
+/** The distinguishing words of a product phrase: its tokens minus the family words (valve, pump, fitting, pipe…). */
+export const headTokens = (tokens: string[]): string[] => tokens.filter((t) => !FAMILY_WORDS.has(t));
+const head = headTokens;
 /** "Safety or relief valves" → [["safety"], ["relief"]]: each alternative must be wholly present. */
 const headGroups = (title: string): string[][] => title.toLowerCase().split(/\bor\b|,|\//).map((part) => head(productTokens(part))).filter((g) => g.length);
 
