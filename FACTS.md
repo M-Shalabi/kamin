@@ -175,7 +175,9 @@ Every decision below is written into `CONTEXT.md` (names), `docs/adr/` (reasonin
   `bun run reverdict` recomputes stored verdicts from saved lenses when this rule changes.
 - **Evidence:** tiers 1 to 4 from `SUBMISSION.md` are canonical. BUILD_PLAN's
   primary/secondary/marketing and STORY's strongest-to-weakest are retired as names.
-- **Threshold:** a capability counts toward coverage only when supported and backed by Tier 1 or 2.
+- **Threshold:** a capability counts toward coverage only when supported and backed by Tier 1 or 2,
+  at the order's own subheading and with no stated attribute in conflict (refined 2026-09-02 after the
+  first matching run let a pressure-reducing valve line "cover" a ball-valve order at heading level).
 - **Coverage:** spend-weighted share of pooled annual demand value, portfolio level. Line coverage
   is secondary.
 - **Gap kinds:** manufacturing gap (ledger default) and supply gap (toggle).

@@ -36,6 +36,33 @@ describe("scoring", () => {
   });
 });
 
+describe.skipIf(!process.env.DATABASE_URL)("what closes a gap", () => {
+  beforeAll(async () => {
+    await migrate(sql);
+    await sql`delete from suppliers where id like 'test:mg%'`;
+    await sql`delete from pooled_orders where title like 'test match gap%'`;
+    await sql`insert into suppliers (id, name_en, source) values ('test:mg1', 'Sibling maker', 'test'), ('test:mg2', 'Conflicting maker', 'test'), ('test:mg3', 'Exact maker', 'test')`;
+    await sql`insert into capabilities (supplier_id, hs6, product_title, class, verdict, confidence, origin, spec_attrs) values
+      ('test:mg1', '848130', 'check valves', 'manufacturer', 'supported', 0.9, 'detective', '{}'),
+      ('test:mg2', '848180', 'cast iron ball valves', 'manufacturer', 'supported', 0.9, 'detective', '{"material": "cast iron"}'),
+      ('test:mg3', '848180', 'ball valves', 'manufacturer', 'supported', 0.9, 'detective', '{}')`;
+    const caps = await sql<{ id: string }[]>`select id from capabilities where supplier_id like 'test:mg%'`;
+    for (const c of caps) await sql`insert into evidence (capability_id, tier, source_type, source_url, excerpt) values (${c.id}, 2, 'test', 'https://x', 'x')`;
+  });
+  test("a supported maker at a sibling subheading or with a conflicting attribute is listed but does not cover", async () => {
+    const [o] = await sql<{ id: string }[]>`insert into pooled_orders (hs6, spec_envelope, family, title, annual_value_usd) values ('848180', ${sql.json(env as never)}, 'valve', 'test match gap valve', 100) returning id`;
+    const sibling = await matchOrder(sql, o!.id, { onlySupplierIds: ["test:mg1"] });
+    expect(sibling.matches).toBe(1);
+    expect(sibling.gap_kind).toBe("supply_gap");
+    const conflicting = await matchOrder(sql, o!.id, { onlySupplierIds: ["test:mg2"] });
+    expect(conflicting.gap_kind).toBe("supply_gap");
+    const exact = await matchOrder(sql, o!.id, { onlySupplierIds: ["test:mg3"] });
+    expect(exact.gap_kind).toBe("covered");
+    await sql`delete from pooled_orders where id = ${o!.id}`;
+    await sql`delete from suppliers where id like 'test:mg%'`;
+  });
+});
+
 describe.skipIf(!process.env.DATABASE_URL)("matchOrder and coverage", () => {
   beforeAll(async () => {
     await migrate(sql);

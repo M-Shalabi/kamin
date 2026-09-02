@@ -78,7 +78,7 @@ The Auditor's finding on one capability: supported or refuted. Refuted means not
 _Avoid_: Kill (fine on stage, not in code), rejected, failed, passed
 
 **Supported capability**:
-A capability whose verdict is supported and which holds at least one Tier 1 or Tier 2 evidence. Only supported capabilities count toward coverage and close gaps.
+A capability whose verdict is supported and which holds at least one Tier 1 or Tier 2 evidence. Only supported capabilities count toward coverage and close gaps, and only at the pooled order's own subheading with no stated attribute in conflict with the envelope; a sibling subheading or a conflicting attribute is a lead, never coverage.
 _Avoid_: Verified (loose stage word), confirmed, validated
 
 **Unverified capability**:

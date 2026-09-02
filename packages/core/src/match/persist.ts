@@ -1,6 +1,6 @@
 import type { Sql } from "postgres";
 import type { Envelope } from "../coordinator/pool";
-import { isSupported, scoreCapability, splitShares, type CapabilityCandidate } from "./score";
+import { isSupported, scoreCapability, specCompatible, splitShares, type CapabilityCandidate } from "./score";
 
 export async function candidatesFor(db: Sql, hs6: string, onlySupplierIds?: string[]): Promise<CapabilityCandidate[]> {
   const heading = hs6.slice(0, 4) + "%";
@@ -18,7 +18,10 @@ export async function matchOrder(db: Sql, orderId: string, opts: { onlySupplierI
   const cands = await candidatesFor(db, order.hs6, opts.onlySupplierIds);
   const scored = cands.map((c) => ({ cap: c, ...scoreCapability({ hs6: order.hs6, envelope: order.spec_envelope }, c) })).filter((x) => x.score > 0).sort((a, b) => b.score - a.score).slice(0, 12);
   const shares = splitShares(order, scored.map((x) => x.cap));
-  const supported = scored.filter((x) => isSupported(x.cap));
+  // Only a supported capability at the order's own subheading with no stated attribute in conflict closes a gap.
+  // Sibling subheadings and conflicting attributes stay in the list as leads, at a discounted score.
+  const closes = (x: { cap: CapabilityCandidate }) => isSupported(x.cap) && x.cap.hs6 === order.hs6 && specCompatible(order.spec_envelope, x.cap.spec_attrs ?? {}).ok;
+  const supported = scored.filter(closes);
   const makers = supported.filter((x) => x.cap.class === "manufacturer" || x.cap.class === "assembler");
   const gap_kind = makers.length ? "covered" : supported.length ? "manufacturing_gap" : "supply_gap";
   const [mandatory] = await db<{ n: number }[]>`select count(*)::int as n from mandatory_list where hs4 = ${order.hs6.slice(0, 4)}`;
