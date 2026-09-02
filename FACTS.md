@@ -44,6 +44,11 @@ capability of any class. Definitions in `CONTEXT.md`, mechanics in `BUILD_PLAN.m
 
 ## 2. Numbers that need a citable source before going on stage
 
+- **Coordinator spike, measured 2026-09-02:** `qwen3.5:9b` resolved 20/20 HS anchors
+  (attribute score 0.986); pooling produced 15 orders from 20 lines, with the three-line ball
+  valve scenario, the two gate valves, the two centrifugal pumps and the two elbows each pooled. About
+  53 seconds per line on a 16 GB laptop. Evidence in `docs/eval/2026-09-02-coordinator-spike-qwen3.5-9b.md`.
+  The `qwen3:8b` A/B did not run (model removed from the machine); pull it and re-run before quoting a comparison.
 - **⚠️ 2026-09-02, the Tarmeez re-count breaks the headline.** The catalogue API reports **14,873
   plants** and **59,611 products** (`DATA_SOURCES.md`, re-test table). 14,873 is larger than the
   12,946 "operating factories" figure, so "3,153 of 12,946, 76% absent" cannot be said until both
