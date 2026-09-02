@@ -3,10 +3,25 @@ import { HumanMessage, SystemMessage, type AIMessage, type BaseMessage } from "@
 import type { RunnableConfig } from "@langchain/core/runnables";
 import { z } from "zod";
 
+/**
+ * Ollama's tool-call parser for Qwen hands nested arrays and objects over as JSON *strings*
+ * (`"capabilities": "[{...}]"`). Walk the value and parse any string that is itself JSON, so a
+ * schema sees the structure the model meant. Plain strings, including numeric ones, stay strings.
+ */
+export function reviveJsonStrings(v: unknown): unknown {
+  if (typeof v === "string") {
+    if (!/^\s*[\[{]/.test(v)) return v;
+    try { return reviveJsonStrings(JSON.parse(v)); } catch { return v; }
+  }
+  if (Array.isArray(v)) return v.map(reviveJsonStrings);
+  if (v && typeof v === "object") return Object.fromEntries(Object.entries(v as Record<string, unknown>).map(([k, x]) => [k, reviveJsonStrings(x)]));
+  return v;
+}
+
 /** Pull a JSON-like candidate out of a model reply: the first tool call's arguments, else JSON found in the text. */
 export function extractCandidate(msg: AIMessage): unknown {
   const tc = msg.tool_calls?.[0];
-  if (tc?.args && Object.keys(tc.args).length) return tc.args;
+  if (tc?.args && Object.keys(tc.args).length) return reviveJsonStrings(tc.args);
   const text = typeof msg.content === "string" ? msg.content : msg.content.map((c) => ("text" in c ? String((c as { text: unknown }).text) : "")).join("\n");
   const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/i);
   const body = fenced ? fenced[1]! : text;
@@ -14,7 +29,7 @@ export function extractCandidate(msg: AIMessage): unknown {
   const end = body.lastIndexOf("}");
   if (start < 0 || end <= start) return undefined;
   try {
-    return JSON.parse(body.slice(start, end + 1));
+    return reviveJsonStrings(JSON.parse(body.slice(start, end + 1)));
   } catch {
     return undefined;
   }

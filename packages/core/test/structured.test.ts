@@ -17,6 +17,10 @@ describe("extractCandidate", () => {
   test("strips code fences and leading prose", () => {
     expect(extractCandidate(new AIMessage({ content: 'Here you go:\n```json\n{"a": 3}\n```' }))).toEqual({ a: 3 });
   });
+  test("revives nested JSON strings inside tool-call arguments, leaving plain strings alone", () => {
+    const msg = new AIMessage({ content: "", tool_calls: [{ name: "out", args: { items: '[{"x": 1}]', meta: '{"k": "v"}', plain: "text", num: "5", nested: { deep: '["a"]' } }, id: "x", type: "tool_call" }] });
+    expect(extractCandidate(msg)).toEqual({ items: [{ x: 1 }], meta: { k: "v" }, plain: "text", num: "5", nested: { deep: ["a"] } });
+  });
   test("returns undefined when nothing parses", () => {
     expect(extractCandidate(new AIMessage({ content: "no json here" }))).toBeUndefined();
     expect(schema.safeParse(undefined).success).toBe(false);

@@ -69,3 +69,17 @@ describe("DetectiveFindingsLoose", () => {
     expect(f.signals.employees).toBe("120");
   });
 });
+
+describe("DetectiveFindingsLoose with stringified arrays", () => {
+  test("parses capabilities and evidence handed over as JSON strings instead of dropping them", async () => {
+    const { DetectiveFindingsLoose } = await import("../src/detective/schema");
+    const r = DetectiveFindingsLoose.parse({
+      website: "https://bariqgroup.com", is_same_company: "true",
+      capabilities: '[{"class_guess": "manufacturer", "hs6_guess": null, "product": "Ball valves (PN16)", "spec_attrs": [], "evidence": [{"url": "https://bariqgroup.com/valves", "excerpt": "BRONZE BALL VALVE PN16", "kind": "catalogue"}]}]',
+      certifications: "[]", signals: '{"employees": null, "capacity": "2500 t", "facility": null}', summary: "s",
+    });
+    expect(r.capabilities).toHaveLength(1);
+    expect(r.capabilities[0]!.evidence[0]!.url).toBe("https://bariqgroup.com/valves");
+    expect(r.signals.capacity).toBe("2500 t");
+  });
+});
