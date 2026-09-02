@@ -47,6 +47,7 @@ await add("… supply gaps (no supported capability of any class)", "select coun
 const cov = await coverage(sql);
 rows.push({ what: "Coverage, spend-weighted share of pooled annual demand a supported local capability can supply", value: pct(cov.coverage), source: "packages/core/src/match/coverage.ts (bun run coverage)" });
 rows.push({ what: "Line coverage, share of pooled orders with a supported local capability", value: pct(cov.line_coverage), source: "same" });
+await add("… covered orders where a closing match also matches at least one stated attribute (spec-level, not only subheading)", "select count(distinct o.id) as v from pooled_orders o join matches m on m.pooled_order_id = o.id join capabilities c on c.id = m.capability_id where o.gap_kind = 'covered' and o.title not like 'test %' and c.hs6 = o.hs6 and c.verdict = 'supported' and m.reasons->>'spec' like 'ok (%' and m.reasons->>'spec' <> 'ok (no stated attributes)'");
 await add("Annual value in manufacturing gaps", "select coalesce(sum(annual_value_usd), 0) as v from pooled_orders where gap_kind = 'manufacturing_gap' and title not like 'test %'", usd);
 await add("Annual value in supply gaps", "select coalesce(sum(annual_value_usd), 0) as v from pooled_orders where gap_kind = 'supply_gap' and title not like 'test %'", usd);
 await add("Gaps on the announced Mandatory List tranche", "select count(*) as v from pooled_orders where gap_kind <> 'covered' and mandatory and title not like 'test %'");
