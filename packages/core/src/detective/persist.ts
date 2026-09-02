@@ -2,6 +2,7 @@ import type { Sql } from "postgres";
 import type { SupplierProfile } from "./queries";
 import type { DetectiveFindingsT } from "./schema";
 import type { PageCandidate } from "./select";
+import { anchorFinding, evidenceTier, ownHosts } from "./anchor";
 
 export async function loadProfile(db: Sql, supplierId: string): Promise<SupplierProfile> {
   const [s] = await db<{ id: string; name_ar: string | null; name_en: string | null; city_en: string | null; region_en: string | null; website: string | null; cr_number: string | null }[]>`
@@ -14,17 +15,17 @@ export async function loadProfile(db: Sql, supplierId: string): Promise<Supplier
   return { ...s, declared };
 }
 
-const TIER_BY_KIND: Record<string, 1 | 2 | 3> = { certification: 1, award: 1, registry: 2, directory: 2, catalogue: 3, website: 3, news: 3 };
-
 export async function mergeFindings(db: Sql, profile: SupplierProfile, f: DetectiveFindingsT, runId: string, pages: PageCandidate[]): Promise<{ capabilities: number; evidence: number; created: number }> {
   const pageTier = new Map(pages.map((p) => [p.url, p.tier]));
-  const tierFor = (url: string, kind: string): 1 | 2 | 3 => Math.min(pageTier.get(url) ?? 3, TIER_BY_KIND[kind] ?? 3) as 1 | 2 | 3;
+  const own = ownHosts(profile.website, f.website, ...pages.filter((p) => p.kind === "own_site").map((p) => p.url));
+  const tierFor = (url: string, kind: string): 1 | 2 | 3 => evidenceTier(url, kind, own, pageTier.get(url) ?? 3);
   let evidenceCount = 0, created = 0, touched = 0;
   await db.begin(async (tx) => {
     await tx`delete from evidence where run_id = ${runId}`;
     const capIds: string[] = [];
     for (const cap of f.capabilities) {
-      const hs6 = cap.hs6_guess;
+      const anchor = anchorFinding(cap.product, profile.declared, cap.hs6_guess);
+      const hs6 = anchor?.hs6 ?? null;
       let id: string | undefined;
       if (hs6) {
         const [existing] = await tx<{ id: string }[]>`select id from capabilities where supplier_id = ${profile.id} and hs6 = ${hs6} order by (origin = 'tarmeez') desc, created_at limit 1`;
@@ -49,10 +50,11 @@ export async function mergeFindings(db: Sql, profile: SupplierProfile, f: Detect
         evidenceCount++;
       }
     }
-    const targets = capIds.length ? capIds : (await tx<{ id: string }[]>`select id from capabilities where supplier_id = ${profile.id}`).map((r) => r.id);
+    const targets = capIds.length ? [...new Set(capIds)] : (await tx<{ id: string }[]>`select id from capabilities where supplier_id = ${profile.id}`).map((r) => r.id);
     for (const cert of f.certifications) {
       for (const id of targets) {
-        await tx`insert into evidence (capability_id, tier, source_type, source_url, excerpt, run_id, title) values (${id}, 1, 'certification', ${cert.url || (f.website ?? "")}, ${`${cert.name}: ${cert.excerpt}`.slice(0, 300)}, ${runId}, ${cert.name})`;
+        const url = cert.url || (f.website ?? "");
+        await tx`insert into evidence (capability_id, tier, source_type, source_url, excerpt, run_id, title) values (${id}, ${tierFor(url, "certification")}, 'certification', ${url}, ${`${cert.name}: ${cert.excerpt}`.slice(0, 300)}, ${runId}, ${cert.name})`;
         evidenceCount++;
       }
     }
