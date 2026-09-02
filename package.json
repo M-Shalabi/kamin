@@ -35,6 +35,7 @@
     "advisor": "bun run packages/core/scripts/advisor.ts",
     "gaps": "bun run packages/core/scripts/gaps.ts",
     "numbers": "bun run packages/core/scripts/numbers.ts",
+    "reverdict": "bun run packages/core/scripts/reverdict.ts",
     "web:dev": "KAMIN_ROOT=$PWD bun run --cwd apps/web dev",
     "web:build": "KAMIN_ROOT=$PWD bun run --cwd apps/web build",
     "typecheck:web": "cd apps/web && tsc --noEmit",

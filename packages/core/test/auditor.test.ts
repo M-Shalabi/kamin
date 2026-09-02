@@ -10,21 +10,30 @@ const base: AuditVerdictT = { analysis: "", real: { verdict: "supported", reason
 
 describe("lensesToVerdict", () => {
   test("both lenses supported gives supported, class from the local lens, tier factor applied", () => {
-    expect(lensesToVerdict(base, [3, 2])).toEqual({ verdict: "supported", class: "trader", confidence: 0.68 });
-    expect(lensesToVerdict(base, [1])).toEqual({ verdict: "supported", class: "trader", confidence: 0.8 });
-    expect(lensesToVerdict(base, [])).toEqual({ verdict: "supported", class: "trader", confidence: 0.32 });
+    expect(lensesToVerdict(base, [3, 2])).toMatchObject({ verdict: "supported", class: "trader", confidence: 0.68, clearAttrs: false });
+    expect(lensesToVerdict(base, [1])).toMatchObject({ verdict: "supported", class: "trader", confidence: 0.8 });
+    expect(lensesToVerdict(base, [])).toMatchObject({ verdict: "supported", class: "trader", confidence: 0.32 });
   });
-  test("a refuting lens refutes and caps confidence, a trader never refutes", () => {
-    expect(lensesToVerdict({ ...base, real: { verdict: "refuted", reasoning: "dead", killer_evidence: "CR expired" } }, [2]).verdict).toBe("refuted");
-    expect(lensesToVerdict({ ...base, at_spec: { verdict: "refuted", reasoning: "category only" } }, [2]).confidence).toBeLessThanOrEqual(0.2);
+  test("a refuted real lens kills the capability and caps confidence; a trader never refutes", () => {
+    expect(lensesToVerdict({ ...base, real: { verdict: "refuted", reasoning: "dead", killer_evidence: "CR expired" } }, [2])).toMatchObject({ verdict: "refuted", confidence: 0.2 });
+    expect(lensesToVerdict({ ...base, real: { verdict: "refuted", reasoning: "dead", killer_evidence: null }, at_spec: { verdict: "supported", reasoning: "" } }, [1]).verdict).toBe("refuted");
     expect(lensesToVerdict({ ...base, local: { class: "trader", reasoning: "imports" } }, [2]).verdict).toBe("supported");
   });
-  test("an unknown lens leaves the verdict pending", () => {
-    expect(lensesToVerdict({ ...base, at_spec: { verdict: "unknown", reasoning: "no spec on record" } }, [2]).verdict).toBe("pending");
+  test("a refuted spec lens on a real product keeps it supported at category level, strips the attributes and discounts confidence", () => {
+    const r = lensesToVerdict({ ...base, at_spec: { verdict: "refuted", reasoning: "PN16 never shown" } }, [2], { attrsClaimed: true });
+    expect(r).toMatchObject({ verdict: "supported", clearAttrs: true });
+    expect(r.confidence).toBeCloseTo(0.8 * 0.85 * 0.6, 2);
   });
-});
-
-describe("AuditVerdictLoose", () => {
+  test("an unknown real lens leaves the verdict pending", () => {
+    expect(lensesToVerdict({ ...base, real: { verdict: "unknown", reasoning: "silent", killer_evidence: null } }, [2]).verdict).toBe("pending");
+  });
+  test("an unknown spec lens is pending when attributes were claimed and not applicable when none were", () => {
+    const silent = { ...base, at_spec: { verdict: "unknown" as const, reasoning: "no spec on record" } };
+    expect(lensesToVerdict(silent, [2], { attrsClaimed: true }).verdict).toBe("pending");
+    const r = lensesToVerdict(silent, [2], { attrsClaimed: false });
+    expect(r).toMatchObject({ verdict: "supported", clearAttrs: false });
+    expect(r.confidence).toBeCloseTo(0.8 * 0.85 * 0.8, 2);
+  });
   test("coerces sloppy lens values", () => {
     const v = AuditVerdictLoose.parse({ real: { verdict: "Supported", reasoning: "r" }, at_spec: { verdict: "cannot tell", reasoning: "s" }, local: { class: "Authorised Distributor", reasoning: "l" }, confidence: "0.7" });
     const prose = AuditVerdictLoose.parse({ real: { verdict: "supported", reasoning: "r" }, at_spec: "Evidence shows 1/2 to 4 inch stainless valves, so the verdict is supported.", local: "They import and resell, which makes them a trader.", confidence: 0.9 });

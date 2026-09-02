@@ -47,8 +47,8 @@ export async function runAuditor(db: Sql, capabilityId: string, opts: { sink?: (
       config: { callbacks: [handler], runName: "audit" },
       onRetry: (issues) => addStep(db, runId, { kind: "note", name: "audit_retry", output: { issues } }),
     });
-    const result = lensesToVerdict(lenses, cap.evidence.map((e) => e.tier));
-    await db`update capabilities set verdict = ${result.verdict}, class = ${result.class}, confidence = ${result.confidence}, class_confidence = ${lenses.confidence}, lenses = ${db.json(lenses as never)}, audit_run_id = ${runId}, audited_at = now(), status = 'audited', updated_at = now() where id = ${capabilityId}`;
+    const { clearAttrs, ...result } = lensesToVerdict(lenses, cap.evidence.map((e) => e.tier), { attrsClaimed: Object.keys(cap.spec_attrs ?? {}).length > 0 });
+    await db`update capabilities set verdict = ${result.verdict}, class = ${result.class}, confidence = ${result.confidence}, class_confidence = ${lenses.confidence}, lenses = ${db.json(lenses as never)}, spec_attrs = case when ${clearAttrs} then '{}'::jsonb else spec_attrs end, audit_run_id = ${runId}, audited_at = now(), status = 'audited', updated_at = now() where id = ${capabilityId}`;
     await addStep(db, runId, { kind: "note", name: "verdict", output: { ...result, killer_evidence: lenses.real.killer_evidence } });
     return { runId, ...result };
   }, { sink: opts.sink });
