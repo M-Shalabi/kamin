@@ -31,6 +31,14 @@ export async function stats() {
 
 export type LedgerRow = { id: string; title: string; hs6: string; family: string | null; gap_kind: GapKind | null; mandatory: boolean; annual_value_usd: number | null; qty_annual: number | null; qty_unit: string | null; portco_count: number; line_count: number; pivots: number | null; headline: string | null; supported_count: number };
 
+/** Orders and annual value per gap kind, for the ledger tabs and its empty state. */
+export async function ledgerCounts(): Promise<Record<string, { n: number; usd: number }>> {
+  const rows = await sql<{ gap_kind: string | null; n: number; usd: number }[]>`
+    select coalesce(gap_kind, 'unmatched') as gap_kind, count(*)::int as n, coalesce(sum(annual_value_usd), 0)::float as usd
+    from pooled_orders where title not like 'test %' group by 1`;
+  return Object.fromEntries(rows.map((r) => [r.gap_kind ?? "unmatched", { n: r.n, usd: r.usd }]));
+}
+
 export async function ledger(kind: GapKind | "all"): Promise<LedgerRow[]> {
   const filter = kind === "all" ? sql`` : sql`and o.gap_kind = ${kind}`;
   return sql<LedgerRow[]>`
