@@ -119,10 +119,11 @@ export function specPrompt(profile: SupplierProfile, docs: DocCandidate[]): { sy
   return {
     system: [
       "You read manufacturers' catalogues and datasheets for a Saudi industrial buyer. Extract every product line of valves, pumps or pipe fittings with the specifications the documents actually state: type, size range, pressure ratings, materials, end connections, standards.",
-      "Quote sizes, pressures and materials verbatim as ranges or lists; never infer a rating the text does not state. One product line per distinct type. Give evidence as short verbatim excerpts with the document URL. If the documents are not about this company, say so and return no products.",
+      "Quote sizes, pressures and materials verbatim as ranges or lists; never infer a rating the text does not state. One product line per distinct type. Give evidence as short verbatim excerpts with the document URL.",
+      "Documents marked as the supplier's own site belong to the supplier even when the brand name on them differs from the registered company name (registries carry legal names, websites carry brands): is_same_company is true for them. Only a third-party document about a different company makes is_same_company false; if every document is the supplier's own site, is_same_company is true.",
       "/no_think",
     ].join("\n"),
-    human: `Company: ${profile.name_en ?? ""} | ${profile.name_ar ?? ""} (${profile.city_en ?? "city unknown"})\nDeclared lines: ${profile.declared.map((d) => `HS ${d.hs6} ${d.title_en}`).join("; ") || "none"}\n\nDocuments:\n${body}`,
+    human: `Company: ${profile.name_en ?? ""} | ${profile.name_ar ?? ""} (${profile.city_en ?? "city unknown"})\nWebsite on record: ${profile.website ?? "none"}\nDeclared lines: ${profile.declared.map((d) => `HS ${d.hs6} ${d.title_en}`).join("; ") || "none"}\n\nDocuments:\n${body}`,
   };
 }
 
@@ -184,6 +185,8 @@ export async function runSpecifier(db: Sql, supplierId: string, opts: { sink?: (
     } else {
       await addStep(db, runId, { kind: "note", name: "no_documents", output: { queries: specQueries(profile, hs6s).length } });
     }
+    // Own-site documents are the supplier's by definition; the model's same-company judgement only applies to third-party documents.
+    if (!findings.is_same_company && docs.some((d) => d.own && d.text) && findings.products.length) findings = { ...findings, is_same_company: true };
     let merged = { products: findings.products.length, attributed: 0, evidence: 0, created: 0 };
     if (findings.is_same_company && findings.products.length) merged = await mergeSpecFindings(db, profile, findings, runId, docs);
     await addStep(db, runId, { kind: "note", name: "specified", output: { ...merged, is_same_company: findings.is_same_company, documents: docs.length } });

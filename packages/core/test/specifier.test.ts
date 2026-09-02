@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { selectDocuments, specQueries, toSpecAttrs, SpecFindingsLoose } from "../src/detective/spec";
+import { selectDocuments, specPrompt, specQueries, toSpecAttrs, SpecFindingsLoose } from "../src/detective/spec";
 import type { SupplierProfile } from "../src/detective/queries";
 
 const profile: SupplierProfile = { id: "tarmeez:1", name_ar: "مصنع صمامات بارق للصناعة", name_en: "Bareq Valves Factory", city_en: "Dammam", region_en: "Eastern Region", website: "https://bariqgroup.com", cr_number: "1", declared: [{ hs6: "848180", title_en: "Ball valves", title_ar: "صمامات كروية", amount: null, unit: null }] };
@@ -86,5 +86,14 @@ describe.skipIf(!process.env.DATABASE_URL)("mergeSpecFindings", () => {
     const [e] = await sql<{ tier: number; source_type: string }[]>`select e.tier, e.source_type from evidence e join capabilities c on c.id = e.capability_id where c.supplier_id = 'test:spec'`;
     expect(e).toEqual({ tier: 3, source_type: "catalogue" });
     await sql`delete from suppliers where id = 'test:spec'`;
+  });
+});
+
+describe("specPrompt", () => {
+  test("tells the model that documents on the supplier's own site are the supplier's, whatever the brand name, and names the website", () => {
+    const p = specPrompt(profile, [{ url: "https://bariqgroup.com/c.pdf", title: "c.pdf", snippet: "", text: "Ball valves PN16", kind: "pdf", own: true, tier: 3, score: 1 }]);
+    expect(p.system).toMatch(/own (web)?site[^.]*belong/i);
+    expect(p.human).toContain("Website on record: https://bariqgroup.com");
+    expect(p.human).toContain("(supplier's own site)");
   });
 });
