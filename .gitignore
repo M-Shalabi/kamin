@@ -5,3 +5,5 @@ data/raw/
 packages/core/eval/results/
 *.log
 data/snapshots/
+apps/web/.next/
+apps/web/tsconfig.tsbuildinfo
