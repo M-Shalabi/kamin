@@ -10,18 +10,18 @@ const add = async (what: string, q: string, fmt: (v: number) => string = (v) => 
 const pct = (v: number) => `${(v * 100).toFixed(1)}%`;
 const usd = (v: number) => `USD ${Math.round(v).toLocaleString("en-US")}`;
 
-await add("Suppliers on the map", "select count(*) as v from suppliers");
-await add("… declared in Tarmeez", "select count(*) as v from suppliers where in_tarmeez");
+await add("Suppliers on the map", "select count(*) as v from suppliers where id not like 'test:%'");
+await add("… declared in Tarmeez", "select count(*) as v from suppliers where in_tarmeez and id not like 'test:%'");
 await add("… in the Madinah chamber directory (MLCP)", "select count(*) as v from suppliers where in_mlcp");
 await add("… Made in Saudi certified", "select count(*) as v from suppliers where in_made_in_saudi");
-await add("… absent from Tarmeez (found through MLCP, Made in Saudi or the hunt)", "select count(*) as v from suppliers where not in_tarmeez");
+await add("… absent from Tarmeez (found through MLCP, Made in Saudi or the hunt)", "select count(*) as v from suppliers where not in_tarmeez and id not like 'test:%'");
 await add("… discovered by the long-tail hunt, in no registry", "select count(*) as v from suppliers where source = 'hunt'");
-await add("Suppliers with a capability in the valve, pump and fitting slice", `select count(distinct supplier_id) as v from capabilities where ${SECTOR}`);
-await add("Capabilities on the map", "select count(*) as v from capabilities");
-await add("… in the slice", `select count(*) as v from capabilities where ${SECTOR}`);
+await add("Suppliers with a capability in the valve, pump and fitting slice", `select count(distinct supplier_id) as v from capabilities where ${SECTOR} and supplier_id not like 'test:%'`);
+await add("Capabilities on the map", "select count(*) as v from capabilities where supplier_id not like 'test:%'");
+await add("… in the slice", `select count(*) as v from capabilities where ${SECTOR} and supplier_id not like 'test:%'`);
 await add("Distinct tariff codes with a registered product (Tarmeez)", "select count(*) as v from products");
-for (const t of [1, 2, 3, 4]) await add(`Evidence records, Tier ${t}`, `select count(*) as v from evidence where tier = ${t}`);
-await add("Suppliers investigated by a Detective", "select count(*) as v from suppliers where detective_status = 'ok'");
+for (const t of [1, 2, 3, 4]) await add(`Evidence records, Tier ${t}`, `select count(*) as v from evidence e join capabilities c on c.id = e.capability_id where e.tier = ${t} and c.supplier_id not like 'test:%'`);
+await add("Suppliers investigated by a Detective", "select count(*) as v from suppliers where detective_status = 'ok' and id not like 'test:%'");
 await add("… Detective runs that errored", "select count(*) as v from suppliers where detective_status = 'error'");
 await add("Slice capabilities audited", `select count(*) as v from capabilities where audit_run_id is not null and ${SECTOR}`);
 await add("… supported", `select count(*) as v from capabilities where verdict = 'supported' and ${SECTOR}`);
