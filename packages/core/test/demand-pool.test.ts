@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, test } from "bun:test";
+import { afterAll, beforeAll, describe, expect, test } from "bun:test";
 import { sql } from "../src/db/client";
 import { migrate } from "../src/db/migrate";
 import { poolAndPersist } from "../src/demand/pool";
@@ -14,6 +14,11 @@ describe.skipIf(!process.env.DATABASE_URL)("poolAndPersist", () => {
       ('b', 'ACWA Power', '848180', ${spec({ material_grade: "316" })}, 40, 5, 2000, 'test:pool:2', '848180'),
       ('c', 'SEC', '848180', ${spec({ object_class: "gate valve" })}, 5, 1, 300, 'test:pool:3', '848180'),
       ('d', 'NEOM', null, null, 1, 1, 10, 'test:pool:4', '848180')`;
+  });
+  afterAll(async () => {
+    const ids = await sql<{ id: string }[]>`select distinct pooled_order_id as id from demand_lines where line_key like 'test:pool:%' and pooled_order_id is not null`;
+    await sql`delete from demand_lines where line_key like 'test:pool:%'`;
+    if (ids.length) await sql`delete from pooled_orders where id in ${sql(ids.map((r) => r.id))}`;
   });
   test("pools compatible resolved lines into orders with quantities and values, leaving unresolved lines alone", async () => {
     const r = await poolAndPersist(sql, { lineKeyPrefix: "test:pool:" });
