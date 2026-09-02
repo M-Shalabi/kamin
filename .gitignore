@@ -7,3 +7,4 @@ packages/core/eval/results/
 data/snapshots/
 apps/web/.next/
 apps/web/tsconfig.tsbuildinfo
+apps/web/next-env.d.ts
