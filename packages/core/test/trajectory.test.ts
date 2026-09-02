@@ -3,7 +3,7 @@ import { RunnableLambda } from "@langchain/core/runnables";
 import { sql } from "../src/db/client";
 import { migrate } from "../src/db/migrate";
 import { TrajectoryHandler, withRun } from "../src/trajectory/handler";
-import { addStep } from "../src/trajectory/store";
+import { addStep, startRun } from "../src/trajectory/store";
 
 describe.skipIf(!process.env.DATABASE_URL)("trajectory", () => {
   beforeAll(async () => { await migrate(sql); });
@@ -34,5 +34,12 @@ describe.skipIf(!process.env.DATABASE_URL)("trajectory", () => {
 
   test("TrajectoryHandler has the name LangChain requires", () => {
     expect(new TrajectoryHandler(sql, "00000000-0000-0000-0000-000000000000").name).toBe("kamin_trajectory");
+  });
+
+  test("concurrent addStep calls on one run get distinct sequence numbers", async () => {
+    const runId = await startRun(sql, { role: "detective", inputRef: "test-concurrent", model: "m" });
+    await Promise.all(Array.from({ length: 20 }, (_, i) => addStep(sql, runId, { kind: "note", name: `n${i}` })));
+    const rows = await sql<{ n: number; d: number }[]>`select count(*)::int as n, count(distinct seq)::int as d from run_steps where run_id = ${runId}`;
+    expect(rows[0]).toEqual({ n: 20, d: 20 });
   });
 });
