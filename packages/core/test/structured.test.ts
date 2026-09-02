@@ -1,7 +1,8 @@
 import { describe, expect, test } from "bun:test";
 import { AIMessage } from "@langchain/core/messages";
 import { z } from "zod";
-import { extractCandidate } from "../src/models/structured";
+import { extractCandidate, invokeStructured } from "../src/models/structured";
+import type { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { HsChoiceLoose, NormalizedSpecLoose } from "../src/coordinator/loose";
 
 describe("extractCandidate", () => {
@@ -55,5 +56,18 @@ describe("HsChoiceLoose", () => {
   });
   test("accepts dotted codes and clamps confidence", () => {
     expect(HsChoiceLoose.parse({ hs6: "8481.80", confidence: 1.4, reasoning: "" })).toEqual({ hs6: "848180", confidence: 1, reasoning: "" });
+  });
+});
+
+describe("invokeStructured fallback", () => {
+  test("falls back to JSON-in-text when the provider rejects the tool call as malformed XML", async () => {
+    const calls: string[] = [];
+    const fake = {
+      bindTools: () => ({ invoke: async () => { calls.push("tool"); throw new Error("XML syntax error on line 14: element <parameter> closed by </function>"); } }),
+      invoke: async (msgs: { content: unknown }[]) => { calls.push("plain"); expect(String(msgs[0]!.content)).toContain("JSON"); return new AIMessage({ content: '{"a": 42}' }); },
+    } as unknown as BaseChatModel;
+    const r = await invokeStructured(fake, [], { name: "out", toolSchema: z.object({ a: z.number() }), parseSchema: z.object({ a: z.number() }) });
+    expect(r).toEqual({ a: 42 });
+    expect(calls).toEqual(["tool", "plain"]);
   });
 });
