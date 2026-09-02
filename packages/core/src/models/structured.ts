@@ -80,9 +80,10 @@ export async function invokeStructured<T>(model: BaseChatModel, messages: BaseMe
       }
     }
     const candidate = extractCandidate(msg);
-    const parsed = opts.parseSchema.safeParse(candidate);
-    if (parsed.success) return parsed.data;
-    lastIssues = candidate === undefined
+    // A reply with no JSON object at all never reaches the schema: a lenient schema would accept it as empty and hide the failure.
+    const parsed = candidate === undefined ? null : opts.parseSchema.safeParse(candidate);
+    if (parsed?.success) return parsed.data;
+    lastIssues = !parsed
       ? "no JSON object or tool call was found in the reply"
       : parsed.error.issues.map((i) => `${i.path.join(".") || "(root)"}: ${i.message}`).join("; ");
     await opts.onRetry?.(lastIssues);

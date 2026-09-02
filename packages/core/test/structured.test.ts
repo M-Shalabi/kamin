@@ -76,6 +76,20 @@ describe("invokeStructured preferJsonText", () => {
   });
 });
 
+describe("invokeStructured with a prose reply", () => {
+  test("a reply holding no JSON object is a failure even for a lenient schema, and the retry is used", async () => {
+    const replies = [new AIMessage({ content: "Based on the text, here are the companies:\n1. **Alpha Valves**" }), new AIMessage({ content: '{"companies": [{"name": "Alpha Valves"}]}' })];
+    let calls = 0;
+    const fake = { invoke: async () => { calls++; return replies.shift()!; } } as unknown as BaseChatModel;
+    const lenient = z.preprocess((raw) => ({ companies: (raw as { companies?: unknown[] } | undefined)?.companies ?? [] }), z.object({ companies: z.array(z.object({ name: z.string() })) }));
+    const retries: string[] = [];
+    const r = await invokeStructured(fake, [], { name: "out", toolSchema: z.object({ companies: z.array(z.object({ name: z.string() })) }), parseSchema: lenient, preferJsonText: true, onRetry: (i) => { retries.push(i); } });
+    expect(r).toEqual({ companies: [{ name: "Alpha Valves" }] });
+    expect(calls).toBe(2);
+    expect(retries[0]).toContain("no JSON object");
+  });
+});
+
 describe("invokeStructured fallback", () => {
   test("falls back to JSON-in-text when the provider rejects the tool call as malformed XML", async () => {
     const calls: string[] = [];

@@ -35,7 +35,7 @@ export async function runHunt(db: Sql, family: "valve" | "pump" | "fitting"): Pr
     const found = await invokeStructured(getChatModel("detective"), [
       new SystemMessage(`You extract company names from search results. List every Saudi company these pages say makes or sells ${family}s. One entry per company, Arabic name if shown, the URL of the page that mentions it, the city if stated. Do not invent companies. /no_think`),
       new HumanMessage(text),
-    ], { name: "hunt_candidates", toolSchema: Candidates, parseSchema: CandidatesLoose, config: { callbacks: [handler], runName: "hunt_extract" } });
+    ], { name: "hunt_candidates", toolSchema: Candidates, parseSchema: CandidatesLoose, preferJsonText: true, config: { callbacks: [handler], runName: "hunt_extract" } });
     const known = await db<{ id: string; name_ar: string | null; name_en: string | null }[]>`select id, name_ar, name_en from suppliers`;
     let created = 0;
     for (const c of found.companies) {
