@@ -4,3 +4,4 @@ node_modules/
 data/raw/
 packages/core/eval/results/
 *.log
+data/snapshots/

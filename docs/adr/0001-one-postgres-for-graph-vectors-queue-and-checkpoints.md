@@ -10,3 +10,9 @@ KAMIN's product is a capability graph, which suggests a graph database. We chose
 ## Consequences
 
 If adjacency inference ever needs deep traversals, that is a projection built from Postgres, not a migration away from it.
+
+**Note, 2026-09-02, after milestone 2.** The pg-boss queue is deferred. Every model call goes through one
+local Ollama, which serialises inference, so a queue would only reorder a line that is already single-file.
+The swarm is a resumable script (`bun run swarm [n]`) that skips suppliers whose Detective status is
+already `ok` and capabilities already audited; interrupting it and starting again is the whole recovery
+story. pg-boss comes back the day two or more model backends run at once.
