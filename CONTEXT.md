@@ -22,6 +22,10 @@ _Avoid_: Resolver, matcher
 The agent that investigates one candidate supplier and returns capabilities, each with evidence.
 _Avoid_: Scout, investigator
 
+**Specifier** (المُحدِّد):
+The Detective's second pass over one supplier: it reads the supplier's catalogues and datasheets and writes the specifications they actually state, sizes, ratings, materials, connections and standards, onto the matching capabilities, each with catalogue evidence. It is what moves a pooled order from declared at category level to verified at specification.
+_Avoid_: spec crawler, enricher
+
 **Auditor** (المدقّق):
 The agent that tries to refute one capability and assigns its class.
 _Avoid_: Verifier, checker
