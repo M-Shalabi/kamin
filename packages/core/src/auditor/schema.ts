@@ -29,13 +29,16 @@ const str = (v: unknown): string => (v === null || v === undefined ? "" : String
 
 export const AuditVerdictLoose: z.ZodType<AuditVerdictT> = z.preprocess((raw) => {
   const r = record(raw);
+  // A lens the model left out stays undefined so validation fails and the retry asks for it; defaulting it would invent a verdict or a class.
+  const present = (v: unknown) => v !== undefined && v !== null && v !== "";
   const real = lensFromText(r.real), spec = lensFromText(r.at_spec), local = lensFromText(r.local);
-  const c = typeof r.confidence === "number" ? r.confidence : Number(r.confidence);
+  const nested = [r.local, r.at_spec, r.real].map((l) => (l && typeof l === "object" ? (l as Record<string, unknown>).confidence : undefined)).find((x) => x !== undefined);
+  const c = typeof r.confidence === "number" ? r.confidence : Number(r.confidence ?? nested);
   return {
     analysis: str(r.analysis),
-    real: { verdict: lens(real.verdict), reasoning: str(real.reasoning), killer_evidence: real.killer_evidence === null || real.killer_evidence === undefined || real.killer_evidence === "" ? null : str(real.killer_evidence) },
-    at_spec: { verdict: lens(spec.verdict), reasoning: str(spec.reasoning) },
-    local: { class: cls(local.class), reasoning: str(local.reasoning) },
+    real: present(r.real) ? { verdict: lens(real.verdict), reasoning: str(real.reasoning), killer_evidence: real.killer_evidence === null || real.killer_evidence === undefined || real.killer_evidence === "" ? null : str(real.killer_evidence) } : undefined,
+    at_spec: present(r.at_spec) ? { verdict: lens(spec.verdict), reasoning: str(spec.reasoning) } : undefined,
+    local: present(r.local) ? { class: cls(local.class), reasoning: str(local.reasoning) } : undefined,
     confidence: Number.isFinite(c) ? Math.min(1, Math.max(0, c)) : 0.5,
   };
 }, AuditVerdict);

@@ -8,6 +8,14 @@ import type { AuditVerdictT } from "../src/auditor/schema";
 
 const base: AuditVerdictT = { analysis: "", real: { verdict: "supported", reasoning: "r", killer_evidence: null }, at_spec: { verdict: "supported", reasoning: "s" }, local: { class: "trader", reasoning: "l" }, confidence: 0.8 };
 
+describe("AuditVerdictLoose with a missing lens", () => {
+  test("a reply without the local lens fails validation so the retry asks for it, instead of defaulting the class", () => {
+    const r = AuditVerdictLoose.safeParse({ analysis: "should be trader", real: { verdict: "supported", reasoning: "r", killer_evidence: null }, at_spec: { verdict: "supported", reasoning: "s", confidence: 0.95 } });
+    expect(r.success).toBe(false);
+    if (!r.success) expect(r.error.issues.map((i) => i.path.join("."))).toContain("local");
+  });
+});
+
 describe("auditorPrompt with relations", () => {
   test("puts the relations on record in front of the auditor", async () => {
     const { auditorPrompt } = await import("../src/auditor/run");
