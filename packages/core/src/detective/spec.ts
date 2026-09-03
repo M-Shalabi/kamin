@@ -61,6 +61,21 @@ export function selectDocuments(profile: SupplierProfile, results: TavilyResult[
   return docs.sort((a, b) => b.score - a.score).slice(0, max);
 }
 
+/** Links worth following one level down from a product page: same-host PDFs first, then catalogue, datasheet, download or brochure pages, skipping pages already read. */
+export function pickCatalogueLinks(links: string[], own: string[], alreadyRead: Set<string>, max = 4): string[] {
+  const scored: { url: string; score: number }[] = [];
+  for (const url of new Set(links)) {
+    if (alreadyRead.has(url)) continue;
+    let host = ""; try { host = new URL(url).hostname.toLowerCase().replace(/^www\./, ""); } catch { continue; }
+    if (!own.some((o) => host === o || host.endsWith(`.${o}`))) continue;
+    const isPdf = /\.pdf(?:$|[?#])/i.test(url);
+    const catalogueish = /catalog|catalogue|datasheet|data-sheet|download|brochure|technical|specification/i.test(url);
+    if (!isPdf && !catalogueish) continue;
+    scored.push({ url, score: (isPdf ? 10 : 0) + (catalogueish ? 1 : 0) });
+  }
+  return scored.sort((a, b) => b.score - a.score).map((x) => x.url).slice(0, max);
+}
+
 export const SpecFindings = z.object({
   is_same_company: z.boolean().describe("Whether the documents belong to this supplier and not a namesake"),
   products: z.array(z.object({
@@ -158,7 +173,7 @@ export async function mergeSpecFindings(db: Sql, profile: SupplierProfile, f: Sp
   return { products: f.products.length, attributed, evidence, created };
 }
 
-export async function runSpecifier(db: Sql, supplierId: string, opts: { sink?: (line: string) => void; hs6s?: string[] } = {}): Promise<{ runId: string; findings: SpecFindingsT; merged: { products: number; attributed: number; evidence: number; created: number } }> {
+export async function runSpecifier(db: Sql, supplierId: string, opts: { sink?: (line: string) => void; hs6s?: string[]; deep?: boolean } = {}): Promise<{ runId: string; findings: SpecFindingsT; merged: { products: number; attributed: number; evidence: number; created: number } }> {
   const profile = await loadProfile(db, supplierId);
   const hs6s = opts.hs6s ?? (await db<{ hs6: string }[]>`select distinct hs6 from capabilities where supplier_id = ${supplierId} and left(hs6, 4) in ('8481', '8413', '7307')`).map((r) => r.hs6);
   return withRun(db, { role: "specifier", inputRef: supplierId, model: modelRefFor("detective") }, async (runId, handler) => {
@@ -169,11 +184,25 @@ export async function runSpecifier(db: Sql, supplierId: string, opts: { sink?: (
       catch (err) { await addStep(db, runId, { kind: "error", name: "tavily_search", input: { query: q }, output: (err as Error).message, durationMs: Date.now() - t }); }
     }
     const docs = selectDocuments(profile, results, 4);
+    const linksSeen: string[] = [];
     for (const d of docs) {
       const t = Date.now();
       const page = await fetchText(d.url, { maxChars: 9000 });
       if (page?.text) { d.text = page.text; if (page.title && d.kind === "pdf") d.title = page.title; }
-      await addStep(db, runId, { kind: "tool_call", name: "fetch_document", input: { url: d.url, kind: d.kind }, output: { chars: d.text?.length ?? 0, title: d.title }, durationMs: Date.now() - t });
+      if (page?.links && d.own) linksSeen.push(...page.links);
+      await addStep(db, runId, { kind: "tool_call", name: "fetch_document", input: { url: d.url, kind: d.kind }, output: { chars: d.text?.length ?? 0, title: d.title, links: page?.links?.length ?? 0 }, durationMs: Date.now() - t });
+    }
+    if (opts.deep) {
+      // One level down: the catalogue and datasheet links the product pages point at, on the supplier's own site.
+      const own = ownHosts(profile.website, ...docs.filter((d) => d.own).map((d) => d.url));
+      const extra = pickCatalogueLinks(linksSeen, own, new Set(docs.map((d) => d.url)), 4);
+      for (const url of extra) {
+        const t = Date.now();
+        const page = await fetchText(url, { maxChars: 9000 });
+        const isPdf = /\.pdf(?:$|[?#])/i.test(url);
+        if (page?.text) docs.push({ url, title: page.title ?? url, snippet: "", text: page.text, kind: isPdf ? "pdf" : "product", own: true, tier: 3, score: 0 });
+        await addStep(db, runId, { kind: "tool_call", name: "fetch_linked_document", input: { url, kind: isPdf ? "pdf" : "page" }, output: { chars: page?.text?.length ?? 0, title: page?.title ?? null }, durationMs: Date.now() - t });
+      }
     }
     let findings: SpecFindingsT = { is_same_company: false, products: [] };
     if (docs.some((d) => d.text)) {

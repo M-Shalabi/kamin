@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { selectDocuments, specPrompt, specQueries, toSpecAttrs, SpecFindingsLoose } from "../src/detective/spec";
+import { pickCatalogueLinks, selectDocuments, specPrompt, specQueries, toSpecAttrs, SpecFindingsLoose } from "../src/detective/spec";
 import type { SupplierProfile } from "../src/detective/queries";
 
 const profile: SupplierProfile = { id: "tarmeez:1", name_ar: "مصنع صمامات بارق للصناعة", name_en: "Bareq Valves Factory", city_en: "Dammam", region_en: "Eastern Region", website: "https://bariqgroup.com", cr_number: "1", declared: [{ hs6: "848180", title_en: "Ball valves", title_ar: "صمامات كروية", amount: null, unit: null }] };
@@ -95,5 +95,17 @@ describe("specPrompt", () => {
     expect(p.system).toMatch(/own (web)?site[^.]*belong/i);
     expect(p.human).toContain("Website on record: https://bariqgroup.com");
     expect(p.human).toContain("(supplier's own site)");
+  });
+});
+
+describe("pickCatalogueLinks", () => {
+  test("keeps same-host PDFs and catalogue, datasheet, download or brochure pages, PDFs first, at most max, never pages already read", () => {
+    const links = [
+      "https://bariqgroup.com/about", "https://bariqgroup.com/downloads/valve-catalogue.pdf", "https://bariqgroup.com/products/ball-valves",
+      "https://cdn.other.example/brochure.pdf", "https://bariqgroup.com/datasheets/ball-valve-l400", "https://bariqgroup.com/en/downloads",
+      "https://bariqgroup.com/products/ball-valves", "https://bariqgroup.com/careers",
+    ];
+    const picked = pickCatalogueLinks(links, ["bariqgroup.com"], new Set(["https://bariqgroup.com/products/ball-valves"]), 3);
+    expect(picked).toEqual(["https://bariqgroup.com/downloads/valve-catalogue.pdf", "https://bariqgroup.com/datasheets/ball-valve-l400", "https://bariqgroup.com/en/downloads"]);
   });
 });

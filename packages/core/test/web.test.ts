@@ -84,3 +84,17 @@ describe("fetchText with a PDF", () => {
     expect(r?.title).toBe("valve-catalogue.pdf");
   });
 });
+
+describe("extractLinks", () => {
+  test("returns absolute, deduplicated http links from anchors, resolving relative hrefs against the page", async () => {
+    const { extractLinks } = await import("../src/web/fetch");
+    const html = `<a href="/downloads/catalogue.pdf">Catalogue</a> <a href='products/ball-valves'>Ball</a> <A HREF="https://other.example/x">x</A> <a href="/downloads/catalogue.pdf">again</a> <a href="mailto:a@b.c">mail</a> <a href="#top">top</a>`;
+    expect(extractLinks(html, "https://bariqgroup.com/en/products")).toEqual(["https://bariqgroup.com/downloads/catalogue.pdf", "https://bariqgroup.com/en/products/ball-valves", "https://other.example/x"]);
+  });
+  test("fetchText keeps the links of an HTML page", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "kamin-links-"));
+    const fake = (async () => new Response(`<html><head><title>P</title></head><body><a href="/c.pdf">c</a></body></html>`, { status: 200, headers: { "content-type": "text/html" } })) as unknown as typeof fetch;
+    const r = await fetchText("https://bariqgroup.com/p", { fetchImpl: fake, cacheDir: dir });
+    expect(r?.links).toEqual(["https://bariqgroup.com/c.pdf"]);
+  });
+});
