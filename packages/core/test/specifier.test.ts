@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { selectDocuments, specPrompt, specQueries, toSpecAttrs, SpecFindingsLoose } from "../src/detective/spec";
+import { pickCatalogueLinks, selectDocuments, specPrompt, specQueries, toSpecAttrs, SpecFindingsLoose } from "../src/detective/spec";
 import type { SupplierProfile } from "../src/detective/queries";
 
 const profile: SupplierProfile = { id: "tarmeez:1", name_ar: "مصنع صمامات بارق للصناعة", name_en: "Bareq Valves Factory", city_en: "Dammam", region_en: "Eastern Region", website: "https://bariqgroup.com", cr_number: "1", declared: [{ hs6: "848180", title_en: "Ball valves", title_ar: "صمامات كروية", amount: null, unit: null }] };
@@ -32,6 +32,11 @@ describe("selectDocuments", () => {
     ], 3);
     expect(docs.map((d) => d.url)).toEqual(["https://bariqgroup.com/downloads/ball-valve-catalogue.pdf", "https://third-party.example.com/bareq-valves-datasheet.pdf", "https://bariqgroup.com/products/gate-valves"]);
     expect(docs[0]!.kind).toBe("pdf");
+  });
+  test("keeps the supplier's own homepage even when it looks like neither a PDF nor a product page, ranked last", () => {
+    const docs = selectDocuments(profile, [r("https://bariqgroup.com", "Bareq Group"), r("https://bariqgroup.com/products/valves", "Valves")], 4);
+    expect(docs.map((d) => d.url)).toEqual(["https://bariqgroup.com/products/valves", "https://bariqgroup.com"]);
+    expect(docs[1]!.kind).toBe("page");
   });
   test("drops third-party documents that never mention the supplier, even PDFs on a certifier's host", () => {
     const docs = selectDocuments(profile, [
@@ -74,7 +79,7 @@ describe.skipIf(!process.env.DATABASE_URL)("mergeSpecFindings", () => {
     const [run] = await sql<{ id: string }[]>`insert into runs (role, input_ref, model) values ('specifier', 'test:spec', 'm') returning id`;
     const profile = await loadProfile(sql, "test:spec");
     const docs = [{ url: "https://spectest.example/catalogue.pdf", title: "catalogue.pdf", snippet: "", text: "…", kind: "pdf" as const, own: true, tier: 3 as const, score: 1 }];
-    const r = await mergeSpecFindings(sql, profile, { is_same_company: true, products: [
+    const r = await mergeSpecFindings(sql, profile, { is_same_company: true, relations: [], products: [
       { product: "Ball valves", type: "ball", hs6_guess: null, sizes: "1/2 to 12 inch", pressure: "PN16, PN40", materials: "stainless steel 316", connections: "flanged", standards: null, evidence: [{ url: "https://spectest.example/catalogue.pdf", excerpt: "Ball valves 1/2 to 12 inch PN16/PN40 SS316" }] },
       { product: "Office chairs", type: null, hs6_guess: null, sizes: "all", pressure: null, materials: "steel", connections: null, standards: null, evidence: [] },
     ] }, run!.id, docs);
@@ -95,5 +100,21 @@ describe("specPrompt", () => {
     expect(p.system).toMatch(/own (web)?site[^.]*belong/i);
     expect(p.human).toContain("Website on record: https://bariqgroup.com");
     expect(p.human).toContain("(supplier's own site)");
+  });
+});
+
+describe("pickCatalogueLinks", () => {
+  test("keeps same-host PDFs and catalogue, datasheet, download or brochure pages, PDFs first, at most max, never pages already read", () => {
+    const links = [
+      "https://bariqgroup.com/about", "https://bariqgroup.com/downloads/valve-catalogue.pdf", "https://bariqgroup.com/products/ball-valves",
+      "https://cdn.other.example/brochure.pdf", "https://bariqgroup.com/datasheets/ball-valve-l400", "https://bariqgroup.com/en/downloads",
+      "https://bariqgroup.com/products/ball-valves", "https://bariqgroup.com/careers",
+    ];
+    const picked = pickCatalogueLinks(links, ["bariqgroup.com"], new Set(["https://bariqgroup.com/products/ball-valves"]), 3);
+    expect(picked).toEqual(["https://bariqgroup.com/downloads/valve-catalogue.pdf", "https://bariqgroup.com/datasheets/ball-valve-l400", "https://bariqgroup.com/en/downloads"]);
+  });
+  test("follows product links from a homepage when nothing better is linked", () => {
+    const picked = pickCatalogueLinks(["https://bariqgroup.com/about", "https://bariqgroup.com/products/gate-valves", "https://bariqgroup.com/contact"], ["bariqgroup.com"], new Set(), 3);
+    expect(picked).toEqual(["https://bariqgroup.com/products/gate-valves"]);
   });
 });

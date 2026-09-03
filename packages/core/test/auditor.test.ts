@@ -8,6 +8,22 @@ import type { AuditVerdictT } from "../src/auditor/schema";
 
 const base: AuditVerdictT = { analysis: "", real: { verdict: "supported", reasoning: "r", killer_evidence: null }, at_spec: { verdict: "supported", reasoning: "s" }, local: { class: "trader", reasoning: "l" }, confidence: 0.8 };
 
+describe("AuditVerdictLoose with a missing lens", () => {
+  test("a reply without the local lens fails validation so the retry asks for it, instead of defaulting the class", () => {
+    const r = AuditVerdictLoose.safeParse({ analysis: "should be trader", real: { verdict: "supported", reasoning: "r", killer_evidence: null }, at_spec: { verdict: "supported", reasoning: "s", confidence: 0.95 } });
+    expect(r.success).toBe(false);
+    if (!r.success) expect(r.error.issues.map((i) => i.path.join("."))).toContain("local");
+  });
+});
+
+describe("auditorPrompt with relations", () => {
+  test("puts the relations on record in front of the auditor", async () => {
+    const { auditorPrompt } = await import("../src/auditor/run");
+    const p = auditorPrompt({ id: "c", supplier_id: "s", supplier_name_en: "Sana", supplier_name_ar: null, city_en: "Riyadh", supplier_summary: null, cr_number: null, hs6: "841370", product_title: "pumps", product_en: null, class: "manufacturer", spec_attrs: {}, declared_amount: null, declared_unit: null, origin: "tarmeez", evidence: [], relations: ["distributes brand Armstrong", "certified by ISO 9001"] });
+    expect(p.human).toContain("Relations on record: distributes brand Armstrong; certified by ISO 9001");
+  });
+});
+
 describe("lensesToVerdict", () => {
   test("both lenses supported gives supported, class from the local lens, tier factor applied", () => {
     expect(lensesToVerdict(base, [3, 2])).toMatchObject({ verdict: "supported", class: "trader", confidence: 0.68, clearAttrs: false });

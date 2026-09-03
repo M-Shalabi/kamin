@@ -16,3 +16,9 @@ local Ollama, which serialises inference, so a queue would only reorder a line t
 The swarm is a resumable script (`bun run swarm [n]`) that skips suppliers whose Detective status is
 already `ok` and capabilities already audited; interrupting it and starting again is the whole recovery
 story. pg-boss comes back the day two or more model backends run at once.
+
+**Note, 2026-09-03, the explicit graph.** Typed relations between entities (brand distributed, parent
+group, certifier, standard, material, process) live in a `relations` edge table in the same Postgres,
+each edge with its source and excerpt, written by the Specifier from catalogue pages. Traversal is
+recursive SQL; an in-memory projection serves the Advisor if adjacency reasoning ever needs depth. A
+graph database stays out of scope at fifteen thousand supplier nodes.

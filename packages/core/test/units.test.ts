@@ -76,3 +76,11 @@ describe("canonicalize", () => {
     expect(canonicalize(spec).size_dn).toBe(50);
   });
 });
+
+describe("canonConnection on flange types", () => {
+  test("a weld neck flange is butt welded to the pipe", async () => {
+    const { canonConnection } = await import("../src/coordinator/units");
+    expect(canonConnection("Weld neck")).toBe("butt_weld");
+    expect(canonConnection("WN RF")).toBe("butt_weld");
+  });
+});

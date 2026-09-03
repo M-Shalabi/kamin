@@ -17,6 +17,7 @@ import { anchorFinding, evidenceTier, ownHosts } from "./anchor";
 import { loadProfile } from "./persist";
 import { nameTokens, type SupplierProfile } from "./queries";
 import { classifyUrl } from "./select";
+import { mergeRelations, RelationsLoose, PREDICATES, type Relation } from "../graph/relations";
 
 const FAMILY_WORD: Record<string, string> = { "8481": "valves", "8413": "pumps", "7307": "pipe fittings flanges" };
 
@@ -53,12 +54,28 @@ export function selectDocuments(profile: SupplierProfile, results: TavilyResult[
     const named = tokens.some((t) => t.length >= 4 && haystack.includes(t.toLowerCase()));
     if (!isOwn && !named) continue;
     const productish = /product|catalog|catalogue|datasheet|data-sheet|download|brochure|valve|pump|fitting|flange/i.test(`${r.url} ${r.title}`);
+    // Third-party pages must look like documents; the supplier's own pages always count, a homepage links to the catalogues.
     if (!isPdf && !productish && !isOwn) continue;
-    if (!isPdf && !productish) continue;
     const rank = (isPdf ? 100 : productish ? 50 : 0) + (isOwn ? 20 : 0) + r.score;
     docs.push({ url: r.url, title: r.title, snippet: r.content, text: r.raw_content, kind: isPdf ? "pdf" : productish ? "product" : "page", own: isOwn, tier: isOwn ? 3 : tier, score: rank });
   }
   return docs.sort((a, b) => b.score - a.score).slice(0, max);
+}
+
+/** Links worth following one level down from a product page: same-host PDFs first, then catalogue, datasheet, download or brochure pages, skipping pages already read. */
+export function pickCatalogueLinks(links: string[], own: string[], alreadyRead: Set<string>, max = 4): string[] {
+  const scored: { url: string; score: number }[] = [];
+  for (const url of new Set(links)) {
+    if (alreadyRead.has(url)) continue;
+    let host = ""; try { host = new URL(url).hostname.toLowerCase().replace(/^www\./, ""); } catch { continue; }
+    if (!own.some((o) => host === o || host.endsWith(`.${o}`))) continue;
+    const isPdf = /\.pdf(?:$|[?#])/i.test(url);
+    const catalogueish = /catalog|catalogue|datasheet|data-sheet|download|brochure|technical|specification/i.test(url);
+    const productish = /product|valve|pump|fitting|flange|range|solution/i.test(url);
+    if (!isPdf && !catalogueish && !productish) continue;
+    scored.push({ url, score: (isPdf ? 10 : 0) + (catalogueish ? 2 : 0) + (productish ? 1 : 0) });
+  }
+  return scored.sort((a, b) => b.score - a.score).map((x) => x.url).slice(0, max);
 }
 
 export const SpecFindings = z.object({
@@ -74,6 +91,11 @@ export const SpecFindings = z.object({
     standards: z.string().nullable().describe("Standards named for this line: API, ASME, ISO, BS, DIN, SASO…"),
     evidence: z.array(z.object({ url: z.string(), excerpt: z.string().describe("Up to 300 characters quoted from the document stating the specification") })),
   })),
+  relations: z.array(z.object({
+    predicate: z.enum(PREDICATES).describe("distributes_brand (a brand it is dealer or distributor of), part_of_group (its parent group), certified_by (a certifier or scheme named), meets_standard (a standard its lines are built to), makes_with_material, uses_process"),
+    object: z.string().describe("The brand, group, certifier, standard, material or process, as written"),
+    url: z.string().nullable(), excerpt: z.string().nullable().describe("Up to 200 characters quoted"),
+  })).describe("Relations the documents state about the company itself"),
 });
 export type SpecFindingsT = z.infer<typeof SpecFindings>;
 
@@ -87,6 +109,7 @@ export const SpecFindingsLoose: z.ZodType<SpecFindingsT> = z.preprocess((raw) =>
   const r = rec(raw);
   return {
     is_same_company: bool(r.is_same_company ?? true),
+    relations: RelationsLoose.parse(r.relations ?? []),
     products: arr(r.products).map((p) => {
       const x = rec(p);
       const code = (str(x.hs6_guess) ?? "").replace(/[^\d]/g, "").slice(0, 6);
@@ -120,6 +143,7 @@ export function specPrompt(profile: SupplierProfile, docs: DocCandidate[]): { sy
     system: [
       "You read manufacturers' catalogues and datasheets for a Saudi industrial buyer. Extract every product line of valves, pumps or pipe fittings with the specifications the documents actually state: type, size range, pressure ratings, materials, end connections, standards.",
       "Quote sizes, pressures and materials verbatim as ranges or lists; never infer a rating the text does not state. One product line per distinct type. Give evidence as short verbatim excerpts with the document URL.",
+      "Also list what the documents state about the company itself as relations: brands it distributes or represents, the group it belongs to, certifiers or schemes named (ISO, SASO, API monogram, UL, FM), standards its lines are built to, materials it works in, processes it runs (casting, forging, machining, assembly). Only what is written; empty when nothing is.",
       "Documents marked as the supplier's own site belong to the supplier even when the brand name on them differs from the registered company name (registries carry legal names, websites carry brands): is_same_company is true for them. Only a third-party document about a different company makes is_same_company false; if every document is the supplier's own site, is_same_company is true.",
       "/no_think",
     ].join("\n"),
@@ -158,7 +182,7 @@ export async function mergeSpecFindings(db: Sql, profile: SupplierProfile, f: Sp
   return { products: f.products.length, attributed, evidence, created };
 }
 
-export async function runSpecifier(db: Sql, supplierId: string, opts: { sink?: (line: string) => void; hs6s?: string[] } = {}): Promise<{ runId: string; findings: SpecFindingsT; merged: { products: number; attributed: number; evidence: number; created: number } }> {
+export async function runSpecifier(db: Sql, supplierId: string, opts: { sink?: (line: string) => void; hs6s?: string[]; deep?: boolean } = {}): Promise<{ runId: string; findings: SpecFindingsT; merged: { products: number; attributed: number; evidence: number; created: number } }> {
   const profile = await loadProfile(db, supplierId);
   const hs6s = opts.hs6s ?? (await db<{ hs6: string }[]>`select distinct hs6 from capabilities where supplier_id = ${supplierId} and left(hs6, 4) in ('8481', '8413', '7307')`).map((r) => r.hs6);
   return withRun(db, { role: "specifier", inputRef: supplierId, model: modelRefFor("detective") }, async (runId, handler) => {
@@ -169,13 +193,27 @@ export async function runSpecifier(db: Sql, supplierId: string, opts: { sink?: (
       catch (err) { await addStep(db, runId, { kind: "error", name: "tavily_search", input: { query: q }, output: (err as Error).message, durationMs: Date.now() - t }); }
     }
     const docs = selectDocuments(profile, results, 4);
+    const linksSeen: string[] = [];
     for (const d of docs) {
       const t = Date.now();
       const page = await fetchText(d.url, { maxChars: 9000 });
       if (page?.text) { d.text = page.text; if (page.title && d.kind === "pdf") d.title = page.title; }
-      await addStep(db, runId, { kind: "tool_call", name: "fetch_document", input: { url: d.url, kind: d.kind }, output: { chars: d.text?.length ?? 0, title: d.title }, durationMs: Date.now() - t });
+      if (page?.links && d.own) linksSeen.push(...page.links);
+      await addStep(db, runId, { kind: "tool_call", name: "fetch_document", input: { url: d.url, kind: d.kind }, output: { chars: d.text?.length ?? 0, title: d.title, links: page?.links?.length ?? 0 }, durationMs: Date.now() - t });
     }
-    let findings: SpecFindingsT = { is_same_company: false, products: [] };
+    if (opts.deep) {
+      // One level down: the catalogue and datasheet links the product pages point at, on the supplier's own site.
+      const own = ownHosts(profile.website, ...docs.filter((d) => d.own).map((d) => d.url));
+      const extra = pickCatalogueLinks(linksSeen, own, new Set(docs.map((d) => d.url)), 4);
+      for (const url of extra) {
+        const t = Date.now();
+        const page = await fetchText(url, { maxChars: 9000 });
+        const isPdf = /\.pdf(?:$|[?#])/i.test(url);
+        if (page?.text) docs.push({ url, title: page.title ?? url, snippet: "", text: page.text, kind: isPdf ? "pdf" : "product", own: true, tier: 3, score: 0 });
+        await addStep(db, runId, { kind: "tool_call", name: "fetch_linked_document", input: { url, kind: isPdf ? "pdf" : "page" }, output: { chars: page?.text?.length ?? 0, title: page?.title ?? null }, durationMs: Date.now() - t });
+      }
+    }
+    let findings: SpecFindingsT = { is_same_company: false, products: [], relations: [] };
     if (docs.some((d) => d.text)) {
       const p = specPrompt(profile, docs.filter((d) => d.text));
       findings = await invokeStructured(getChatModel("detective"), [new SystemMessage(p.system), new HumanMessage(p.human)], {
@@ -189,7 +227,8 @@ export async function runSpecifier(db: Sql, supplierId: string, opts: { sink?: (
     if (!findings.is_same_company && docs.some((d) => d.own && d.text) && findings.products.length) findings = { ...findings, is_same_company: true };
     let merged = { products: findings.products.length, attributed: 0, evidence: 0, created: 0 };
     if (findings.is_same_company && findings.products.length) merged = await mergeSpecFindings(db, profile, findings, runId, docs);
-    await addStep(db, runId, { kind: "note", name: "specified", output: { ...merged, is_same_company: findings.is_same_company, documents: docs.length } });
+    const relations = findings.is_same_company ? await mergeRelations(db, supplierId, findings.relations as Relation[], runId) : 0;
+    await addStep(db, runId, { kind: "note", name: "specified", output: { ...merged, relations, is_same_company: findings.is_same_company, documents: docs.length } });
     return { runId, findings, merged };
   }, { sink: opts.sink });
 }

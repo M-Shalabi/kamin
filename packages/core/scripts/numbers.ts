@@ -56,6 +56,7 @@ await add("Capabilities carrying attributes written by the Specifier from catalo
 await add("Annual value in manufacturing gaps", "select coalesce(sum(annual_value_usd), 0) as v from pooled_orders where gap_kind = 'manufacturing_gap' and title not like 'test %'", usd);
 await add("Annual value in supply gaps", "select coalesce(sum(annual_value_usd), 0) as v from pooled_orders where gap_kind = 'supply_gap' and title not like 'test %'", usd);
 await add("Gaps on the announced Mandatory List tranche", "select count(*) as v from pooled_orders where gap_kind <> 'covered' and mandatory and title not like 'test %'");
+await add("Typed relations in the graph (brands distributed, groups, certifiers, standards, materials, processes)", "select count(*) as v from relations r join suppliers s on s.id = r.subject_id where s.id not like 'test:%'");
 await add("Investment cases written by the Advisor", "select count(*) as v from gap_cases");
 await add("Matches written", "select count(*) as v from matches m join pooled_orders o on o.id = m.pooled_order_id where o.title not like 'test %'");
 await add("Discovery lift: suppliers absent from Tarmeez with a supported capability in the slice", `select count(distinct c.supplier_id) as v from capabilities c join suppliers s on s.id = c.supplier_id where not s.in_tarmeez and s.id not like 'test:%' and c.verdict = 'supported' and ${SECTOR}`);

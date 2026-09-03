@@ -141,3 +141,8 @@ export async function unenrichedSectorSuppliers(limit = 20) {
     where s.in_tarmeez and s.detective_status = 'pending' and (c.hs6 like '8481%' or c.hs6 like '8413%' or c.hs6 like '7307%')
     group by s.id order by n desc, s.id limit ${limit}`;
 }
+
+export async function supplierRelations(id: string) {
+  return sql<{ predicate: string; object: string; object_id: string | null; object_name: string | null; source_url: string | null; excerpt: string | null }[]>`
+    select r.predicate, r.object, r.object_id, s.name_en as object_name, r.source_url, r.excerpt from relations r left join suppliers s on s.id = r.object_id where r.subject_id = ${id} order by r.predicate, r.object`;
+}

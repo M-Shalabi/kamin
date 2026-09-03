@@ -63,10 +63,11 @@ capability of any class. Definitions in `CONTEXT.md`, mechanics in `BUILD_PLAN.m
   requires a plant, office, warehouse or stock inside the Kingdom. Discovery lift figures before this
   note counted them.
 - **Coverage, measured 2026-09-02:** 96 simulated lines pooled into 72 orders worth USD 357.9M a year.
-  **At the stated specification: 0.0%.** Product type verified (the supplier names the order's product
-  type, nothing in conflict): 70.5% of spend, 54 of 72 orders, after the Specifier pass over forty
-  suppliers' catalogues. At category level (a verified plant declares the subheading): 98.9% of spend,
-  70 of 72 orders. Two supply gaps (carbon-steel butt-weld tees, USD 4.1M a year) with
+  **At the stated specification: 2.1%, five stainless flange orders verified against a catalogue**
+  (2026-09-03, after the Specifier's deep pass and two matching fixes). Product type verified (the
+  supplier names the order's product type, nothing in conflict): 70.5% of spend, 49 of 72 orders. At
+  category level (a verified plant declares the subheading): 98.9% of spend, 70 of 72 orders. The graph
+  also holds 70 typed relations across 17 suppliers (brands distributed, groups, certifiers, standards). Two supply gaps (carbon-steel butt-weld tees, USD 4.1M a year) with
   Advisor cases, no manufacturing gaps. Say both figures on stage; the distance between them is the
   blind spot. This framing was decided without Mohammed and needs his confirmation.
 - **⚠️ 2026-09-02, the Tarmeez re-count breaks the headline.** The catalogue API reports **14,873

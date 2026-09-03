@@ -73,6 +73,10 @@ _Avoid_: Tier (reserved for evidence), type, category
 One cited source behind one capability, with its tier. A capability without evidence is not a capability.
 _Avoid_: Proof, citation (as the noun), source record
 
+**Relation** (العلاقة):
+A typed edge between a supplier and a brand, group, certifier, standard, material or process, stated by a document and carrying its evidence: distributes brand, part of group, certified by, meets standard, same entity as, works in material, runs process. Relations are what make the map a knowledge graph; the Auditor's local lens and the Advisor's adjacency read them.
+_Avoid_: link, tag, attribute (reserved for a capability's stated specification)
+
 **Evidence tier**:
 The standing of one piece of evidence. Tier 1, third-party verified: an Etimad award, Made in Saudi certification, ISO or SASO. Tier 2, official registry declaration: Tarmeez, commercial register activity, MLCP. Tier 3, self-published: the supplier's own site and catalogues. Tier 4, inferred: adjacency and equipment signals, never standing alone. Where a page lives decides the tier before what it claims: a certificate shown on the supplier's own site is Tier 3, the certifier's or the registry's page for it is Tier 1 or 2.
 _Avoid_: Primary/secondary/marketing, strongest/weakest, source type
