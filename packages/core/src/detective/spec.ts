@@ -54,8 +54,8 @@ export function selectDocuments(profile: SupplierProfile, results: TavilyResult[
     const named = tokens.some((t) => t.length >= 4 && haystack.includes(t.toLowerCase()));
     if (!isOwn && !named) continue;
     const productish = /product|catalog|catalogue|datasheet|data-sheet|download|brochure|valve|pump|fitting|flange/i.test(`${r.url} ${r.title}`);
+    // Third-party pages must look like documents; the supplier's own pages always count, a homepage links to the catalogues.
     if (!isPdf && !productish && !isOwn) continue;
-    if (!isPdf && !productish) continue;
     const rank = (isPdf ? 100 : productish ? 50 : 0) + (isOwn ? 20 : 0) + r.score;
     docs.push({ url: r.url, title: r.title, snippet: r.content, text: r.raw_content, kind: isPdf ? "pdf" : productish ? "product" : "page", own: isOwn, tier: isOwn ? 3 : tier, score: rank });
   }
@@ -71,8 +71,9 @@ export function pickCatalogueLinks(links: string[], own: string[], alreadyRead: 
     if (!own.some((o) => host === o || host.endsWith(`.${o}`))) continue;
     const isPdf = /\.pdf(?:$|[?#])/i.test(url);
     const catalogueish = /catalog|catalogue|datasheet|data-sheet|download|brochure|technical|specification/i.test(url);
-    if (!isPdf && !catalogueish) continue;
-    scored.push({ url, score: (isPdf ? 10 : 0) + (catalogueish ? 1 : 0) });
+    const productish = /product|valve|pump|fitting|flange|range|solution/i.test(url);
+    if (!isPdf && !catalogueish && !productish) continue;
+    scored.push({ url, score: (isPdf ? 10 : 0) + (catalogueish ? 2 : 0) + (productish ? 1 : 0) });
   }
   return scored.sort((a, b) => b.score - a.score).map((x) => x.url).slice(0, max);
 }

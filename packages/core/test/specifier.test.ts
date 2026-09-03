@@ -33,6 +33,11 @@ describe("selectDocuments", () => {
     expect(docs.map((d) => d.url)).toEqual(["https://bariqgroup.com/downloads/ball-valve-catalogue.pdf", "https://third-party.example.com/bareq-valves-datasheet.pdf", "https://bariqgroup.com/products/gate-valves"]);
     expect(docs[0]!.kind).toBe("pdf");
   });
+  test("keeps the supplier's own homepage even when it looks like neither a PDF nor a product page, ranked last", () => {
+    const docs = selectDocuments(profile, [r("https://bariqgroup.com", "Bareq Group"), r("https://bariqgroup.com/products/valves", "Valves")], 4);
+    expect(docs.map((d) => d.url)).toEqual(["https://bariqgroup.com/products/valves", "https://bariqgroup.com"]);
+    expect(docs[1]!.kind).toBe("page");
+  });
   test("drops third-party documents that never mention the supplier, even PDFs on a certifier's host", () => {
     const docs = selectDocuments(profile, [
       r("https://saso.gov.sa/en/Documents/TR-BM-Part5-Pipes.pdf", "Technical regulation: pipes", "pipes used in water networks"),
@@ -107,5 +112,9 @@ describe("pickCatalogueLinks", () => {
     ];
     const picked = pickCatalogueLinks(links, ["bariqgroup.com"], new Set(["https://bariqgroup.com/products/ball-valves"]), 3);
     expect(picked).toEqual(["https://bariqgroup.com/downloads/valve-catalogue.pdf", "https://bariqgroup.com/datasheets/ball-valve-l400", "https://bariqgroup.com/en/downloads"]);
+  });
+  test("follows product links from a homepage when nothing better is linked", () => {
+    const picked = pickCatalogueLinks(["https://bariqgroup.com/about", "https://bariqgroup.com/products/gate-valves", "https://bariqgroup.com/contact"], ["bariqgroup.com"], new Set(), 3);
+    expect(picked).toEqual(["https://bariqgroup.com/products/gate-valves"]);
   });
 });
