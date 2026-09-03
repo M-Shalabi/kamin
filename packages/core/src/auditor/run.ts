@@ -10,6 +10,8 @@ import { lensesToVerdict } from "./verdict";
 export type CapabilityForAudit = {
   id: string; supplier_id: string; supplier_name_en: string | null; supplier_name_ar: string | null; city_en: string | null; supplier_summary: string | null; cr_number: string | null;
   hs6: string; product_title: string | null; product_en: string | null; class: string; spec_attrs: Record<string, string>; declared_amount: number | null; declared_unit: string | null; origin: string;
+  /** Typed relations on record for the supplier, rendered as "predicate object" phrases. */
+  relations?: string[];
   evidence: { tier: number; source_type: string; source_url: string; excerpt: string | null; title: string | null }[];
 };
 
@@ -21,7 +23,8 @@ export async function loadCapability(db: Sql, capabilityId: string): Promise<Cap
     where c.id = ${capabilityId}`;
   if (!c) throw new Error(`capability ${capabilityId} not found`);
   const evidence = await db<CapabilityForAudit["evidence"]>`select tier, source_type, source_url, excerpt, title from evidence where capability_id = ${capabilityId} order by tier, fetched_at`;
-  return { ...c, evidence };
+  const rels = await db<{ predicate: string; object: string }[]>`select predicate, object from relations where subject_id = ${c.supplier_id} order by predicate, object limit 20`;
+  return { ...c, evidence, relations: rels.map((r) => `${r.predicate.replace(/_/g, " ")} ${r.object}`) };
 }
 
 export function auditorPrompt(cap: CapabilityForAudit): { system: string; human: string } {
@@ -30,11 +33,11 @@ export function auditorPrompt(cap: CapabilityForAudit): { system: string; human:
     system: [
       "You are an adversarial auditor for a Saudi industrial buyer. Your job is to try to REFUTE the capability claim below: that this company can put this product, at the stated specification, in a buyer's hands.",
       "Three lenses, answered separately. real: does this company exist and is it active, and does the evidence show this product at all; refute when the evidence contradicts it, say unknown when the evidence is silent. at_spec: this lens is only about the product's physical specification (type, size, material, rating, standard); supported when the evidence shows those attributes, refuted when the evidence shows a different product or only a broad category while specific attributes were claimed, unknown when no attributes are stated anywhere. local: classify how the company supplies this product, manufacturer (makes it in the Kingdom), assembler (assembles imported parts), authorised_distributor (named dealer of a brand), trader (imports and resells).",
-      "Whether the company makes or imports the product is the local lens and only the local lens. Being an importer, stockist, distributor or trader is never a reason to refute real or at_spec. A foreign manufacturer that exports into the Kingdom, or sells through a Saudi landing page, is a trader unless the evidence shows a plant inside Saudi Arabia. A tier 2 registry declaration alone means real is supported and at_spec is unknown unless attributes are stated.",
+      "Whether the company makes or imports the product is the local lens and only the local lens. Being an importer, stockist, distributor or trader is never a reason to refute real or at_spec. A foreign manufacturer that exports into the Kingdom, or sells through a Saudi landing page, is a trader unless the evidence shows a plant inside Saudi Arabia. A relation on record that the company distributes a brand makes it an authorised_distributor or trader for that brand's products unless a plant in the Kingdom is shown. A tier 2 registry declaration alone means real is supported and at_spec is unknown unless attributes are stated.",
       "Think in the analysis field first, then fill every lens with a final decision and one sentence of reasoning. Never deliberate inside a lens: each lens object holds exactly its verdict or class and one sentence. Give a killer_evidence fact when you refute real, and an overall confidence between 0 and 1 in your own findings.",
       "/no_think",
     ].join("\n"),
-    human: `Company: ${cap.supplier_name_en ?? ""} | ${cap.supplier_name_ar ?? ""} (${cap.city_en ?? "city unknown"}, CR ${cap.cr_number ?? "unknown"})\nWhat we know about the company: ${cap.supplier_summary ?? "nothing beyond the registry"}\n\nClaim: can supply "${cap.product_title ?? cap.product_en ?? cap.hs6}" (HS ${cap.hs6})${cap.declared_amount ? `, declared capacity ${cap.declared_amount} ${cap.declared_unit ?? ""} per year` : ""}\nClass currently on record (you decide the class in the local lens): ${cap.class}\nStated attributes: ${Object.entries(cap.spec_attrs ?? {}).map(([k, v]) => `${k}=${v}`).join(", ") || "none"}\nOrigin of the claim: ${cap.origin}\n\nEvidence:\n${ev}`,
+    human: `Company: ${cap.supplier_name_en ?? ""} | ${cap.supplier_name_ar ?? ""} (${cap.city_en ?? "city unknown"}, CR ${cap.cr_number ?? "unknown"})\nWhat we know about the company: ${cap.supplier_summary ?? "nothing beyond the registry"}\n\nClaim: can supply "${cap.product_title ?? cap.product_en ?? cap.hs6}" (HS ${cap.hs6})${cap.declared_amount ? `, declared capacity ${cap.declared_amount} ${cap.declared_unit ?? ""} per year` : ""}\nRelations on record: ${cap.relations?.length ? cap.relations.join("; ") : "none"}\nClass currently on record (you decide the class in the local lens): ${cap.class}\nStated attributes: ${Object.entries(cap.spec_attrs ?? {}).map(([k, v]) => `${k}=${v}`).join(", ") || "none"}\nOrigin of the claim: ${cap.origin}\n\nEvidence:\n${ev}`,
   };
 }
 
