@@ -17,12 +17,14 @@ export async function matchOrder(db: Sql, orderId: string, opts: { onlySupplierI
   const [order] = await db<{ id: string; hs6: string; spec_envelope: Envelope; qty_annual: number | null }[]>`select id, hs6, spec_envelope, qty_annual::float as qty_annual from pooled_orders where id = ${orderId}`;
   if (!order) throw new Error(`pooled order ${orderId} not found`);
   const cands = await candidatesFor(db, order.hs6, opts.onlySupplierIds);
-  const scored = cands.map((c) => ({ cap: c, ...scoreCapability({ hs6: order.hs6, envelope: order.spec_envelope }, c) })).filter((x) => x.score > 0).sort((a, b) => b.score - a.score).slice(0, 12);
+  const scoredAll = cands.map((c) => ({ cap: c, ...scoreCapability({ hs6: order.hs6, envelope: order.spec_envelope }, c) })).filter((x) => x.score > 0).sort((a, b) => b.score - a.score);
+  // The stored match list is the top twenty; the gap kind and spec status are judged over every candidate.
+  const scored = scoredAll.slice(0, 20);
   const shares = splitShares(order, scored.map((x) => x.cap));
   // Only a supported capability at the order's own subheading with no stated attribute in conflict closes a gap.
   // Sibling subheadings and conflicting attributes stay in the list as leads, at a discounted score.
   const closes = (x: { cap: CapabilityCandidate }) => isSupported(x.cap) && x.cap.hs6 === order.hs6 && specCompatible(order.spec_envelope, x.cap.spec_attrs ?? {}).ok;
-  const supported = scored.filter(closes);
+  const supported = scoredAll.filter(closes);
   const makers = supported.filter((x) => x.cap.class === "manufacturer" || x.cap.class === "assembler");
   const gap_kind = makers.length ? "covered" : supported.length ? "manufacturing_gap" : "supply_gap";
   const o = { hs6: order.hs6, envelope: order.spec_envelope };

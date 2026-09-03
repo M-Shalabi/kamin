@@ -16,8 +16,10 @@ export function specCompatible(env: Envelope, attrs: Record<string, string>): { 
   const hits: string[] = [], conflicts: string[] = [];
   const entries = Object.entries(attrs).map(([k, v]) => [k, glyphs(String(v))] as const);
   const text = entries.map(([k, v]) => `${k} ${v}`).join(" ");
+  // A stated list ("stainless 316 / carbon steel WCB", "slip-on, weld neck, threaded") is a set: any compatible item is a hit, none is a conflict.
+  const items = (v: string) => v.split(/[,;\/|]|\band\b|&/i).map((x) => x.trim()).filter(Boolean);
   if (env.material) {
-    const stated = entries.filter(([k]) => /material|body|grade/i.test(k)).map(([, v]) => canonMaterial(v)).filter(Boolean);
+    const stated = entries.filter(([k]) => /material|body|grade/i.test(k)).flatMap(([, v]) => items(v).map((x) => canonMaterial(x))).filter(Boolean);
     if (stated.length) (stated.includes(env.material as never) ? hits : conflicts).push("material");
   }
   if (env.size_inch !== null || env.size_dn !== null) {
@@ -56,7 +58,7 @@ export function specCompatible(env: Envelope, attrs: Record<string, string>): { 
     }
   }
   if (env.connection) {
-    const stated = entries.filter(([k]) => /connection|ends?\b/i.test(k)).map(([, v]) => canonConnection(v)).filter(Boolean);
+    const stated = entries.filter(([k]) => /connection|ends?\b/i.test(k)).flatMap(([, v]) => items(v).map((x) => canonConnection(x))).filter(Boolean);
     if (stated.length) (stated.includes(env.connection as never) ? hits : conflicts).push("connection");
   }
   return { ok: conflicts.length === 0, hits, conflicts };

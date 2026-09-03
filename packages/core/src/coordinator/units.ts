@@ -68,7 +68,7 @@ export function canonMaterial(token: string): Material | null {
 const CONNECTION_TOKENS: [RegExp, Connection][] = [
   [/flang|flgd|بشفة|فلنج|شفة/i, "flanged"],
   [/thread|npt|bsp|ملولب|مسنن/i, "threaded"],
-  [/butt\s*weld|\bbw\b|لحام تناكبي|لحام تناكب/i, "butt_weld"],
+  [/butt\s*weld|\bbw\b|weld\s*neck|\bwn\b|لحام تناكبي|لحام تناكب/i, "butt_weld"],
   [/socket\s*weld|\bsw\b|لحام مقبس/i, "socket_weld"],
   [/wafer|ويفر/i, "wafer"],
   [/\blug\b/i, "lug"],

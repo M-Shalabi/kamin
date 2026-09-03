@@ -26,6 +26,10 @@ describe("scoring", () => {
     expect(specCompatible(env, { size: "1/2″ (15 NB) to 48″ (1200NB)" }).hits).toEqual(["size"]);
     expect(specCompatible({ ...env, pressure_bar: null, pressure_class: "150" }, { pressure: "Class / Pressure : 150, 300, 600, 900, 1500, 2500" }).hits).toEqual(["pressure"]);
     expect(specCompatible({ ...env, pressure_bar: null, pressure_class: "300" }, { rating: "Class 150" }).conflicts).toEqual(["pressure"]);
+    const flange = { ...env, object_class: "flange", connection: "butt_weld" };
+    expect(specCompatible(flange, { connection: "Slip-on, Blind, Weld neck, Threaded, Socket weld, Lap joint" }).hits).toEqual(["connection"]);
+    expect(specCompatible(flange, { connection: "Threaded / Socket weld" }).conflicts).toEqual(["connection"]);
+    expect(specCompatible(env, { material: "stainless steel 316 / carbon steel WCB / ductile iron" }).hits).toEqual(["material"]);
   });
   test("class, verdict and tier weights order candidates as the glossary says", () => {
     const maker = scoreCapability({ hs6: "848180", envelope: env }, cap({})).score;
