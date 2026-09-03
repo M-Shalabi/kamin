@@ -30,7 +30,7 @@ The capability graph, its ingests, the four agent roles (Coordinator, Detective,
 | `bun run auditor <capabilityId>` | Audits one capability through the three lenses (real, at spec, local) and writes the verdict and class |
 | `bun run swarm [n]` | Detective then Auditor over the sector suppliers, `n` at a time, skipping what is already done; resumable |
 | `bun run hunt` | Long-tail discovery: searches for sector suppliers absent from every registry and adds them as `discovered:*` |
-| `bun run spec:pass [limit] [--hs6 848180]` | The Specifier: reads catalogues and datasheets (PDF included) of the supported suppliers that could close the most demand and writes stated sizes, ratings, materials and connections onto their capabilities |
+| `bun run spec:pass [limit] [--hs6 848180]` | The Specifier: reads catalogues and datasheets (PDF included) of the supported suppliers that could close the most demand and writes stated sizes, ratings, materials and connections onto their capabilities, and the relations the documents state (brands distributed, group, certifiers, standards) into the `relations` edge table; `--deep` follows catalogue links one level down, `--redo` re-reads suppliers |
 | `bun run ingest:mlcp` | Loads the Madinah chamber's factory directory and links it to Tarmeez suppliers by CR then by name |
 | `bun run capture:mis` / `bun run load:mis` | Captures the public Made in Saudi member pages, then links them (CR first, name similarity second) and writes Tier 1 evidence |
 | `bun run cost` | Seconds and tokens per role from the trajectory store, and what the same runs would cost on paid models |
@@ -82,6 +82,7 @@ Raw responses from Tarmeez, MLCP, Made in Saudi, Comtrade and Tavily are cached 
 - `src/detective`, `src/auditor`, `src/advisor` the three agent roles: prompts, schemas, runs, persistence
 - `src/match` scoring, persistence, coverage and gap kinds
 - `src/lcgpa` the input-gated G1 score and the local-content signals shown meanwhile
+- `src/graph` typed relations between entities, the explicit knowledge graph over the map
 - `src/coldmiss.ts` the live cold miss: Detective then Auditor on one supplier, streaming lines
 - `eval` the twenty demand lines with expected answers and the spike runner
 - `scripts` one file per command in the tables above

@@ -74,7 +74,7 @@ describe.skipIf(!process.env.DATABASE_URL)("mergeSpecFindings", () => {
     const [run] = await sql<{ id: string }[]>`insert into runs (role, input_ref, model) values ('specifier', 'test:spec', 'm') returning id`;
     const profile = await loadProfile(sql, "test:spec");
     const docs = [{ url: "https://spectest.example/catalogue.pdf", title: "catalogue.pdf", snippet: "", text: "…", kind: "pdf" as const, own: true, tier: 3 as const, score: 1 }];
-    const r = await mergeSpecFindings(sql, profile, { is_same_company: true, products: [
+    const r = await mergeSpecFindings(sql, profile, { is_same_company: true, relations: [], products: [
       { product: "Ball valves", type: "ball", hs6_guess: null, sizes: "1/2 to 12 inch", pressure: "PN16, PN40", materials: "stainless steel 316", connections: "flanged", standards: null, evidence: [{ url: "https://spectest.example/catalogue.pdf", excerpt: "Ball valves 1/2 to 12 inch PN16/PN40 SS316" }] },
       { product: "Office chairs", type: null, hs6_guess: null, sizes: "all", pressure: null, materials: "steel", connections: null, standards: null, evidence: [] },
     ] }, run!.id, docs);

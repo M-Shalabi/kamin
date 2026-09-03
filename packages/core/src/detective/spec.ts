@@ -17,6 +17,7 @@ import { anchorFinding, evidenceTier, ownHosts } from "./anchor";
 import { loadProfile } from "./persist";
 import { nameTokens, type SupplierProfile } from "./queries";
 import { classifyUrl } from "./select";
+import { mergeRelations, RelationsLoose, PREDICATES, type Relation } from "../graph/relations";
 
 const FAMILY_WORD: Record<string, string> = { "8481": "valves", "8413": "pumps", "7307": "pipe fittings flanges" };
 
@@ -89,6 +90,11 @@ export const SpecFindings = z.object({
     standards: z.string().nullable().describe("Standards named for this line: API, ASME, ISO, BS, DIN, SASO…"),
     evidence: z.array(z.object({ url: z.string(), excerpt: z.string().describe("Up to 300 characters quoted from the document stating the specification") })),
   })),
+  relations: z.array(z.object({
+    predicate: z.enum(PREDICATES).describe("distributes_brand (a brand it is dealer or distributor of), part_of_group (its parent group), certified_by (a certifier or scheme named), meets_standard (a standard its lines are built to), makes_with_material, uses_process"),
+    object: z.string().describe("The brand, group, certifier, standard, material or process, as written"),
+    url: z.string().nullable(), excerpt: z.string().nullable().describe("Up to 200 characters quoted"),
+  })).describe("Relations the documents state about the company itself"),
 });
 export type SpecFindingsT = z.infer<typeof SpecFindings>;
 
@@ -102,6 +108,7 @@ export const SpecFindingsLoose: z.ZodType<SpecFindingsT> = z.preprocess((raw) =>
   const r = rec(raw);
   return {
     is_same_company: bool(r.is_same_company ?? true),
+    relations: RelationsLoose.parse(r.relations ?? []),
     products: arr(r.products).map((p) => {
       const x = rec(p);
       const code = (str(x.hs6_guess) ?? "").replace(/[^\d]/g, "").slice(0, 6);
@@ -135,6 +142,7 @@ export function specPrompt(profile: SupplierProfile, docs: DocCandidate[]): { sy
     system: [
       "You read manufacturers' catalogues and datasheets for a Saudi industrial buyer. Extract every product line of valves, pumps or pipe fittings with the specifications the documents actually state: type, size range, pressure ratings, materials, end connections, standards.",
       "Quote sizes, pressures and materials verbatim as ranges or lists; never infer a rating the text does not state. One product line per distinct type. Give evidence as short verbatim excerpts with the document URL.",
+      "Also list what the documents state about the company itself as relations: brands it distributes or represents, the group it belongs to, certifiers or schemes named (ISO, SASO, API monogram, UL, FM), standards its lines are built to, materials it works in, processes it runs (casting, forging, machining, assembly). Only what is written; empty when nothing is.",
       "Documents marked as the supplier's own site belong to the supplier even when the brand name on them differs from the registered company name (registries carry legal names, websites carry brands): is_same_company is true for them. Only a third-party document about a different company makes is_same_company false; if every document is the supplier's own site, is_same_company is true.",
       "/no_think",
     ].join("\n"),
@@ -204,7 +212,7 @@ export async function runSpecifier(db: Sql, supplierId: string, opts: { sink?: (
         await addStep(db, runId, { kind: "tool_call", name: "fetch_linked_document", input: { url, kind: isPdf ? "pdf" : "page" }, output: { chars: page?.text?.length ?? 0, title: page?.title ?? null }, durationMs: Date.now() - t });
       }
     }
-    let findings: SpecFindingsT = { is_same_company: false, products: [] };
+    let findings: SpecFindingsT = { is_same_company: false, products: [], relations: [] };
     if (docs.some((d) => d.text)) {
       const p = specPrompt(profile, docs.filter((d) => d.text));
       findings = await invokeStructured(getChatModel("detective"), [new SystemMessage(p.system), new HumanMessage(p.human)], {
@@ -218,7 +226,8 @@ export async function runSpecifier(db: Sql, supplierId: string, opts: { sink?: (
     if (!findings.is_same_company && docs.some((d) => d.own && d.text) && findings.products.length) findings = { ...findings, is_same_company: true };
     let merged = { products: findings.products.length, attributed: 0, evidence: 0, created: 0 };
     if (findings.is_same_company && findings.products.length) merged = await mergeSpecFindings(db, profile, findings, runId, docs);
-    await addStep(db, runId, { kind: "note", name: "specified", output: { ...merged, is_same_company: findings.is_same_company, documents: docs.length } });
+    const relations = findings.is_same_company ? await mergeRelations(db, supplierId, findings.relations as Relation[], runId) : 0;
+    await addStep(db, runId, { kind: "note", name: "specified", output: { ...merged, relations, is_same_company: findings.is_same_company, documents: docs.length } });
     return { runId, findings, merged };
   }, { sink: opts.sink });
 }

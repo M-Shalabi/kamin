@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { supplierDetail } from "@/lib/queries";
+import { supplierDetail, supplierRelations } from "@/lib/queries";
 import { A, Ar, ClassBadge, Int, Pct, Registry, Table, Td, Tier, Verdict } from "@/components/ui";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
@@ -12,6 +12,8 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   const { id } = await params;
   const s = await supplierDetail(decodeURIComponent(id));
   if (!s) notFound();
+  const relations = await supplierRelations(s.id);
+  const PRED: Record<string, string> = { distributes_brand: "distributes", part_of_group: "part of", certified_by: "certified by", meets_standard: "builds to", same_entity_as: "same entity as", makes_with_material: "works in", uses_process: "runs" };
   const hasRecording = existsSync(join(REPO_ROOT, "apps/web/public/cold-miss", `${s.id}.json`));
   const pending = s.detective_status === "pending";
   return (
@@ -35,6 +37,14 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           ))}
         </Table>
       </section>
+      {relations.length > 0 && (
+        <section>
+          <h2 className="mb-2 font-semibold">What the documents say about the company ({relations.length})</h2>
+          <ul className="space-y-1 text-sm">
+            {relations.map((r) => <li key={`${r.predicate}:${r.object}`}><span style={{ color: "var(--muted)" }}>{PRED[r.predicate] ?? r.predicate}</span> {r.object_id ? <A href={`/suppliers/${encodeURIComponent(r.object_id)}`}>{r.object_name ?? r.object}</A> : <span>{r.object}</span>}{r.source_url && <> · <a className="underline text-xs" href={r.source_url} target="_blank" rel="noreferrer">source</a></>}{r.excerpt && <span className="block text-xs" style={{ color: "var(--muted)" }}>“{r.excerpt}”</span>}</li>)}
+          </ul>
+        </section>
+      )}
       <section>
         <h2 className="mb-2 font-semibold">Runs on this supplier ({s.runs.length})</h2>
         <Table head={["Role", "Status", "Model", "Started", "Seconds", ""]}>
