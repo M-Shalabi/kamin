@@ -17,7 +17,7 @@ Seven minutes, seven steps, one laptop. Everything below is local: Postgres in D
 | 1 | The number PIF has never been able to state | Header: coverage at the stated specification, with the type-verified and category-level figures under it. Say all three: nearly every order has a verified plant declaring the subheading, seven in ten have a supplier that names the product type, none is verified at size and rating. That ladder is the blind spot, and the Detectives and the Specifier climb it |
 | 2 | Purchase requests, pooled | `/orders/<id>` from a ledger row: the lines in their ERP formats and the envelope they pooled into |
 | 3 | Who can supply it, at spec, with evidence | Same page, the match table: class, verdict, tier, score |
-| 4 | The map, filtered | `/suppliers?family=valve&verdict=supported`, then a supplier page |
+| 4 | The map, filtered | `/suppliers?family=valve&verdict=supported`, then a supplier page; OMB Valves (`/suppliers/tarmeez%3A91094`) shows what the documents say about the company, part of UBSCO Group, and Rainbow (`/suppliers/tarmeez%3A43073`) shows a catalogue-specified flange line |
 | 5 | The Auditor killing a claim | `/evidence/548d017f-0072-4923-867d-98cfb925cf8f`, KSB Pumps Arabia's declared check valves, refuted on the real lens with killer evidence; any row with verdict refuted in `/suppliers?verdict=refuted` works too |
 | 6 | The cold miss | The recorded supplier's page, Play recording; or a pending supplier's page, Investigate live |
 | 7 | The gap ledger and an investment case | `/?kind=supply_gap`, open the 4-inch carbon steel butt weld tee, read the Advisor's case and its pivot candidates; then `/?kind=covered` to show that "covered" means declared, spec unverified |
