@@ -21,7 +21,7 @@ export function specCompatible(env: Envelope, attrs: Record<string, string>): { 
     if (stated.length) (stated.includes(env.material as never) ? hits : conflicts).push("material");
   }
   if (env.size_inch !== null || env.size_dn !== null) {
-    const inchRange = text.match(/(\d+(?:\/\d+)?)\s*(?:"|inch|in\b)?\s*(?:to|-)\s*(\d+(?:\/\d+)?)\s*(?:"|inch|in\b)/i);
+    const inchRange = text.match(/(\d+(?:\/\d+)?)\s*(?:"|inch|in\b)?\s*(?:\([^)]*\)\s*)?(?:to|-)\s*(\d+(?:\/\d+)?)\s*(?:"|inch|in\b)/i);
     const dnRange = text.match(/DN\s*(\d+)\s*(?:to|-)\s*(?:DN\s*)?(\d+)/i);
     if (inchRange && env.size_inch !== null) {
       const lo = parseSizeToken(`${inchRange[1]}"`)?.inch ?? null, hi = parseSizeToken(`${inchRange[2]}"`)?.inch ?? null;
@@ -33,7 +33,18 @@ export function specCompatible(env: Envelope, attrs: Record<string, string>): { 
   }
   if (env.pressure_bar !== null || env.pressure_class) {
     // A stated rating covers the order when it is at least the required rating; classes compare as classes or through their bar equivalent.
-    const stated = entries.filter(([k, v]) => /pressure|rating|pn\b|class/i.test(k) || /\b(?:PN\s*\d+|class\s*\d{3,4}|\d+\s*bar)\b/i.test(v)).map(([, v]) => v.match(/PN\s*\d+(?:[.,]\d+)?|class\s*\d{3,4}|CL\s*\d{3,4}|\d+(?:[.,]\d+)?\s*(?:bar|psi)/i)?.[0]).filter((x): x is string => !!x).map((tok) => parsePressureToken(tok)).filter((x): x is { bar: number | null; klass: string | null } => !!x);
+    const stated: { bar: number | null; klass: string | null }[] = [];
+    for (const [k, v] of entries) {
+      if (!(/pressure|rating|pn\b|class/i.test(k) || /\b(?:PN\s*\d+|class\s*\d{3,4}|\d+\s*bar)\b/i.test(v))) continue;
+      const tokens = [...v.matchAll(/PN\s*\d+(?:[.,]\d+)?|class\s*\d{3,4}|CL\s*\d{3,4}|\d+(?:[.,]\d+)?\s*(?:bar|psi|MPa)/gi)].map((m) => m[0]);
+      // "Class / Pressure: 150, 300, 600": bare class numbers listed under a class-like key.
+      if (!tokens.length && /class/i.test(`${k} ${v}`)) tokens.push(...[...v.matchAll(/\b(150|300|400|600|900|1500|2500)\b/g)].map((m) => `class ${m[1]}`));
+      for (const tok of tokens) {
+        const mpa = tok.match(/^(\d+(?:[.,]\d+)?)\s*MPa$/i);
+        const r = mpa ? { bar: Number(mpa[1]!.replace(",", ".")) * 10, klass: null } : parsePressureToken(tok);
+        if (r) stated.push(r);
+      }
+    }
     if (stated.length) {
       const needBar = env.pressure_bar ?? (env.pressure_class ? CLASS_BAR[env.pressure_class] ?? null : null);
       const ok = stated.some((r) => {

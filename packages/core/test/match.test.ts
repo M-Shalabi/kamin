@@ -23,6 +23,9 @@ describe("scoring", () => {
     expect(specCompatible(env, { "pressure rating": "class 300" }).hits).toEqual(["pressure"]);
     expect(specCompatible(env, { size: "½” to 12”" }).hits).toEqual(["size"]);
     expect(specCompatible(env, { "size range": "DN15 - DN300" }).hits).toEqual(["size"]);
+    expect(specCompatible(env, { size: "1/2″ (15 NB) to 48″ (1200NB)" }).hits).toEqual(["size"]);
+    expect(specCompatible({ ...env, pressure_bar: null, pressure_class: "150" }, { pressure: "Class / Pressure : 150, 300, 600, 900, 1500, 2500" }).hits).toEqual(["pressure"]);
+    expect(specCompatible({ ...env, pressure_bar: null, pressure_class: "300" }, { rating: "Class 150" }).conflicts).toEqual(["pressure"]);
   });
   test("class, verdict and tier weights order candidates as the glossary says", () => {
     const maker = scoreCapability({ hs6: "848180", envelope: env }, cap({})).score;

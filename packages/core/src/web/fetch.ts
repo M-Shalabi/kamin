@@ -44,7 +44,8 @@ export async function fetchText(url: string, opts: { fetchImpl?: typeof fetch; c
   const file = join(cacheDir, createHash("sha1").update(url).digest("hex") + ".json");
   try {
     const cached = JSON.parse(await readFile(file, "utf8")) as { url: string; title: string | null; text: string; links?: string[] } | null;
-    return cached && { ...cached, links: cached.links ?? [], text: cached.text.slice(0, maxChars) };
+    // Entries written before links were recorded are refetched once so catalogue links can be followed.
+    if (cached === null || cached.links) return cached && { ...cached, links: cached.links ?? [], text: cached.text.slice(0, maxChars) };
   } catch {}
   let result: { url: string; title: string | null; text: string; links: string[] } | null = null;
   try {

@@ -98,3 +98,21 @@ describe("extractLinks", () => {
     expect(r?.links).toEqual(["https://bariqgroup.com/c.pdf"]);
   });
 });
+
+describe("fetchText cache without links", () => {
+  test("refetches an HTML page cached before links were recorded, and stores the links", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "kamin-stale-"));
+    const { createHash } = await import("node:crypto");
+    const { writeFile } = await import("node:fs/promises");
+    const url = "https://bariqgroup.com/products";
+    await writeFile(join(dir, createHash("sha1").update(url).digest("hex") + ".json"), JSON.stringify({ url, title: "old", text: "old text" }));
+    let calls = 0;
+    const fake = (async () => { calls++; return new Response(`<html><head><title>New</title></head><body><a href="/c.pdf">c</a></body></html>`, { status: 200, headers: { "content-type": "text/html" } }); }) as unknown as typeof fetch;
+    const r = await fetchText(url, { fetchImpl: fake, cacheDir: dir });
+    expect(calls).toBe(1);
+    expect(r?.links).toEqual(["https://bariqgroup.com/c.pdf"]);
+    const again = await fetchText(url, { fetchImpl: fake, cacheDir: dir });
+    expect(calls).toBe(1);
+    expect(again?.title).toBe("New");
+  });
+});
