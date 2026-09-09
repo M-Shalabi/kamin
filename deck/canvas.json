@@ -38,8 +38,8 @@
    "page": "page-1"
   },
   {
-   "file": "WhoMakes.dc.html",
-   "title": "٤ اللي يرفع يده",
+   "file": "Problem.dc.html",
+   "title": "٤ المشكلة",
    "x": 5280,
    "y": 0,
    "w": 1600,
@@ -47,27 +47,9 @@
    "page": "page-1"
   },
   {
-   "file": "WhatWeBuy.dc.html",
-   "title": "٥ اختلاف المسمّى",
-   "x": 0,
-   "y": 1160,
-   "w": 1600,
-   "h": 900,
-   "page": "page-1"
-  },
-  {
-   "file": "WhatChanged.dc.html",
-   "title": "٦ ما تغيّر",
-   "x": 1760,
-   "y": 1160,
-   "w": 1600,
-   "h": 900,
-   "page": "page-1"
-  },
-  {
    "file": "TheWall.dc.html",
-   "title": "٧ جدار ٥ سنوات",
-   "x": 3520,
+   "title": "٥ جدار ٥ سنوات",
+   "x": 0,
    "y": 1160,
    "w": 1600,
    "h": 900,
@@ -75,8 +57,8 @@
   },
   {
    "file": "Solution.dc.html",
-   "title": "٨ والحل؟",
-   "x": 5280,
+   "title": "٦ والحل؟",
+   "x": 1760,
    "y": 1160,
    "w": 1600,
    "h": 900,
@@ -84,7 +66,25 @@
   },
   {
    "file": "TheTeam.dc.html",
-   "title": "٩ نوظّف فريق",
+   "title": "٧ نوظّف فريق",
+   "x": 3520,
+   "y": 1160,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "TheReveal.dc.html",
+   "title": "٨ الانكشاف",
+   "x": 5280,
+   "y": 1160,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "Discovery.dc.html",
+   "title": "٩ زووم الاكتشاف",
    "x": 0,
    "y": 2320,
    "w": 1600,
@@ -92,8 +92,8 @@
    "page": "page-1"
   },
   {
-   "file": "TheReveal.dc.html",
-   "title": "١٠ الانكشاف",
+   "file": "Decisions.dc.html",
+   "title": "١٠ زووم القرار",
    "x": 1760,
    "y": 2320,
    "w": 1600,
@@ -110,8 +110,8 @@
    "page": "page-1"
   },
   {
-   "file": "Discovery.dc.html",
-   "title": "١٢ زووم الاكتشاف",
+   "file": "Suppliers.dc.html",
+   "title": "١٢ قائمة الموردين",
    "x": 5280,
    "y": 2320,
    "w": 1600,
@@ -119,27 +119,9 @@
    "page": "page-1"
   },
   {
-   "file": "Decisions.dc.html",
-   "title": "١٣ زووم القرار",
-   "x": 0,
-   "y": 3480,
-   "w": 1600,
-   "h": 900,
-   "page": "page-1"
-  },
-  {
    "file": "TheMath.dc.html",
-   "title": "١٤ الحساب",
-   "x": 1760,
-   "y": 3480,
-   "w": 1600,
-   "h": 900,
-   "page": "page-1"
-  },
-  {
-   "file": "Suppliers.dc.html",
-   "title": "١٥ قائمة الموردين",
-   "x": 3520,
+   "title": "١٣ الحساب",
+   "x": 0,
    "y": 3480,
    "w": 1600,
    "h": 900,
@@ -147,8 +129,8 @@
   },
   {
    "file": "TheClose.dc.html",
-   "title": "١٦ الختام",
-   "x": 5280,
+   "title": "١٤ الختام",
+   "x": 1760,
    "y": 3480,
    "w": 1600,
    "h": 900,
@@ -156,9 +138,9 @@
   },
   {
    "file": "Team.dc.html",
-   "title": "١٧ الفريق",
-   "x": 0,
-   "y": 4640,
+   "title": "١٥ الفريق",
+   "x": 3520,
+   "y": 3480,
    "w": 1600,
    "h": 900,
    "page": "page-1"
@@ -200,8 +182,8 @@
    "page": "page-1"
   },
   {
-   "file": "EN_WhoMakes.dc.html",
-   "title": "4 Raise Your Hand",
+   "file": "EN_Problem.dc.html",
+   "title": "4 The Problem",
    "x": 5280,
    "y": 8120,
    "w": 1600,
@@ -209,27 +191,9 @@
    "page": "page-1"
   },
   {
-   "file": "EN_WhatWeBuy.dc.html",
-   "title": "5 Different Names",
-   "x": 0,
-   "y": 9280,
-   "w": 1600,
-   "h": 900,
-   "page": "page-1"
-  },
-  {
-   "file": "EN_WhatChanged.dc.html",
-   "title": "6 What Changed",
-   "x": 1760,
-   "y": 9280,
-   "w": 1600,
-   "h": 900,
-   "page": "page-1"
-  },
-  {
    "file": "EN_TheWall.dc.html",
-   "title": "7 The 5-Year Wall",
-   "x": 3520,
+   "title": "5 The 5-Year Wall",
+   "x": 0,
    "y": 9280,
    "w": 1600,
    "h": 900,
@@ -237,8 +201,8 @@
   },
   {
    "file": "EN_Solution.dc.html",
-   "title": "8 So What Now",
-   "x": 5280,
+   "title": "6 So What Now",
+   "x": 1760,
    "y": 9280,
    "w": 1600,
    "h": 900,
@@ -246,7 +210,25 @@
   },
   {
    "file": "EN_TheTeam.dc.html",
-   "title": "9 Hire A Team",
+   "title": "7 Hire A Team",
+   "x": 3520,
+   "y": 9280,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_TheReveal.dc.html",
+   "title": "8 The Reveal",
+   "x": 5280,
+   "y": 9280,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_Discovery.dc.html",
+   "title": "9 Zoom · Discovery",
    "x": 0,
    "y": 10440,
    "w": 1600,
@@ -254,8 +236,8 @@
    "page": "page-1"
   },
   {
-   "file": "EN_TheReveal.dc.html",
-   "title": "10 The Reveal",
+   "file": "EN_Decisions.dc.html",
+   "title": "10 Zoom · The Decision",
    "x": 1760,
    "y": 10440,
    "w": 1600,
@@ -272,8 +254,8 @@
    "page": "page-1"
   },
   {
-   "file": "EN_Discovery.dc.html",
-   "title": "12 Zoom · Discovery",
+   "file": "EN_Suppliers.dc.html",
+   "title": "12 The Supplier List",
    "x": 5280,
    "y": 10440,
    "w": 1600,
@@ -281,27 +263,9 @@
    "page": "page-1"
   },
   {
-   "file": "EN_Decisions.dc.html",
-   "title": "13 Zoom · The Decision",
-   "x": 0,
-   "y": 11600,
-   "w": 1600,
-   "h": 900,
-   "page": "page-1"
-  },
-  {
    "file": "EN_TheMath.dc.html",
-   "title": "14 The Math",
-   "x": 1760,
-   "y": 11600,
-   "w": 1600,
-   "h": 900,
-   "page": "page-1"
-  },
-  {
-   "file": "EN_Suppliers.dc.html",
-   "title": "15 The Supplier List",
-   "x": 3520,
+   "title": "13 The Math",
+   "x": 0,
    "y": 11600,
    "w": 1600,
    "h": 900,
@@ -309,8 +273,8 @@
   },
   {
    "file": "EN_TheClose.dc.html",
-   "title": "16 The Close",
-   "x": 5280,
+   "title": "14 The Close",
+   "x": 1760,
    "y": 11600,
    "w": 1600,
    "h": 900,
@@ -318,9 +282,9 @@
   },
   {
    "file": "EN_Team.dc.html",
-   "title": "17 The Team",
-   "x": 0,
-   "y": 12760,
+   "title": "15 The Team",
+   "x": 3520,
+   "y": 11600,
    "w": 1600,
    "h": 900,
    "page": "page-1"

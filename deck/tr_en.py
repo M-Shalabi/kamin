@@ -413,4 +413,7 @@ TR = {
 "خريطة كامن ":"KAMIN's map ",
 "مصنع الرياض للصمامات الصناعية":"Riyadh Industrial Valves Factory",
 "كامن · قائمة الموردين":"KAMIN · Supplier list",
+"المشكلة":"The problem",
+"البيانات موجودة، بس ":"The data exists, just ",
+"لكل مصنع":"per factory",
 }

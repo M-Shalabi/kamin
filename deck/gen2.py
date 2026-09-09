@@ -41,7 +41,7 @@ def slide(num, cap, inner, center=False):
     foot = '' if center else (
       '  <div style="display: flex; justify-content: space-between; align-items: flex-end; '
       'border-top: 1px solid @L@; padding-top: 20px;">\n'
-      '    <div style="font-family: @MONO@; font-size: 14px; letter-spacing: 0.18em; color: @L@;"' + (' dir="ltr"' if num.isdigit() else '') + '>' + (num + ' / 17' if num.isdigit() else 'ملحق') + '</div>\n'
+      '    <div style="font-family: @MONO@; font-size: 14px; letter-spacing: 0.18em; color: @L@;"' + (' dir="ltr"' if num.isdigit() else '') + '>' + (num + ' / 15' if num.isdigit() else 'ملحق') + '</div>\n'
       '    <div style="font-family: @KUFI@; font-size: 16px; font-weight: 700; color: @M@;">كامن</div>\n'
       '  </div>\n')
     return sub(HEAD +
@@ -72,7 +72,7 @@ S['Main'] = sub(HEAD +
 '    <div style="font-family:@KUFI@;font-weight:700;font-size:52px;color:@T@;margin-top:44px;line-height:1.45;">خريطة حيّة للقدرات المحلية.</div>\n'
 '  </div>\n'
 '  <div style="display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid @L@;padding-top:24px;">\n'
-'    <div style="font-family:@MONO@;font-size:17px;letter-spacing:0.18em;color:@L@;" dir="ltr">01 / 17</div>\n'
+'    <div style="font-family:@MONO@;font-size:17px;letter-spacing:0.18em;color:@L@;" dir="ltr">01 / 15</div>\n'
 '    <div style="font-size:22px;color:@M@;">هاكاثون ابتكار · المسار الأول</div>\n'
 '  </div>\n</div>\n' + TAIL)
 
@@ -160,119 +160,123 @@ S['Blind'] = slide('03','لماذا يهم',
   + '  </div>\n'
   '  </div>\n')
 
-# 04 who makes what: documented everywhere except your list
+# 04 the problem, all three faces of it side by side
+UI = {'paper':'#FFFFFF','chrome':'#F1EEE9','side':'#FAF8F5','line':'#E6E2DB','row':'#F0EDE7',
+      'ink':'#1A1714','mut':'#6B6660','dim':'#9A938A','acc':'#E14E12','accbg':'#FFF4EE',
+      'okbg':'#E7F6EC','okink':'#12703A','okline':'#BFE5CC','warn':'#C98A16'}
+
+def coltitle(t, emoji=None):
+    return ('    <div style="display:flex;align-items:center;gap:12px;min-height:44px;">\n'
+      + (('      <div style="font-size:32px;line-height:1;">' + emoji + '</div>\n') if emoji else '')
+      + '      <div style="font-family:@KUFI@;font-weight:700;font-size:30px;line-height:1.25;color:@T@;'
+        'letter-spacing:-0.01em;">' + t + '</div>\n'
+      '    </div>\n')
+
+# face one, unchanged in kind: the hand-raising bias
 ev = ''
 for txt in ['فاز بمنافسات حكومية سابقة',
             'ومسجّل منتجاته عند وزارة الصناعة',
             'وعنده شهادات مطابقة منشورة',
             'وموطن صناعته']:
-    ev += ('    <div style="display:flex;align-items:center;gap:14px;padding:5px 0;">\n'
-           '      <div style="flex:0 0 auto;width:22px;height:22px;border-radius:50%;border:1px solid @A@;color:@A@;'
-           'font-size:14px;display:flex;align-items:center;justify-content:center;">\u2713</div>\n'
-           '      <div style="font-size:25px;font-weight:300;color:@T@;">' + txt + '</div>\n'
-           '    </div>\n')
-ev += ('    <div style="display:flex;align-items:center;gap:14px;padding:11px 0 0;margin-top:8px;border-top:1px solid @L@;">\n'
-       '      <div style="flex:0 0 auto;width:22px;height:22px;border-radius:50%;border:1px solid #D93830;color:#D93830;'
-       'font-size:14px;display:flex;align-items:center;justify-content:center;">\u2715</div>\n'
-       '      <div style="font-family:@KUFI@;font-weight:700;font-size:28px;color:#E8503F;">بس ما هو في لستة الموردين عندك.</div>\n'
-       '    </div>\n')
+    ev += ('      <div style="display:flex;align-items:center;gap:11px;padding:3px 0;">\n'
+           '        <div style="flex:0 0 auto;width:19px;height:19px;border-radius:50%;border:1px solid @A@;color:@A@;'
+           'font-size:12px;display:flex;align-items:center;justify-content:center;">✓</div>\n'
+           '        <div style="font-size:18px;font-weight:300;color:@T@;">' + txt + '</div>\n'
+           '      </div>\n')
+ev += ('      <div style="display:flex;align-items:center;gap:11px;padding:9px 0 0;margin-top:7px;border-top:1px solid @L@;">\n'
+       '        <div style="flex:0 0 auto;width:19px;height:19px;border-radius:50%;border:1px solid #D93830;color:#D93830;'
+       'font-size:12px;display:flex;align-items:center;justify-content:center;">✕</div>\n'
+       '        <div style="font-family:@KUFI@;font-weight:700;font-size:20px;color:#E8503F;line-height:1.35;">بس ما هو في لستة الموردين عندك.</div>\n'
+       '      </div>\n')
 
-S['WhoMakes'] = slide('04','المشكلة، النصف الأول',
-  '  <div style="margin:auto 0;">\n'
-  '  <div style="display:flex;align-items:center;gap:20px;">\n'
-  '    <div style="font-size:50px;line-height:1;">\u270B</div>\n'
-  '    <div style="font-family:@KUFI@;font-weight:700;font-size:62px;line-height:1.3;color:@T@;letter-spacing:-0.01em;">ما نعرف إلا اللي يرفع يده</div>\n'
-  '  </div>\n' +
-  '  <div style="border-right:4px solid @A@;padding-right:26px;margin-top:30px;">\n'
-  '    <div style="font-family:@KUFI@;font-weight:700;font-size:46px;color:@T@;line-height:1.4;">علشان تعرفه، لازم يوصلك.</div>\n'
-  '    <div style="font-size:26px;font-weight:300;color:@M@;line-height:1.65;margin-top:14px;">وتخيّل مصنع في الخرج له عشرين سنة ما تعرف عنه، وهو بالضبط اللي كنت تدور عليه.</div>\n'
-  '  </div>\n'
-  '  <div style="font-size:22px;color:@M@;margin-top:30px;margin-bottom:2px;">مع إنه:</div>\n' + ev +
+face1 = ('  <div style="flex:1 1 0;display:flex;flex-direction:column;">\n'
+  + coltitle('ما نعرف إلا اللي يرفع يده', '✋') +
+  '    <div style="border-right:4px solid @A@;padding-right:18px;margin-top:20px;">\n'
+  '      <div style="font-family:@KUFI@;font-weight:700;font-size:28px;color:@T@;line-height:1.35;">علشان تعرفه، لازم يوصلك.</div>\n'
+  '      <div style="font-size:18px;font-weight:300;color:@M@;line-height:1.6;margin-top:10px;">وتخيّل مصنع في الخرج له عشرين سنة ما تعرف عنه، وهو بالضبط اللي كنت تدور عليه.</div>\n'
+  '    </div>\n'
+  '    <div style="font-size:17px;color:@M@;margin-top:20px;margin-bottom:2px;">مع إنه:</div>\n'
+  '    <div>\n' + ev + '    </div>\n'
   '  </div>\n')
 
-UI = {'paper':'#FFFFFF','chrome':'#F1EEE9','side':'#FAF8F5','line':'#E6E2DB','row':'#F0EDE7',
-      'ink':'#1A1714','mut':'#6B6660','dim':'#9A938A','acc':'#E14E12','accbg':'#FFF4EE',
-      'okbg':'#E7F6EC','okink':'#12703A','okline':'#BFE5CC','warn':'#C98A16'}
-
-# 05 what we buy — REAL UI
-def sysrow(system, meta, pr, line, desc, qty, lead, std, date, mono, hot=False):
+# face two, the same light windows, narrowed to the three columns that carry the point
+def miniwin(system, desc, lead, std, mono):
     dfont = '@MONO@' if mono else '@BODY@'
     ltr = ' dir="ltr"' if mono else ''
     def dot(c):
-        return '<span style="width:9px;height:9px;border-radius:50%;background:' + c + ';display:inline-block;"></span>'
-    cols = 'grid-template-columns:118px 46px 1fr 78px 92px 100px 100px;'
+        return '<span style="width:8px;height:8px;border-radius:50%;background:' + c + ';display:inline-block;"></span>'
+    cols = 'grid-template-columns:1fr 70px 74px;'
     return (
-    '    <div style="border:1px solid ' + UI['line'] + ';background:' + UI['paper'] + ';border-radius:7px;overflow:hidden;">\n'
-    '      <div style="position:relative;background:' + UI['chrome'] + ';'
-    'border-bottom:1px solid ' + UI['line'] + ';padding:8px 14px;">\n'
-    '        <div style="position:absolute;left:14px;top:50%;transform:translateY(-50%);display:flex;gap:6px;">'
+    '    <div style="border:1px solid ' + UI['line'] + ';background:' + UI['paper'] + ';border-radius:6px;overflow:hidden;">\n'
+    '      <div style="position:relative;background:' + UI['chrome'] + ';border-bottom:1px solid ' + UI['line'] + ';padding:6px 12px;">\n'
+    '        <div style="position:absolute;left:12px;top:50%;transform:translateY(-50%);display:flex;gap:5px;" dir="ltr">'
     + dot('#FF5F57') + dot('#FEBC2E') + dot('#28C840') + '</div>\n'
-    '        <div style="text-align:center;font-family:@BODY@;font-size:15px;color:' + UI['mut'] + ';">' + system + ' &nbsp;·&nbsp; ' + meta + '</div>\n'
+    '        <div style="text-align:center;font-family:@BODY@;font-size:13px;color:' + UI['mut'] + ';">' + system + '</div>\n'
     '      </div>\n'
-    '      <div style="display:grid;' + cols + 'gap:10px;font-family:@BODY@;font-size:14px;color:' + UI['dim'] + ';'
-    'background:' + UI['side'] + ';padding:7px 14px;border-bottom:1px solid ' + UI['line'] + ';">\n'
-    '        <div>رقم الطلب</div><div>البند</div><div>الوصف</div><div>الكمية</div><div>المدة</div><div>المعيار</div><div>التاريخ</div>\n'
+    '      <div style="display:grid;' + cols + 'gap:8px;font-family:@BODY@;font-size:12px;color:' + UI['dim'] + ';'
+    'background:' + UI['side'] + ';padding:5px 12px;border-bottom:1px solid ' + UI['line'] + ';">\n'
+    '        <div>الوصف</div><div>المدة</div><div>المعيار</div>\n'
     '      </div>\n'
-    '      <div style="display:grid;' + cols + 'gap:10px;align-items:center;padding:13px 14px;">\n'
-    '        <div style="font-family:@MONO@;font-size:16px;color:' + UI['dim'] + ';">' + pr + '</div>\n'
-    '        <div style="font-family:@MONO@;font-size:16px;color:' + UI['dim'] + ';">' + line + '</div>\n'
+    '      <div style="display:grid;' + cols + 'gap:8px;align-items:center;padding:9px 12px;">\n'
     '        <div style="min-width:0;' + ('direction:ltr;text-align:left;' if mono else '') + '">'
-        '<span style="font-family:' + dfont + ';font-size:23px;color:' + UI['ink'] + ';border-bottom:2px solid ' + UI['acc'] + ';padding-bottom:3px;">' + desc + '</span></div>\n'
-    '        <div style="font-family:@BODY@;font-size:17px;color:' + UI['mut'] + ';"' + ltr + '>' + qty + '</div>\n'
-    '        <div style="font-family:' + dfont + ';font-size:17px;color:' + UI['ink'] + ';"' + ltr + '>' + lead + '</div>\n'
-    '        <div style="font-family:@MONO@;font-size:16px;color:' + UI['ink'] + ';">' + std + '</div>\n'
-    '        <div style="font-family:@MONO@;font-size:16px;color:' + UI['mut'] + ';">' + date + '</div>\n'
+        '<span style="font-family:' + dfont + ';font-size:' + ('13' if mono else '17') + 'px;color:' + UI['ink'] + ';border-bottom:2px solid ' + UI['acc'] + ';padding-bottom:2px;white-space:nowrap;">' + desc + '</span></div>\n'
+    '        <div style="font-family:' + dfont + ';font-size:14px;color:' + UI['ink'] + ';"' + ltr + '>' + lead + '</div>\n'
+    '        <div style="font-family:@MONO@;font-size:13px;color:' + UI['ink'] + ';">' + std + '</div>\n'
     '      </div>\n'
     '    </div>\n')
 
-S['WhatWeBuy'] = slide('05','المشكلة، النصف الثاني',
-  '  <div style="margin:auto 0;">\n' +
-  H('اختلاف المسمّى يصعّب المهمة', 62) +
-  '  <div style="display:flex;flex-direction:column;gap:14px;margin-top:34px;">\n'
-  + sysrow('شركة المحفظة «أ»','SAP MM','PR-2026-0142','0010','صمام كروي ٢ بوصة','١٢ EA','٣٠ يوم','ISO 9001','٢٠٢٦-٠١-١٤', False)
-  + sysrow('شركة المحفظة «ب»','Oracle iProc','REQ-88213','003','BALL VLV 2IN SS','40 PCS','45 days','API 6D','14/01/2026', True)
-  + sysrow('شركة المحفظة «ج»','Excel','-','7','Valve, ball, stainless, 2 inch','5 units','6 wks','ISO 9001','Jan 14', True)
-  + '  </div>\n'
+face2 = ('  <div style="flex:1 1 0;display:flex;flex-direction:column;">\n'
+  + coltitle('اختلاف المسمّى يصعّب المهمة') +
+  '    <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px;">\n'
+  + miniwin('شركة المحفظة «أ» &nbsp;·&nbsp; SAP MM', 'صمام كروي ٢ بوصة', '٣٠ يوم', 'ISO 9001', False)
+  + miniwin('شركة المحفظة «ب» &nbsp;·&nbsp; Oracle iProc', 'BALL VLV 2IN SS', '45 days', 'API 6D', True)
+  + miniwin('شركة المحفظة «ج» &nbsp;·&nbsp; Excel', 'Valve, ball, stainless, 2 inch', '6 wks', 'ISO 9001', True)
+  + '    </div>\n'
   '  </div>\n')
 
-# 06 what changed
+# face three, the same nine-source list, without the description column
 sources = [
- ('logo-etimad.png',    'منافسات',            'ترسيات العقود الحكومية'),
- ('logo-mim.png',       'ترميز · وزارة الصناعة','كتالوج المنتجات الوطني'),
- ('logo-saudimade.png', 'صنع في السعودية',     'شهادة القيمة المضافة المحلية'),
- ('logo-lcgpa.png',     'المحتوى المحلي',      'منهجية احتساب المحتوى المحلي'),
- ('logo-gastat.svg',    'الهيئة العامة للإحصاء','الاستيراد حسب رمز المنتج'),
- ('logo-hrsd.png',      'الموارد البشرية',     'التوطين وأعداد الموظفين'),
- ('logo-moc.png',       'وزارة التجارة',       'السجل التجاري والنشاط الفعلي'),
- ('logo-sca.png',       'الهيئة السعودية للمقاولين','تصنيف المقاولين وقدراتهم'),
- (None,                 'موقع الشركة والسجل',  'الكتالوج والشهادات والسجل التجاري'),
+ ('logo-etimad.png',    'منافسات'),
+ ('logo-mim.png',       'ترميز · وزارة الصناعة'),
+ ('logo-saudimade.png', 'صنع في السعودية'),
+ ('logo-lcgpa.png',     'المحتوى المحلي'),
+ ('logo-gastat.svg',    'الهيئة العامة للإحصاء'),
+ ('logo-hrsd.png',      'الموارد البشرية'),
+ ('logo-moc.png',       'وزارة التجارة'),
+ ('logo-sca.png',       'الهيئة السعودية للمقاولين'),
+ (None,                 'موقع الشركة والسجل'),
 ]
 rows = ''
-for logo, name, desc in sources:
-    tile = ('        <img src="' + logo + '" style="width:25px;height:25px;object-fit:contain;">\n') if logo \
-           else '        <div style="width:25px;height:25px;border:1px dashed #9a948b;border-radius:3px;"></div>\n'
-    rows += ('    <div style="display:flex;align-items:center;gap:16px;padding:6px 18px;border-top:1px solid @L@;">\n'
-             '      <div style="flex:0 0 auto;width:36px;height:36px;border-radius:8px;background:#F2EEE7;'
+for logo, name in sources:
+    tile = ('        <img src="' + logo + '" style="width:19px;height:19px;object-fit:contain;">\n') if logo \
+           else '        <div style="width:19px;height:19px;border:1px dashed #9a948b;border-radius:3px;"></div>\n'
+    rows += ('      <div style="display:flex;align-items:center;gap:12px;padding:5px 14px;border-top:1px solid @L@;">\n'
+             '        <div style="flex:0 0 auto;width:28px;height:28px;border-radius:6px;background:#F2EEE7;'
              'display:flex;align-items:center;justify-content:center;">\n' + tile +
-             '      </div>\n'
-             '      <div style="flex:0 0 290px;font-family:@KUFI@;font-weight:700;font-size:23px;color:@T@;">' + name + '</div>\n'
-             '      <div style="flex:1 1 auto;font-size:19px;font-weight:300;color:@M@;">' + desc + '</div>\n'
-             '      <div style="flex:0 0 auto;font-family:@MONO@;font-size:17px;color:@A@;">\u2713</div>\n'
-             '    </div>\n')
+             '        </div>\n'
+             '        <div style="flex:1 1 auto;font-family:@KUFI@;font-weight:700;font-size:18px;color:@T@;">' + name + '</div>\n'
+             '        <div style="flex:0 0 auto;font-family:@MONO@;font-size:14px;color:@A@;">✓</div>\n'
+             '      </div>\n')
 
-S['WhatChanged'] = slide('06','ما الذي تغيّر',
-  '  <div style="margin:auto 0;">\n' +
-  H('البيانات موجودة ولكن <span style="color:@A@;">متناثرة</span>', 66) +
-  '  <div style="border:1px solid @L@;background:@P@;margin-top:22px;">\n'
-  '    <div style="display:flex;align-items:center;justify-content:space-between;background:@P2@;padding:9px 18px;">\n'
-  '      <div style="font-family:@BODY@;font-size:16px;color:@M@;">٩ مصادر</div>\n'
-  '      <div style="font-family:@BODY@;font-size:16px;color:@M@;">المصادر اللي لازم يفتحها لكل مصنع</div>\n'
-  '    </div>\n' + rows +
-  '  </div>\n'
+face3 = ('  <div style="flex:1 1 0;display:flex;flex-direction:column;">\n'
+  + coltitle('البيانات موجودة، بس <span style="color:@A@;">متناثرة</span>') +
+  '    <div style="border:1px solid @L@;background:@P@;margin-top:20px;">\n'
+  '      <div style="display:flex;align-items:center;justify-content:space-between;background:@P2@;padding:7px 14px;">\n'
+  '        <div style="font-family:@BODY@;font-size:13px;color:@M@;">٩ مصادر</div>\n'
+  '        <div style="font-family:@BODY@;font-size:13px;color:@M@;">لكل مصنع</div>\n'
+  '      </div>\n' + rows +
+  '    </div>\n'
+  '  </div>\n')
+
+sep = '  <div style="flex:0 0 1px;background:@L@;margin:6px 0;"></div>\n'
+
+S['Problem'] = slide('04','المشكلة',
+  '  <div style="margin:auto 0;display:flex;gap:26px;align-items:stretch;">\n'
+  + face1 + sep + face2 + sep + face3 +
   '  </div>\n')
 
 # 07 the wall
-S['TheWall'] = slide('07','فلماذا محد سواها؟',
+S['TheWall'] = slide('05','فلماذا محد سواها؟',
   '  <div style="margin:auto 0;">\n'
   '  <div style="font-size:36px;font-weight:300;color:@M@;line-height:1.5;">وليه محد سواها للآن؟</div>\n'
   '  <div style="font-family:@KUFI@;font-weight:900;font-size:78px;line-height:1.35;color:@T@;letter-spacing:-0.01em;margin-top:10px;">لأنها تاخذ <span style="color:@A@;">خمس سنوات</span>.</div>\n'
@@ -285,14 +289,14 @@ S['Solution'] = sub(HEAD +
 '<div dir="rtl" style="width:1600px;height:900px;box-sizing:border-box;background:@A@;color:@G@;'
 'font-family:@BODY@;padding:80px 104px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;">\n'
 '  <div style="display:flex;justify-content:space-between;align-items:center;">\n'
-'    <div style="font-family:@MONO@;font-size:17px;letter-spacing:0.16em;color:rgba(11,10,9,0.5);" dir="ltr">08</div>\n'
+'    <div style="font-family:@MONO@;font-size:17px;letter-spacing:0.16em;color:rgba(11,10,9,0.5);" dir="ltr">06</div>\n'
 '    <div style="font-family:@BODY@;font-size:18px;color:rgba(11,10,9,0.5);">الفصل الثاني</div>\n'
 '  </div>\n'
 '  <div style="display:flex;align-items:center;justify-content:center;flex:1 1 auto;">\n'
 '    <div style="font-family:@KUFI@;font-weight:900;font-size:200px;line-height:1.2;color:@G@;letter-spacing:-0.02em;">والحل؟</div>\n'
 '  </div>\n'
 '  <div style="display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid rgba(11,10,9,0.25);padding-top:22px;">\n'
-'    <div style="font-family:@MONO@;font-size:16px;letter-spacing:0.18em;color:rgba(11,10,9,0.45);" dir="ltr">08 / 17</div>\n'
+'    <div style="font-family:@MONO@;font-size:16px;letter-spacing:0.18em;color:rgba(11,10,9,0.45);" dir="ltr">06 / 15</div>\n'
 '    <div style="font-family:@KUFI@;font-size:18px;font-weight:700;color:rgba(11,10,9,0.55);">كامن</div>\n'
 '  </div>\n'
 '</div>\n' + TAIL)
@@ -307,7 +311,7 @@ for img, name, role in [('fig-coordinator.png','المنسّق','يفهم الط
              '      <img src="' + img + '" style="height:236px;width:auto;max-width:100%;object-fit:contain;display:block;margin:0 auto 14px;">\n'
              '      <div style="font-family:@KUFI@;font-weight:700;font-size:38px;color:@T@;">' + name + '</div>\n'
              '    </div>\n')
-S['TheTeam'] = slide('09','طيب كيف نحلها؟',
+S['TheTeam'] = slide('07','طيب كيف نحلها؟',
   '  <div style="margin:auto 0;">\n' +
   H('ببساطة. <span style="color:@A@;">نوظّف فريق.</span>', 72) +
   '  <div style="display:flex;gap:30px;margin-top:52px;">\n' + team + '  </div>\n'
@@ -319,7 +323,7 @@ for t, hot in [('وكلاء ذكاء اصطناعي',True),('دقيقتين لل
     chips += ('    <div style="border:1px solid ' + ('@A@' if hot else '@L@') + ';'
               + ('background:rgba(255,92,26,0.10);' if hot else '') + 'padding:14px 24px;font-size:24px;color:'
               + ('@A@' if hot else '@M@') + ';">' + t + '</div>\n')
-S['TheReveal'] = slide('10','الانكشاف',
+S['TheReveal'] = slide('08','الانكشاف',
   '  <div style="font-family:@KUFI@;font-weight:700;font-size:72px;line-height:1.35;color:@M@;">احنا ما نوظّفهم.</div>\n'
   '  <div style="font-family:@KUFI@;font-weight:900;font-size:148px;line-height:1.3;color:@A@;margin-top:10px;">نشغّلهم.</div>\n'
   '  <div style="display:flex;gap:16px;margin-top:56px;flex-wrap:wrap;">\n' + chips + '  </div>\n', center=True)
@@ -472,7 +476,7 @@ def legend(t, ok, desc):
       '      <div style="flex:1 1 auto;font-size:18px;font-weight:300;color:@M@;line-height:1.5;">' + desc + '</div>\n'
       '    </div>\n')
 
-S['Suppliers'] = slide('15','المُخرج',
+S['Suppliers'] = slide('12','المُخرج',
   '  <div style="margin:auto 0;">\n'
   '  <div style="margin-top:18px;border-radius:11px;overflow:hidden;background:' + UI['paper'] + ';'
   'box-shadow:0 18px 44px rgba(0,0,0,0.55);">\n'
@@ -540,8 +544,8 @@ def zcard(title, sub, lines, out, dashed=False, img=None):
             + (('        <img src="' + img + '" style="width:50px;height:50px;object-fit:contain;">\n') if img else '')
             + '        <div>\n'
             '          <div style="font-family:@KUFI@;font-weight:900;font-size:30px;color:@T@;">' + title + '</div>\n'
-            '          <div style="font-size:16px;color:@A@;margin-top:2px;">' + sub + '</div>\n'
-            '        </div>\n      </div>\n')
+            + (('          <div style="font-size:16px;color:@A@;margin-top:2px;">' + sub + '</div>\n') if sub else '')
+            + '        </div>\n      </div>\n')
     body = ''
     for ln in lines:
         body += ('      <div style="font-size:20px;font-weight:300;color:@T@;line-height:1.45;margin-top:8px;">'
@@ -581,12 +585,12 @@ funnel = ('<svg viewBox="0 0 1392 236" style="width:100%;height:auto;">'
   + band(166, 234, 150, 64, '0.30', 'مكالمة صوتية', 'وكيل ذكاء اصطناعي يتصل', '< $1.00', 'اللي ما ردّ على الواتساب')
   + '</svg>')
 
-S['Discovery'] = slide('12','زووم · الاكتشاف',
+S['Discovery'] = slide('09','زووم · الاكتشاف',
   '  <div style="margin:auto 0;">\n'
   '  <div style="font-family:@KUFI@;font-weight:900;font-size:44px;color:@T@;">وش يصير قبل ما يوصل <span style="color:@A@;">الخريطة</span>؟</div>\n'
   '  <div style="margin-top:8px;">' + minimap + '</div>\n'
   '  <div style="display:flex;gap:16px;align-items:stretch;">\n'
-  + zcard('مصادر عامة','ما تحتاج إذن من أحد',
+  + zcard('مصادر عامة','',
           ['منافسات · ترميز · صنع في السعودية', 'التجارة · الموارد البشرية · المقاولين'],
           'اسم ورقم سجل', dashed=True)
   + darrow
@@ -653,7 +657,7 @@ def rung(n, name, tool, hot=False):
       + ';border:1px solid ' + ('@A@' if hot else '@L@') + ';padding:10px 20px;">' + tool + '</div>\n'
       '    </div>\n')
 
-S['Decisions'] = slide('13','زووم · القرار',
+S['Decisions'] = slide('10','زووم · القرار',
   '  <div style="margin:0 0 auto;">\n'
   '  <div style="font-family:@KUFI@;font-weight:900;font-size:44px;color:@T@;">ولما <span style="color:@A@;">الخريطة</span> تقول محد يقدر؟</div>\n'
   '  <div style="margin-top:8px;">' + minimap2 + '</div>\n'
@@ -689,7 +693,7 @@ for k, a, b in [('الوقت','٥ سنوات','أقل من ١٠ ساعات'),
              '      <div style="font-size:27px;font-weight:300;color:@M@;">' + a + '</div>\n'
              '      <div style="font-size:27px;font-weight:600;color:@T@;">' + b + '</div>\n'
              '    </div>\n')
-S['TheMath'] = slide('14','الحساب',
+S['TheMath'] = slide('13','الحساب',
   '  <div style="margin:auto 0;">\n'
   '  <div style="display:grid;grid-template-columns:200px 1fr 1fr;gap:30px;padding-bottom:12px;font-family:@BODY@;font-size:17px;">\n'
   '    <div></div><div style="color:@M@;">الطريقة القديمة</div><div style="color:@A@;">كامن</div>\n'
@@ -698,7 +702,7 @@ S['TheMath'] = slide('14','الحساب',
   '  </div>\n')
 
 # 16 close
-S['TheClose'] = slide('16','الختام',
+S['TheClose'] = slide('14','الختام',
   '  <div style="width:340px;height:12px;background:@A@;margin-bottom:44px;"></div>\n'
   '  <div style="font-family:@KUFI@;font-weight:900;font-size:86px;line-height:1.3;color:@M@;">مساهمة تعرف <span style="color:@T@;">مين سجّل</span>.</div>\n'
   '  <div style="font-family:@KUFI@;font-weight:900;font-size:86px;line-height:1.3;color:@T@;">كامن يعرف <span style="color:@A@;">اللي ما رفع يده</span>.</div>\n'
@@ -737,7 +741,7 @@ S['AsIs'] = slide('بدوننا','كيف يُجاب السؤال اليوم',
   '  <div style="font-family:@KUFI@;font-weight:700;font-size:42px;color:@A@;margin-top:28px;">و«محد يصنعه محلياً» مو حقيقة، بل «محد في لستتي».</div>\n'
   '  </div>\n')
 
-S['Team'] = slide('17','من نحن',
+S['Team'] = slide('15','من نحن',
   '  <div style="margin:auto 0;">\n'
   '  <div style="width:180px;height:10px;background:@A@;margin-bottom:26px;"></div>\n'
   '  <div style="font-family:@KUFI@;font-weight:900;font-size:76px;line-height:1.3;color:@T@;letter-spacing:-0.01em;">ثلاثة أشخاص. <span style="color:@A@;">وآلاف الوكلاء</span>.</div>\n'
@@ -770,11 +774,11 @@ S['Team'] = slide('17','من نحن',
 for name, src in S.items():
     open(name + '.dc.html', 'w', encoding='utf-8').write(src)
 
-order = ['Main','Question','Blind','WhoMakes','WhatWeBuy','WhatChanged','TheWall','Solution','TheTeam',
-         'TheReveal','TheMap','Discovery','Decisions','TheMath','Suppliers','TheClose','Team']
-titles = ['١ الغلاف','٢ السؤال','٣ لا أحد يفرّق','٤ اللي يرفع يده','٥ اختلاف المسمّى','٦ ما تغيّر',
-          '٧ جدار ٥ سنوات','٨ والحل؟','٩ نوظّف فريق','١٠ الانكشاف','١١ الخريطة',
-          '١٢ زووم الاكتشاف','١٣ زووم القرار','١٤ الحساب','١٥ قائمة الموردين','١٦ الختام','١٧ الفريق']
+order = ['Main','Question','Blind','Problem','TheWall','Solution','TheTeam',
+         'TheReveal','Discovery','Decisions','TheMap','Suppliers','TheMath','TheClose','Team']
+titles = ['١ الغلاف','٢ السؤال','٣ لا أحد يفرّق','٤ المشكلة','٥ جدار ٥ سنوات','٦ والحل؟','٧ نوظّف فريق',
+          '٨ الانكشاف','٩ زووم الاكتشاف','١٠ زووم القرار','١١ الخريطة','١٢ قائمة الموردين',
+          '١٣ الحساب','١٤ الختام','١٥ الفريق']
 abs_=[]
 for i, f in enumerate(order):
     col, row = i % 4, i // 4

@@ -3,11 +3,11 @@
 import re, json
 from tr_en import TR
 
-ORDER = ['Main','Question','Blind','WhoMakes','WhatWeBuy','WhatChanged','TheWall','Solution','TheTeam',
-         'TheReveal','TheMap','Discovery','Decisions','TheMath','Suppliers','TheClose','Team']
-TITLES = ['1 Cover','2 The Question','3 Nobody Can Tell','4 Raise Your Hand','5 Different Names','6 What Changed',
-          '7 The 5-Year Wall','8 So What Now','9 Hire A Team','10 The Reveal','11 The Map',
-          '12 Zoom · Discovery','13 Zoom · The Decision','14 The Math','15 The Supplier List','16 The Close','17 The Team']
+ORDER = ['Main','Question','Blind','Problem','TheWall','Solution','TheTeam',
+         'TheReveal','Discovery','Decisions','TheMap','Suppliers','TheMath','TheClose','Team']
+TITLES = ['1 Cover','2 The Question','3 Nobody Can Tell','4 The Problem','5 The 5-Year Wall','6 So What Now',
+          '7 Hire A Team','8 The Reveal','9 Zoom · Discovery','10 Zoom · The Decision','11 The Map',
+          '12 The Supplier List','13 The Math','14 The Close','15 The Team']
 
 AR_FONT = "'Thmanyah','Geeza Pro',Tahoma,sans-serif"
 EN_FONT = "'Archivo','Geeza Pro','Helvetica Neue',Arial,sans-serif"
