@@ -157,11 +157,20 @@ Buildable entirely from public documents:
 
 ## Incumbents, what Novelty has to beat
 
+### HRSD, Ministry of Commerce, Saudi Contractors Authority
+
+Three sources added in the reshape, all Tier 2, official registry declaration.
+
+- **HRSD (Ministry of Human Resources and Social Development)** · Saudization percentage and headcount band. The staffing half of a local-content picture, and a real signal of whether a supplier can carry volume **[access unverified]**
+- **Ministry of Commerce** · Commercial register and the **actual declared activity**, which is the difference between "sector: metals" and what the entity is registered to do. The commercial registration number is already the join key everywhere else, so this source is the spine of identity resolution **[access unverified]**
+- **Saudi Contractors Authority** · Contractor grading and capacity classification. **This is the one that brings services and contractors into scope at all**, which is also why UNSPSC matters: HS cannot express a service, and UNSPSC can **[access unverified]**
+
 ### MUSAHAMA Platform (PIF's own), read this first
 - `https://musahama.pif.gov.sa/` **[verified: live]**; program pages **[verified: 403 to non-browser clients]**
 - PIF's Local Content Growth Program (MUSAHAMA), four enablers: Supplier Development Program, PIF Local Content Policy, MUSAHAMA Awards, **MUSAHAMA Platform**.
 - PIF's own framing: solves "fragmented sourcing opportunities, limited visibility into aggregated demand, and repetitive registration processes by creating **one unified intelligence hub**," letting PIF and **150+ portfolio companies** "discover and connect with local high-performing suppliers." Target **60% local content**. SDP spans 40+ measures.
 - **Implication:** MUSAHAMA is *registration-and-engagement*. Suppliers opt in. Its blind spot is structural, **it can only see suppliers who registered.**
+- **UPDATE, 2026-09-09: MUSAHAMA and portfolio company data are available to us.** That changes their role from competitor to seed. They become **layer 0**, the incumbent baseline the map starts from: the strongest evidence on it, and still the minority. Discovery lift stops being an assertion and becomes a set difference against layers 0 and 1, and incumbent coverage against map coverage becomes a real, measured figure. Note the remaining asymmetry to state on stage: **the incumbent baseline is real while demand lines are still simulated** against real HS import values.
 - **Your novelty angle: outside-in.** A no-registration-required capability graph from Tarmeez + Mandatory List + Etimad awards + trade data, surfacing capable Saudi manufacturers who have **never registered with PIF**, and quantifying localization gap per HS code. **Frame as a discovery/enrichment layer feeding MUSAHAMA. Do not pitch a supplier registration portal.**
 
 ### Saudi / regional

@@ -10,13 +10,23 @@
 ## Architecture
 
 ```
-   Purchase requests ─►┌─────────────────────────────────┐
-   from portco ERPs    │  COORDINATOR AGENTS (per line)  │──┐
+   MUSAHAMA + portco ─►┌─────────────────────────────────┐
+   vendor masters      │  INCUMBENT LOAD (layer 0)       │──┐
+   + engagements       │  buyer-attested, tier 0         │  │
+                       └─────────────────────────────────┘  │
+                                                            │
+   Purchase requests ─►┌─────────────────────────────────┐  │
+   from portco ERPs    │  COORDINATOR AGENTS (per line)  │──┤
    (AR/EN free text)   │  spec + HS anchor               │  │
                        │  → POOL across companies + time │  │
                        └─────────────────────────────────┘  │
                                     │ pooled order          │
                                     ▼                       │
+                       ┌─────────────────────────────────┐  │
+                       │  AUDITOR, request audit         │  │
+                       │  portco bars: lead time,        │──┤
+                       │  standards, class → fit         │  │
+                       └─────────────────────────────────┘  │
    Tarmeez API ───────►┌─────────────────────────────────┐  │
    MLCP (CR nums)─────►│ DETECTIVE AGENTS (per supplier) │  │
    Made in Saudi ─────►│ crawl · CR · awards · certs     │  │
@@ -24,20 +34,26 @@
                        └─────────────────────────────────┘  │
                                     │                       ▼
                        ┌─────────────────────────────────┐ ┌──────────────────┐
-                       │  AUDITOR AGENTS (per claim)     │ │  CAPABILITY      │
+                       │  AUDITOR, capability audit      │ │  CAPABILITY      │
                        │  adversarial: REFUTE this       │►│  GRAPH           │
-                       │  then CLASSIFY: maker /         │ │  (persisted)     │
-                       │  assembler / distributor/trader │ │                  │
+                       │  CLASSIFY + assign UNSPSC       │ │  (persisted)     │
+                       │  maker/assembler/dist./trader   │ │                  │
                        └─────────────────────────────────┘ │  supplier        │
                                                            │  ├─ capability   │
    Comtrade HS ───────►┌─────────────────────────────────┐ │  │  ├─ class     │
    import values       │  ADVISOR AGENTS (per gap)       │◄┤  │  ├─ evidence  │
-                       │  pooled annual value ·adjacency │ │  │  └─ verdict   │
-                       │  who could pivot → investment   │ │  ├─ region       │
+                       │  ladder: buy · split · invest · │ │  │  ├─ unspsc    │
+                       │  partner · localise · import    │ │  │  └─ lead time │
                        └─────────────────────────────────┘ │  └─ CR number    │
                                     │                      └──────────────────┘
                                     ▼
-     VETTED SUPPLIER LIST   ·   GAP LEDGER   ·   COVERAGE %
+                       ┌─────────────────────────────────┐
+                       │  OUTREACH CASCADE               │──► MUSAHAMA
+                       │  email 5d → whatsapp 3d → voice │    registration
+                       └─────────────────────────────────┘
+                                    │
+                                    ▼
+  VETTED LIST · OPTION LADDER · GAP LEDGER · COVERAGE (incumbent vs map)
 ```
 
 **Design rule:** the graph is the product. Agents write into it; the UI reads from it. A cold miss triggers a live detective that *writes back*. Never query-time-only, see the reasoning in `SUBMISSION.md`.
@@ -60,31 +76,44 @@ The single highest-risk hours. Everything downstream depends on which endpoints 
 
 ## Hour 2–8, The spine
 
-**Graph schema** (keep it small, seven node types, resist the urge to model everything). Names are fixed in `CONTEXT.md`: Supplier, never Factory; class lives on the Capability; every Evidence carries a tier; the Auditor's verdict is supported or refuted; Run is the trajectory store (ADR 0003):
+**Graph schema** (eleven node types; the last four are the reshape, and every change is additive). Names are fixed in `CONTEXT.md`: Supplier, never Factory; class lives on the Capability; every Evidence carries a tier; the Auditor's verdict is supported or refuted; Run is the trajectory store (ADR 0003):
 
 ```
-Supplier   { id, name_ar, name_en, cr_number?, region, geo?, in_tarmeez, in_made_in_saudi, in_mlcp, source, fetched_at }
+Supplier   { id, name_ar, name_en, cr_number?, region, geo?, layer 0|1|2,
+             in_musahama, in_portco_master, in_tarmeez, in_made_in_saudi, in_mlcp,
+             in_hrsd, in_moc, in_sca, source, fetched_at }
 Product    { id, description_ar, description_en, hs_code?, category }
-Capability { supplier_id, product_id, spec_attrs{}, class, verdict, confidence, status }
-Evidence   { capability_id, tier (1-4), source_url, excerpt, fetched_at }
-DemandLine { id, raw_text, portco, normalized_spec, hs_code, confidence, pool_id? }
-PooledOrder{ id, hs_code, spec_envelope, qty_now, qty_annual, portco_count }
-Run        { id, role, input_ref, model, steps[], started_at, finished_at }
+Capability { supplier_id, product_id, spec_attrs{}, class, verdict, confidence, status,
+             unspsc_{segment,family,class}?, lead_time_days?, lead_time_source? }
+Evidence   { capability_id, tier (0-4), visibility, source_url, excerpt, fetched_at }
+DemandLine { id, raw_text, portco, normalized_spec, hs_code, confidence, pool_id?,
+             required_lead_time_days?, quality_standards[] }
+PooledOrder{ id, hs_code, spec_envelope, qty_now, qty_annual, portco_count, volume_status }
+Run        { id, role, mode, input_ref, model, steps[], started_at, finished_at }
+Engagement { id, supplier_id, portco, status, description, lead_time_days_actual?, source }
+PortcoPref { portco, unspsc_family?, max_lead_time_days?, required_standards[], min_class? }
+Option     { pooled_order_id, rung 1-6, state, answer?, supplier_id?, economics }
+Outreach   { supplier_id, stage 1-3, sent_at, responded_at?, outcome, cost_usd }
 ```
+
+**Tier 0 is new and it is why the ladder goes to zero, not one:** a portco's own record that a supplier delivered is stronger evidence than any public source, and it is private to the portfolio, hence `visibility`. The change is safely additive because the ladder already reads "lower is stronger", so every existing `tier <= 2` test admits Tier 0 correctly without being touched.
+
+**The spec envelope needs new arithmetic.** Attributes intersect, but lead time is **tightest-wins** (a pool of a 30-day and a 90-day line demands 30) and standards are a **union** (a pool needing ISO 9001 and API 6D demands both). Getting this backwards silently produces orders that look servable and are not, so it is tested before anything else in the reshape is built.
 
 `cr_number` is the join key across every source. Populate it wherever available (MLCP gives it outright), it is what makes a future Wathq integration a drop-in rather than a rebuild.
 
 **Stack (decided 2026-09-02, reasoning in `docs/adr/`):** TypeScript end to end. LangGraph.js for the agent runtimes, with a registry that maps each role to a provider and model from the environment: Ollama first (`qwen3.5:9b` default; the spike A/Bs `qwen3:8b`, and ALLaM and Cohere's Arabic Command R7B remain to try), switchable per role to Claude, OpenAI or DeepSeek. `bge-m3` through Ollama for embeddings. Postgres with pgvector in Docker holds the graph, the vectors, the pg-boss job queue and the LangGraph checkpoints. Every run's trajectory is written to Postgres and streamed to the terminal; Langfuse self-hosted is the dev trace viewer. Tavily is the Detective's search tool. Next.js for the three screens. In code, agent workflows are called runs, never graphs.
 
 **Work:**
-1. Ingest Tarmeez → Supplier + Product + baseline Capability (class: manufacturer, verdict: pending, one Tier 2 evidence each). This alone is thousands of real nodes.
-2. Ingest MLCP → CR numbers, merge on name similarity, flag conflicts for review.
-3. Ingest Made in Saudi via `api.saudimade.sa` (SPA, capture the XHR, the HTML shell is empty) → `certified_local` flag, ≥40% value-add rule.
-4. Load Mandatory List → flag products government/state-owned entities must source locally.
-5. Load Comtrade HS-6 imports → demand value per product line.
-6. **Reconcile the conflicting figures now, not on stage:** Tarmeez product count (52,824 AR vs 12,641 EN), Mandatory List size (1,444 vs 233 vs 116 are three different metrics), MODON scale. Pick one citable number per claim and write it down.
+1. **Incumbent load, before any public source.** MUSAHAMA records, portco vendor masters and engagement history: the map's starting population, and the only Tier 0 evidence there is. Reconcile on commercial registration number and expect the messiest matching in the project here, because vendor masters carry trade names and typos, not clean CRs. Keep `approved_not_used` distinct from an active supplier or the baseline is overstated.
+2. Ingest Tarmeez → Supplier + Product + baseline Capability (class: manufacturer, verdict: pending, one Tier 2 evidence each). This alone is thousands of real nodes.
+3. Ingest MLCP → CR numbers, merge on name similarity, flag conflicts for review.
+4. Ingest Made in Saudi via `api.saudimade.sa` (SPA, capture the XHR, the HTML shell is empty) → `certified_local` flag, ≥40% value-add rule.
+5. Load Mandatory List → flag products government/state-owned entities must source locally.
+6. Load Comtrade HS-6 imports → demand value per product line.
+7. **Reconcile the conflicting figures now, not on stage:** Tarmeez product count (52,824 AR vs 12,641 EN), Mandatory List size (1,444 vs 233 vs 116 are three different metrics), MODON scale. Pick one citable number per claim and write it down.
 
-7. **Coordinator spike, in parallel with the ingest.** Twenty hand-picked messy bilingual demand lines, resolved to spec and HS anchor by hand-checked agent output. This does not need the graph, so it does not wait for it. If Arabic to English normalisation cannot be made to work, the whole demo does not work, and you need to know that at hour 8, not hour 40.
+8. **Coordinator spike, in parallel with the ingest.** Twenty hand-picked messy bilingual demand lines, resolved to spec and HS anchor by hand-checked agent output. This does not need the graph, so it does not wait for it. If Arabic to English normalisation cannot be made to work, the whole demo does not work, and you need to know that at hour 8, not hour 40.
 
 **Checkpoint at hour 8:** the graph loads, is queryable, and contains real Saudi factories, and the Coordinator spike resolves at least 15 of the 20 lines. If not, cut scope somewhere else, not here.
 
@@ -110,7 +139,7 @@ RULE    Never assert a capability without an evidence record.
         Absence of evidence is a valid output. Say "unknown".
 ```
 
-**Auditor agent**, one per claim, adversarial, runs immediately after its detective (pipeline, no barrier, item A can audit while item B is still being investigated):
+**Auditor, capability audit**, one per claim, adversarial, runs immediately after its detective (pipeline, no barrier, item A can audit while item B is still being investigated):
 
 ```
 INSTRUCTION  Try to REFUTE this capability. Default to refuted when
@@ -121,7 +150,8 @@ LENSES       is-it-real: dead CR? no such product? contradicting source?
              is-it-local: manufacturer / assembler / authorised
              distributor / trader, from CR activity, facility scale,
              brand ownership
-OUTPUT       { verdict: supported | refuted, class, confidence: 0-1,
+OUTPUT       { verdict: supported | refuted, class, unspsc: {segment, family, class},
+               confidence: 0-1,
                reasoning, killer_evidence? }
 ```
 
@@ -166,7 +196,11 @@ OUTPUT  normalized_spec, hs_code, confidence, the pooled order's
 
 ---
 
-## Hour 28–40, Gap ledger and advisors
+## Hour 28–40, The request audit, the ladder and the gap ledger
+
+**Auditor, request audit**, one per pooled order. Reads `portco_preferences`, returns each candidate with a fit: `fits`, `misses_lead_time`, `misses_quality`, or `conflicting_preferences` when two portcos in one order disagree, in which case the order splits rather than averaging. It reads the graph and never writes it, which is what keeps it cheap enough to run per request. **This is what makes the third reason on slide 3 a screen rather than a claim, so it comes before the ladder.**
+
+## Hour 28–40 continued, Gap ledger and advisors
 
 **Advisor agent**, one per gap:
 
@@ -178,8 +212,11 @@ STEPS   1. Total pooled annual value at this HS line (Comtrade/GASTAT + pooled d
         3. Adjacent domestic capability, who makes something near this?
         4. Which factories could pivot with existing equipment?
         5. Raw material availability (Ta'adeen / SGS layer)
-OUTPUT  Ranked gap with import value, regulatory flag, pivot candidates,
-        and a one-paragraph investment case
+OUTPUT  An option ladder, rungs 1-6, each with state (inferred | asked |
+        answered), economics, and the supplier it was put to.
+        Rungs 3 and 4 produce QUESTIONS, not conclusions; the answers
+        arrive through the outreach cascade. An unanswered rung is
+        never rendered as a no.
 ```
 
 **Adjacency inference is the differentiator.** Nobody else will attempt it. A stainless pipe-fitting plant can make valve bodies. Reason over equipment class, material handling, process similarity and existing product adjacency, not category codes.
@@ -242,5 +279,7 @@ Coverage, spend-weighted in SAR, as the persistent header figure; line coverage 
 3. Etimad awards → capability confidence drops, everything still works
 4. Map screen → the gap ledger table is the stronger artefact anyway
 5. Breadth of entities → narrow to one sector
+6. Outreach stages 2 and 3 → design and cost them, run stage 1 for real. This is the most defensible thing to leave partly on the roadmap
+7. Ladder rungs 3 to 5 → compute the economics, leave the asking to the roadmap
 
-**Never cut:** evidence + confidence on every claim · one auditor kill on stage · the gap ledger · the coverage number.
+**Never cut:** evidence + confidence on every claim · one auditor kill on stage · the gap ledger · the coverage number · the incumbent-vs-map coverage delta, which is the number a committee acts on.

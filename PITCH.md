@@ -1,6 +1,6 @@
 # KAMIN, the pitch deck
 
-> 19 slides, matching the published deck. Arabic version: `PITCH_AR.md`
+> 20 slides, matching the published deck. Arabic version: `PITCH_AR.md`
 > Story: `STORY.md` · Formal submission: `SUBMISSION.md`
 
 ---
@@ -39,8 +39,9 @@ PIF has more than **150 companies** buying every day: steel, valves, cables, che
 
 **Case one · For a good reason**, genuinely nobody makes it locally.
 **Case two · For a sad reason**, someone makes it two hours away, and nobody knows they exist.
+**Case three · Because they do not fit**, we found them, local and real. But their lead time is longer than the company can carry, or their quality sits under its bar. And every company sets a different bar.
 
-# And to this day, nobody can tell the two apart.
+# And to this day, nobody can tell the three apart.
 
 ---
 
@@ -72,13 +73,15 @@ To find out what a Saudi factory can supply, **it** has to tell you. Every suppl
 
 More than 150 companies, each with a different procurement system, two languages, and free text.
 
-| System | PR No. | Description |
-|---|---|---|
-| SAP MM | `PR-2026-0142` | صمام كروي ٢ بوصة |
-| Oracle iProc | `REQ-88213` | `BALL VLV 2IN SS` |
-| Excel | `-` | `Valve, ball, stainless, 2 inch` |
+| System | PR No. | Description | Lead time | Standard |
+|---|---|---|---|---|
+| SAP MM | `PR-2026-0142` | صمام كروي ٢ بوصة | 30 days | `ISO 9001` |
+| Oracle iProc | `REQ-88213` | `BALL VLV 2IN SS` | `45 days` | `API 6D` |
+| Excel | `-` | `Valve, ball, stainless, 2 inch` | `6 wks` | `ISO 9001` |
 
-**Exactly the same thing.** And three strings a computer sees as unrelated.
+**Exactly the same thing.** Under three names, three lead times and three standards.
+
+Every order carries a lead time and a quality standard. Pooling must take the **tightest lead time** and the **union of the standards**, never the average.
 
 ---
 
@@ -93,6 +96,9 @@ More than 150 companies, each with a different procurement system, two languages
 | Saudi Made | Local content certificate |
 | Local Content Authority | Local content calculation methodology |
 | GASTAT | Imports by product code |
+| HRSD | Saudization and headcount |
+| Ministry of Commerce | Commercial register and actual activity |
+| Saudi Contractors Authority | Contractor grading and capacity |
 | Company site and registry | Catalogue, certificates, commercial register |
 
 A good researcher spends one afternoon and comes back with an honest page on **one factory**.
@@ -164,29 +170,34 @@ And the question changes: not "who makes this?" but **"who can serve this volume
 
 ## 12 · The Auditor
 
-**One per claim**
+**They work in two places on the map, not one.**
 
-**Input:** The candidates the Detective found
+| After the Detective · **Capability audit** | After the Coordinator · **Request audit** |
+|---|---|
+| **Input:** the candidates the Detective found | **Input:** a new pooled order, and the companies' bars |
+| They do not strike the trader out, they classify them: manufacturer, assembler, authorised distributor, or trader. And they give every capability its **UNSPSC** code, the one MUSAHAMA speaks. | They return the map ranked for this company in particular: the lead time it can carry, the standards it requires, and the class it accepts. |
+| Writes to the map | Reads the map, never writes it |
 
-It does not strike the trader out, it **classifies** them: manufacturer, assembler, authorised distributor, or trader. Each class carries its own weight in local content.
-
-Because a local trader is still a local supplier: they employ Saudis and their margin stays in the country. Lower local content, not zero.
-
-# Output: every supplier with its class, its evidence, and a confidence score.
+# Because a supplier that fits one company does not necessarily fit the next.
 
 ---
 
 ## 13 · The Advisor
 
-**One per gap**
+**They do not stop at the gap. They hand you a ladder of options, cheapest first.**
 
-**The gap:** Pooled demand nobody in the Kingdom can supply
+| | Option | What it means |
+|---|---|---|
+| 1 | **Buy it** | One supplier can serve the volume today |
+| 2 | **Split it** | Several local suppliers together, so the volume does not exclude the small ones |
+| 3 | **Invest** | "Could you, if we expanded your capacity?" Capex, against a contract for the volume |
+| 4 | **Partner** | "Could you bring a global manufacturer in with you?" A joint venture, and knowledge transfer |
+| 5 | **Localise** | Nobody can, so PIF brings the industry itself into the Kingdom |
+| 6 | **Import** | No option above works. The gap is logged with its annual value |
 
-What is it worth in riyals a year? Do the regulations mandate localising it? And which existing factory could supply it if anyone ever asked?
+Rungs 3 and 4 are asked, not inferred, and the question travels the outreach cascade. **An unanswered rung is not a no.**
 
-And here is the difference: the demand is now **pooled and forward-looking**, a volume that justifies investment, not a one-off order.
-
-# Nobody ever asked.
+# And the pooled order is what makes the investment possible. A one-off order does not finance a factory.
 
 ---
 
@@ -209,8 +220,13 @@ And you run four thousand as easily as four. Five years becomes under ten hours.
 
 *Two faces: what the Kingdom can supply, and what the portfolio buys, pooled*
 
-`Public sources → The Detective → The Auditor → THE MAP`
-`Purchase requests → The Coordinator → THE MAP`
+Three inputs, not two:
+
+- `Public sources → The Detective → The Auditor (capability audit) → THE MAP`
+- `Internal sources (MUSAHAMA and company systems) → THE MAP directly`
+- `Purchase requests → The Coordinator → The Auditor (request audit) → THE MAP`
+
+**The internal layer is the starting line.** Everyone who already raised their hand, and still the minority. Everything the Detective finds above that line is **discovery lift**, computed rather than asserted.
 
 **THE MAP:** capability + pooled demand
 
@@ -226,9 +242,10 @@ And you run four thousand as easily as four. Five years becomes under ten hours.
 |---|---|---|
 | **Purchase request** | Raised in the company system | 2-inch ball valve, 12 units |
 | **The Coordinator** | Understands it and pools it with others | Pooled demand: 40,000 a year |
+| **The Auditor** | Reads the company's bar | Required lead time and quality |
 | **The Detective** | Finds who can serve the volume | Candidates, each with evidence |
 | **The Auditor** | Verifies and classifies each candidate | Manufacturer · assembler · distributor · trader |
-| **The Advisor** | When nobody can supply it | An investment case at pooled scale |
+| **The Advisor** | When nobody can supply it | A ladder of options, not just a gap |
 
 ↓ **THE MAP**, two faces: what the Kingdom can supply, and what the portfolio buys, pooled
 
@@ -241,7 +258,28 @@ And you run four thousand as easily as four. Five years becomes under ten hours.
 
 ---
 
-## 17 · The math
+## 17 · Outreach
+
+# We found them. So how do we reach them?
+
+*Each stage runs only on whoever did not answer the last*
+
+| | Stage one | Stage two | Stage three |
+|---|---|---|---|
+| **Channel** | Email | WhatsApp | Voice agent |
+| **Wait** | 5 days | 3 days | Calls whoever is left |
+| **Cost** | `~ $0.0001` | `~ $0.04` | `< $1.00` |
+| **Why** | The large ones with sales teams answer here. And most of them were registered already. | With the registration link. The small workshop reads WhatsApp, not corporate email. | A call in Arabic. By here the number is small, so the call is worth making. |
+
+# The expensive channel only ever reaches the few who are left.
+
+Which is how we reach the smallest workshop. Not generosity, arithmetic. And the arithmetic holds even if nobody answers the first two stages, so no optimistic response rate is load-bearing.
+
+And the link takes them to **MUSAHAMA** registration. KAMIN is an internal system, with nothing on it for the supplier.
+
+---
+
+## 18 · The math
 
 | | The old way | KAMIN |
 |---|---|---|
@@ -255,7 +293,7 @@ And you run four thousand as easily as four. Five years becomes under ten hours.
 
 ---
 
-## 18 · The close
+## 19 · The close
 
 # Musahama knows who registered.
 # KAMIN knows who never raised a hand.
@@ -266,7 +304,7 @@ The first is a list of names that raised their hand. The second is a map of what
 
 ---
 
-## 19 · Who we are
+## 20 · Who we are
 
 # Three people. Thousands of agents.
 

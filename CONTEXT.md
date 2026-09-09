@@ -27,12 +27,29 @@ The Detective's second pass over one supplier: it reads the supplier's catalogue
 _Avoid_: spec crawler, enricher
 
 **Auditor** (المدقّق):
-The agent that tries to refute one capability and assigns its class.
+The agent that judges a claim against its evidence. She works in two places on the map, in two passes.
 _Avoid_: Verifier, checker
 
+**Capability audit** (تدقيق القدرة):
+The Auditor's pass after the Detective, over one capability. Refutes or supports it, assigns its class, and assigns its UNSPSC code. Writes to the map.
+_Avoid_: Verification pass, audit (unqualified)
+
+**Request audit** (تدقيق الطلب):
+The Auditor's pass after the Coordinator, over one pooled order against the requesting portcos' preferences. Returns the map ranked for them, with a fit per candidate. Reads the map, never writes it.
+_Avoid_: Matching, filtering, ranking pass
+
 **Advisor** (المستشار):
-The agent that turns one gap into an investment case.
+The agent that turns one pooled order the map cannot serve into an option ladder. Does not stop at the gap.
 _Avoid_: Strategist
+
+**Option ladder** (سلّم الخيارات):
+The Advisor's ordered set of interventions for one pooled order, walked upward until a rung holds: buy it, split it, invest in capacity, partner for technology transfer, localise, import. _Avoid_: options list, recommendations, escalation
+
+**Rung**:
+One intervention on the ladder, with its instrument, its economics and its state. States are inferred, what the map believes; asked, put to the supplier; and answered. An unanswered rung is not a refusal.
+
+**Offtake**:
+The pooled, multi-year, contracted volume behind a pooled order. What makes a capacity investment or a joint venture financeable, and the reason pooling matters a second time.
 
 ## Demand side
 
@@ -55,7 +72,27 @@ The Harmonized System code a specification resolves to. Two lines with the same 
 A PIF portfolio company. The buyer.
 _Avoid_: Client, customer, account
 
+**Portco preference**:
+The bar one portfolio company sets for a category: maximum lead time, required standards, minimum class. What makes a supplier suitable for one buyer and not another.
+_Avoid_: Requirements, criteria (both too general), SLA
+
+**Fit**:
+Whether a supported capability meets a specific portco's preferences. Distinct from verdict, which is about truth, and from class, which is about kind. A capability can be supported, correctly classed, and still not fit.
+_Avoid_: Match (reserved for the demand-to-supply join), suitability score
+
 ## Supply side
+
+**Engagement** (التعامل):
+A record that one supplier supplied one portco, past or current. Tier 0 evidence, and the substance of the incumbent baseline. An approved vendor never bought from is a different fact from an active one, and is recorded as such.
+_Avoid_: Contract, relationship, history
+
+**Incumbent baseline**:
+The suppliers PIF and its portcos already know, from MUSAHAMA, vendor masters and engagements. Where the map starts, and still the minority: the national catalogue itself holds 3,153 of 12,946 factories.
+_Avoid_: Existing vendors, known set, legacy suppliers
+
+**Outreach cascade** (سلسلة الوصول):
+Email, then WhatsApp, then a voice agent, each stage running only on the previous stage's non-responders. How a capability on the map becomes a supplier registered on MUSAHAMA. KAMIN holds no registration of its own.
+_Avoid_: Campaign, sequence, drip
 
 **Supplier** (المورّد):
 A company in the Kingdom that can put a product in a buyer's hands, whatever its class. Identified by commercial registration number wherever one is known.
@@ -78,7 +115,7 @@ A typed edge between a supplier and a brand, group, certifier, standard, materia
 _Avoid_: link, tag, attribute (reserved for a capability's stated specification)
 
 **Evidence tier**:
-The standing of one piece of evidence. Tier 1, third-party verified: an Etimad award, Made in Saudi certification, ISO or SASO. Tier 2, official registry declaration: Tarmeez, commercial register activity, MLCP. Tier 3, self-published: the supplier's own site and catalogues. Tier 4, inferred: adjacency and equipment signals, never standing alone. Where a page lives decides the tier before what it claims: a certificate shown on the supplier's own site is Tier 3, the certifier's or the registry's page for it is Tier 1 or 2.
+The standing of one piece of evidence. Tier 0, buyer-attested: a portco's own record that this supplier delivered this thing. Stronger than any public source, and private to the portfolio. Tier 1, third-party verified: an Etimad award, Made in Saudi certification, ISO or SASO. Tier 2, official registry declaration: Tarmeez, commercial register activity, MLCP. Tier 3, self-published: the supplier's own site and catalogues. Tier 4, inferred: adjacency and equipment signals, never standing alone. Where a page lives decides the tier before what it claims: a certificate shown on the supplier's own site is Tier 3, the certifier's or the registry's page for it is Tier 1 or 2.
 _Avoid_: Primary/secondary/marketing, strongest/weakest, source type
 
 **Verdict**:
@@ -117,6 +154,13 @@ _Avoid_: Gap register, gap list, gap analysis
 **Coverage** (نسبة التغطية):
 The share of pooled annual demand value, in riyals, for which at least one supported capability exists. Spend-weighted and portfolio-level, never per company.
 _Avoid_: Coverage rate, localization coverage, coverage percentage
+
+**Incumbent coverage**:
+The same figure computed only over suppliers already in the incumbent baseline. Read against full map coverage; the delta between them is the sourcing opportunity, in riyals.
+
+**Volume status**:
+Whether a pooled order's supported capabilities can serve its quantity: served, short, or unknown. Separate from gap kind, which is about capability. A supplier can be able to make a thing and unable to make this much of it.
+_Avoid_: Capacity gap (ambiguous against the gap kinds), fulfilment status
 
 The headline coverage is **at the stated specification**: the best supported supplier states at least one attribute that agrees with the pooled envelope and none that conflicts, and names the object class on a catch-all subheading. **Type-verified coverage** sits between: the best supported supplier names the order's product type in its title or stated type with nothing in conflict, but no size or rating is confirmed. **Category-level coverage** is the secondary figure: a verified supplier declares the subheading with nothing in conflict but no specification on record. Each pooled order carries a spec status: verified at spec, type verified, declared only, or nobody.
 

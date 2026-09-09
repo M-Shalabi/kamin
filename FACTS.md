@@ -120,7 +120,7 @@ capability of any class. Definitions in `CONTEXT.md`, mechanics in `BUILD_PLAN.m
 
 ## 5. Blocked / external
 
-- **Notion pages are stale, and this is now the largest gap.** All three still carry the name
+- **Notion pages are stale, and this is now the largest gap.** Three reshapes behind as of 2026-09-09. All three still carry the name
   **نسيج**, the pre-reshape mechanism (factory-by-factory discovery, no demand pooling), the old
   role names, 17 slides, and no English version at all. The local `.md` files, the PDFs and the
   published canvas are current; Notion is roughly three reshapes behind.
@@ -158,14 +158,15 @@ capability of any class. Definitions in `CONTEXT.md`, mechanics in `BUILD_PLAN.m
 
 ## 7. Current state of the deliverables
 
-- **Deck: 19 slides plus an unnumbered appendix, in both Arabic and English**, 40 artboards on one
-  canvas. Slide 8 is the inverted-colour interstitial; slide 19 is the team.
+- **Deck: 20 slides plus an unnumbered appendix, in both Arabic and English**, 42 artboards on one
+  canvas. Slide 8 is the inverted-colour interstitial, slide 17 the outreach cascade, slide 20 the team.
 - **The English deck is derived, not hand-written.** `deck/gen_en.py` reads each Arabic artboard and
-  applies a 221-entry translation map from `deck/tr_en.py`, flips `dir`, swaps the font stack,
+  applies a 287-entry translation map from `deck/tr_en.py`, flips `dir`, swaps the font stack,
   converts Arabic-Indic numerals, flips the flow arrows and mirrors the map diagram. So a change to
   `deck/gen2.py` propagates to both languages, and any new Arabic string fails loudly until it is
-  translated. Do not hand-edit `EN_*.dc.html`.
-- **PDFs:** `KAMIN-Pitch-Deck.pdf` (38 pages, AR then EN), `-AR.pdf` and `-EN.pdf` (19 each), fonts
+  translated. Do not hand-edit `EN_*.dc.html`. `deck/render.py` builds the three PDFs, and
+  `python3 deck/render.py --only Blind,TheMap` spot-checks single slides while iterating.
+- **PDFs:** `KAMIN-Pitch-Deck.pdf` (40 pages, AR then EN), `-AR.pdf` and `-EN.pdf` (20 each), fonts
   embedded so exports keep their typography.
 - **Canonical name:** كامن / KAMIN, "the thing that exists but has never been found".
   Slogan: **موجود. بس ما أحد شافه.**
@@ -219,3 +220,29 @@ fixed to Detective and Coordinator on 2026-09-02.
 
 **Machine note:** the data volume was at 96% on 2026-09-02. Langfuse is deferred until space is
 freed; Postgres runs first.
+
+---
+
+## 8. The reshape of 2026-09-09, and what it left open
+
+The design changed on five axes at once. `docs/superpowers/specs/2026-09-09-incumbent-baseline-and-outreach-design.md` is the spec; `CONTEXT.md` carries the vocabulary. What is worth flagging here:
+
+**Resolved by the user, and it changes the numbers.** MUSAHAMA and portfolio company data **are** available. Layer 0 is real, so incumbent coverage and discovery lift are measured rather than simulated. The asymmetry that remains, and that must be said on stage: **the incumbent baseline is real, the demand lines are still simulated** against real HS import values.
+
+**Numbers now on a slide that are not yet measured.**
+- **Outreach per-contact costs**, `~$0.0001` email, `~$0.04` WhatsApp, `<$1.00` voice, on slide 17. These are order-of-magnitude, not quotes. Price the WhatsApp Business API for Saudi Arabia and the voice stack from real vendors before saying them out loud.
+- **Response rates for all three cascade stages are unmeasured, and are deliberately absent from the slide.** The bar widths on slide 17 are a visual metaphor with no percentage attached, which is intentional: the cost argument is structural, so it survives a pessimistic funnel and needs no optimistic rate. Do not add percentages later.
+- **Reachability is measurable today and has not been measured.** `suppliers` already holds `email`, `phone` and `website` from Tarmeez, so the share of candidates with a usable contact is computable from the graph as it stands. Run it: it bounds the funnel with a real number, and it is a better thing to show than a guessed rate.
+- The `$0.30` per factory estimate from before is unchanged and still unmeasured.
+
+**A correction to the funnel's own assumption, worth keeping in mind.** The expectation that most suppliers answer the email rests on the large ones with sales teams replying. But by construction those are already in layer 0 or 1: they registered, that is how they got there. **The cascade runs mostly on layer 2**, the segment least reachable by business email and most reachable by WhatsApp. Hence entry-point routing: a supplier with no email on record enters at stage 2 rather than burning a five-day wait.
+
+**Still owed in the design, not just the build.**
+- The gap ledger still does not split *no local manufacturing* from *no local supply at all*. Carried over from item 1 and still open.
+- The RFQ boundary is decided and appears on no slide and in no submission. Still open.
+- `volume_status` is specified and not yet built. Until it is, a pooled order that a supplier can make but cannot make *enough of* is still counted as covered, which overstates the baseline.
+- Rungs 3 to 5 of the option ladder make the Advisor multi-turn and stateful where she is one-shot today. That is the largest single build in the spec.
+
+**Compliance surfaces to name before they surprise anyone.** The WhatsApp Business API requires pre-approved message templates and has opt-in rules, and outbound voice at scale has its own regulatory surface in the Kingdom. Both are ordinary B2B procurement outreach; both have a shape worth checking in week one rather than week three.
+
+**"AI-Native Principle Engineer"** on slide 20 is as supplied. If *Principal* was meant, it changes in the deck, three PDFs, both pitch files and the canvas.
