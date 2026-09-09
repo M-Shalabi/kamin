@@ -1,6 +1,6 @@
 # KAMIN, the pitch deck
 
-> 17 slides, matching the published deck. Arabic version: `PITCH_AR.md`
+> 15 slides, matching the published deck. Arabic version: `PITCH_AR.md`
 > Story: `STORY.md` · Formal submission: `SUBMISSION.md`
 
 ---
@@ -44,9 +44,11 @@ Reasons two and three are the ones the deck is about. Nobody can tell them apart
 
 ---
 
-## 4 · The problem, half one
+## 4 · The problem
 
-# ✋ We only know who raises their hand
+*Three faces of it, side by side on one slide.*
+
+### ✋ We only know who raises their hand
 
 > **To know them, they have to reach you.**
 > And picture a factory in Al Kharj, twenty years old, that you have never heard of, and it is exactly what you were looking for.
@@ -60,45 +62,23 @@ Reasons two and three are the ones the deck is about. Nobody can tell them apart
 
 **✗ It just is not on your supplier list.**
 
----
+### The same item, three different names
 
-## 5 · The problem, half two
-
-# The same item, three different names
-
-*Three portfolio companies, three procurement systems, one object.*
-
-| System | PR No. | Description | Qty | Lead time | Standard | Date |
-|---|---|---|---|---|---|---|
-| Portfolio company A · SAP MM | `PR-2026-0142` | صمام كروي ٢ بوصة | 12 EA | 30 days | `ISO 9001` | `2026-01-14` |
-| Portfolio company B · Oracle iProc | `REQ-88213` | `BALL VLV 2IN SS` | 40 PCS | `45 days` | `API 6D` | `14/01/2026` |
-| Portfolio company C · Excel | `-` | `Valve, ball, stainless, 2 inch` | 5 units | `6 wks` | `ISO 9001` | `Jan 14` |
+| System | Description | Lead time | Standard |
+|---|---|---|---|
+| Portfolio company A · SAP MM | صمام كروي ٢ بوصة | 30 days | `ISO 9001` |
+| Portfolio company B · Oracle iProc | `BALL VLV 2IN SS` | `45 days` | `API 6D` |
+| Portfolio company C · Excel | `Valve, ball, stainless, 2 inch` | `6 wks` | `ISO 9001` |
 
 Every line carries a lead time and a quality standard of its own. Pooling takes the **tightest lead time** and the **union of the standards**, never the average.
 
----
+### The data exists, just scattered
 
-## 6 · What changed
-
-# The data exists, but it is scattered
-
-| Source | What it holds |
-|---|---|
-| Monafasat | Government contract awards |
-| Tarmeez · Ministry of Industry | National product catalogue, 3,153 of 12,946 factories |
-| Saudi Made | Local content certificate |
-| Local Content Authority | Local content calculation methodology |
-| GASTAT | Imports by product code |
-| HRSD | Saudization and headcount |
-| Ministry of Commerce | Commercial register and actual activity |
-| Saudi Contractors Authority | Contractor grading and capacity |
-| Company site and registry | Catalogue, certificates, commercial register |
-
-Nine sources to open, for every single factory.
+Nine sources to open, for every single factory: Monafasat, Tarmeez at the Ministry of Industry, Saudi Made, the Local Content Authority, GASTAT, HRSD, the Ministry of Commerce, the Saudi Contractors Authority, and the company's own site and registry.
 
 ---
 
-## 7 · So why has nobody done it?
+## 5 · So why has nobody done it?
 
 So why has nobody done it yet?
 
@@ -110,7 +90,7 @@ Which is why KAMIN is an investment case, not just a product.
 
 ---
 
-## 8 · So what is the fix?
+## 6 · So what is the fix?
 
 *Interstitial slide, colours inverted: orange ground, black type.*
 
@@ -118,17 +98,17 @@ Which is why KAMIN is an investment case, not just a product.
 
 ---
 
-## 9 · So how do we solve it?
+## 7 · So how do we solve it?
 
 # Simple. We hire a team.
 
 **The Coordinator · The Detective · The Auditor · The Advisor**
 
-What each of them does is slide 12 and slide 13.
+What each of them does is slide 9 and slide 10.
 
 ---
 
-## 10 · The reveal
+## 8 · The reveal
 
 ## We do not hire them.
 # We run them.
@@ -137,31 +117,15 @@ What each of them does is slide 12 and slide 13.
 
 ---
 
-## 11 · The map
-
-# KAMIN's map of local industrial capability
-
-| Limb | Chain |
-|---|---|
-| Discovery | `Public sources → The Detective → The Auditor · capability audit → THE MAP` |
-| Demand | `Purchase requests → The Coordinator → The Auditor · request audit → THE MAP` |
-| Decision | `THE MAP → The Advisor → Gap register → Coverage rate` |
-
-The Auditor sits beside the map and works in two passes, not one. The capability audit writes to the map; the request audit only reads it.
-
-**THE MAP:** baseline + capability + pooled demand. The baseline is everyone PIF already knows, and it is still the minority. Everything above that line is **discovery lift**, computed rather than asserted.
-
----
-
-## 12 · Zoom · Discovery
+## 9 · Zoom · Discovery
 
 # What happens before it reaches THE MAP?
 
-*The right-hand limb of the map, enlarged.*
+*The discovery half, before anything reaches the map.*
 
 | | Does | Produces |
 |---|---|---|
-| **Public sources** · no permission needed from anyone | Monafasat · Tarmeez · Saudi Made · Commerce · HRSD · Contractors Authority | A name and a CR number |
+| **Public sources** | Monafasat · Tarmeez · Saudi Made · Commerce · HRSD · Contractors Authority | A name and a CR number |
 | **The Detective** · searches, and reaches out | Reads the site, the register and the awards. And contacts whoever it finds | A supplier with its evidence |
 | **The Auditor** · checks | Audits what was found by the Detective. Classifies and documents the supplier | A documented capability, onto THE MAP |
 
@@ -179,11 +143,11 @@ The link goes to MUSAHAMA's own registration. KAMIN keeps no login, no upload an
 
 ---
 
-## 13 · Zoom · The Decision
+## 10 · Zoom · The Decision
 
 # And when THE MAP says nobody can?
 
-*The other limb of the map, enlarged at the Advisor.*
+*And what happens where the map says nobody can.*
 
 `THE MAP → The Advisor → Gap register → Coverage rate`
 
@@ -205,19 +169,23 @@ Rungs 3, 4 and 5 are PIF's own instruments, and 3 and 4 are **asked of the suppl
 
 ---
 
-## 14 · The math
+## 11 · The map
 
-| | The old way | KAMIN |
-|---|---|---|
-| **Time** | Five years | Under 10 hours |
-| **Cost** | Millions of riyals | Under $4,000 |
-| **Freshness** | A report born stale | Updates itself |
+# KAMIN's map of local industrial capability
 
-# The same work. Just in hours, not years.
+| Limb | Chain |
+|---|---|
+| Discovery | `Public sources → The Detective → The Auditor · capability audit → THE MAP` |
+| Demand | `Purchase requests → The Coordinator → The Auditor · request audit → THE MAP` |
+| Decision | `THE MAP → The Advisor → Gap register → Coverage rate` |
+
+The Auditor sits beside the map and works in two passes, not one. The capability audit writes to the map; the request audit only reads it.
+
+**THE MAP:** baseline + capability + pooled demand. The baseline is everyone PIF already knows, and it is still the minority. Everything above that line is **discovery lift**, computed rather than asserted.
 
 ---
 
-## 15 · The output
+## 12 · The output
 
 *A product screen, light on the dark deck, because it is a real screen and not another diagram.*
 
@@ -235,7 +203,19 @@ Rungs 3, 4 and 5 are PIF's own instruments, and 3 and 4 are **asked of the suppl
 
 ---
 
-## 16 · The close
+## 13 · The math
+
+| | The old way | KAMIN |
+|---|---|---|
+| **Time** | Five years | Under 10 hours |
+| **Cost** | Millions of riyals | Under $4,000 |
+| **Freshness** | A report born stale | Updates itself |
+
+# The same work. Just in hours, not years.
+
+---
+
+## 14 · The close
 
 # MUSAHAMA knows who registered.
 # KAMIN knows who never raised a hand.
@@ -244,7 +224,7 @@ Rungs 3, 4 and 5 are PIF's own instruments, and 3 and 4 are **asked of the suppl
 
 ---
 
-## 17 · Who we are
+## 15 · Who we are
 
 # Three people. Thousands of agents.
 

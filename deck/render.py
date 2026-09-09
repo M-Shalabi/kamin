@@ -10,8 +10,8 @@ import re
 import subprocess
 import sys
 
-ORDER = ['Main', 'Question', 'Blind', 'WhoMakes', 'WhatWeBuy', 'WhatChanged', 'TheWall', 'Solution',
-         'TheTeam', 'TheReveal', 'TheMap', 'Discovery', 'Decisions', 'TheMath', 'Suppliers',
+ORDER = ['Main', 'Question', 'Blind', 'Problem', 'TheWall', 'Solution',
+         'TheTeam', 'TheReveal', 'Discovery', 'Decisions', 'TheMap', 'Suppliers', 'TheMath',
          'TheClose', 'Team']
 
 ASSETS = ['fig-coordinator.png', 'fig-detective.png', 'fig-auditor.png', 'fig-advisor.png',
