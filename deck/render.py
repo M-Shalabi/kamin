@@ -11,8 +11,8 @@ import subprocess
 import sys
 
 ORDER = ['Main', 'Question', 'Blind', 'WhoMakes', 'WhatWeBuy', 'WhatChanged', 'TheWall', 'Solution',
-         'TheTeam', 'Coordinator', 'Detective', 'Auditor', 'Strategist', 'TheReveal', 'TheMap',
-         'Journey', 'Outreach', 'TheMath', 'TheClose', 'Team']
+         'TheTeam', 'TheReveal', 'TheMap', 'Discovery', 'Decisions', 'TheMath', 'Suppliers',
+         'TheClose', 'Team']
 
 ASSETS = ['fig-coordinator.png', 'fig-detective.png', 'fig-auditor.png', 'fig-advisor.png',
           'logo-etimad.png', 'logo-mim.png', 'logo-saudimade.png', 'logo-lcgpa.png', 'logo-gastat.svg',

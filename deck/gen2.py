@@ -41,7 +41,7 @@ def slide(num, cap, inner, center=False):
     foot = '' if center else (
       '  <div style="display: flex; justify-content: space-between; align-items: flex-end; '
       'border-top: 1px solid @L@; padding-top: 20px;">\n'
-      '    <div style="font-family: @MONO@; font-size: 14px; letter-spacing: 0.18em; color: @L@;"' + (' dir="ltr"' if num.isdigit() else '') + '>' + (num + ' / 20' if num.isdigit() else 'ملحق') + '</div>\n'
+      '    <div style="font-family: @MONO@; font-size: 14px; letter-spacing: 0.18em; color: @L@;"' + (' dir="ltr"' if num.isdigit() else '') + '>' + (num + ' / 17' if num.isdigit() else 'ملحق') + '</div>\n'
       '    <div style="font-family: @KUFI@; font-size: 16px; font-weight: 700; color: @M@;">كامن</div>\n'
       '  </div>\n')
     return sub(HEAD +
@@ -67,13 +67,12 @@ S['Main'] = sub(HEAD +
 '  <div style="width:340px;height:12px;background:@A@;"></div>\n'
 '  <div>\n'
 '    <div style="font-family:@KUFI@;font-weight:900;font-size:224px;line-height:1.16;color:@T@;letter-spacing:-0.02em;">كامن</div>\n'
-'    <div style="font-size:26px;font-weight:300;color:@M@;margin-top:14px;">الموجود غير المكتشف</div>\n'
+'    <div style="font-size:26px;font-weight:300;color:@M@;margin-top:14px;">الموجود الغير مكتشف</div>\n'
 '    <div style="font-family:@MONO@;font-size:24px;letter-spacing:0.42em;color:@A@;margin-top:10px;">K A M I N</div>\n'
-'    <div style="font-family:@KUFI@;font-weight:700;font-size:52px;color:@T@;margin-top:44px;line-height:1.45;">موجود. بس ما أحد شافه.</div>\n'
-'    <div style="font-size:26px;font-weight:300;color:@M@;margin-top:14px;line-height:1.6;">خريطة حيّة لما تقدر المملكة تورّده.</div>\n'
+'    <div style="font-family:@KUFI@;font-weight:700;font-size:52px;color:@T@;margin-top:44px;line-height:1.45;">خريطة حيّة للقدرات المحلية.</div>\n'
 '  </div>\n'
 '  <div style="display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid @L@;padding-top:24px;">\n'
-'    <div style="font-family:@MONO@;font-size:17px;letter-spacing:0.18em;color:@L@;" dir="ltr">01 / 20</div>\n'
+'    <div style="font-family:@MONO@;font-size:17px;letter-spacing:0.18em;color:@L@;" dir="ltr">01 / 17</div>\n'
 '    <div style="font-size:22px;color:@M@;">هاكاثون ابتكار · المسار الأول</div>\n'
 '  </div>\n</div>\n' + TAIL)
 
@@ -107,7 +106,6 @@ card2 = ('    <div style="flex:1 1 0;display:flex;flex-direction:column;">\n'
  '            <img src="logo-saudimade.png" style="width:46px;height:46px;object-fit:contain;">\n'
  '          </div>\n'
  '          <div style="font-family:@KUFI@;font-weight:700;font-size:23px;color:@T@;">صنع في السعودية</div>\n'
- '          <div style="font-family:@BODY@;font-size:17px;color:@M@;">٤٠٪ قيمة مضافة محلية</div>\n'
  '        </div>\n'
  '      </div>\n'
  '      <div style="font-size:19px;color:@A@;margin-top:12px;">علامة على منتج، مو دليل موردين.</div>\n'
@@ -146,21 +144,20 @@ S['Question'] = slide('02','الافتتاحية',
 
 # 03 two cases
 def case(tag, title, desc, hot):
-    return ('    <div style="flex:1 1 0;border:1px solid ' + ('@A@' if hot else '@L@') + ';padding:30px 26px;'
+    return ('    <div style="flex:1 1 0;border:1px solid ' + ('@A@' if hot else '@L@') + ';padding:38px 30px;'
             + ('background:rgba(255,92,26,0.06);' if hot else '') + '">\n'
             '      <div style="font-family:@BODY@;font-size:16px;color:' + ('@A@' if hot else '@M@') + ';">' + tag + '</div>\n'
-            '      <div style="font-family:@KUFI@;font-weight:700;font-size:36px;color:' + ('@A@' if hot else '@T@') + ';margin-top:14px;">' + title + '</div>\n'
-            '      <div style="font-size:23px;font-weight:300;color:' + ('@T@' if hot else '@M@') + ';margin-top:12px;line-height:1.6;">' + desc + '</div>\n'
+            '      <div style="font-family:@KUFI@;font-weight:700;font-size:42px;color:' + ('@A@' if hot else '@T@') + ';margin-top:16px;">' + title + '</div>\n'
+            '      <div style="font-size:26px;font-weight:300;color:' + ('@T@' if hot else '@M@') + ';margin-top:14px;line-height:1.6;">' + desc + '</div>\n'
             '    </div>\n')
 S['Blind'] = slide('03','لماذا يهم',
   '  <div style="margin:auto 0;">\n' +
-  P('الصندوق عنده أكثر من <span style="color:@T@;font-weight:600;">١٥٠ شركة</span> تشتري كل يوم: حديد، صمامات، كابلات، كيماويات، معدات. وجزء كبير من اللي تشتريه يجي من الخارج.', 30, '@M@', 0) +
-  '  <div style="display:flex;gap:22px;margin-top:38px;">\n'
-  + case('الحالة الأولى','لسبب وجيه','فعلاً ماحد يصنعه محلياً.', False)
-  + case('الحالة الثانية','لسبب مؤسف','فيه أحد يصنعه على بُعد ساعتين، بس ماحد يدري عنه.', True)
-  + case('الحالة الثالثة','لأنه ما يناسب','لقيناه، ومحلي وحقيقي. بس مدّته أطول من اللي تحتمله الشركة، أو جودته تحت معيارها. وكل شركة معيارها يختلف.', True)
-  + '  </div>\n' +
-  '  <div style="font-family:@KUFI@;font-weight:700;font-size:50px;color:@T@;margin-top:40px;">وإلى الحين، محد يقدر يفرّق بينهم.</div>\n'
+  H('شركات الصندوق تشتري من موردين خارجيين، <span style="color:@A@;">لثلاثة أسباب</span>.', 56) +
+  '  <div style="display:flex;gap:22px;margin-top:52px;">\n'
+  + case('السبب الأول','لسبب وجيه','فعلاً محد يصنعه محلياً.', False)
+  + case('السبب الثاني','لأنه ما يناسب','بسبب جودته، وقت التسليم، أو اختلاف المعايير.', True)
+  + case('السبب الثالث','لسبب مؤسف','فيه أحد يصنعه على بُعد ساعتين، بس محد يدري عنه.', True)
+  + '  </div>\n'
   '  </div>\n')
 
 # 04 who makes what: documented everywhere except your list
@@ -168,7 +165,7 @@ ev = ''
 for txt in ['فاز بمنافسات حكومية سابقة',
             'ومسجّل منتجاته عند وزارة الصناعة',
             'وعنده شهادات مطابقة منشورة',
-            'وسجله التجاري يقول وش نشاطه بالضبط']:
+            'وموطن صناعته']:
     ev += ('    <div style="display:flex;align-items:center;gap:14px;padding:5px 0;">\n'
            '      <div style="flex:0 0 auto;width:22px;height:22px;border-radius:50%;border:1px solid @A@;color:@A@;'
            'font-size:14px;display:flex;align-items:center;justify-content:center;">\u2713</div>\n'
@@ -186,58 +183,56 @@ S['WhoMakes'] = slide('04','المشكلة، النصف الأول',
   '    <div style="font-size:50px;line-height:1;">\u270B</div>\n'
   '    <div style="font-family:@KUFI@;font-weight:700;font-size:62px;line-height:1.3;color:@T@;letter-spacing:-0.01em;">ما نعرف إلا اللي يرفع يده</div>\n'
   '  </div>\n' +
-  P('عشان تعرف مصنع سعودي وش يقدر يورّد، لازم <span style="color:@T@;">هو</span> يقولك. فكل دليل موردين موجود هو لستة بأسماء اللي رفعوا أيديهم.', 23, '@M@', 18) +
-  '  <div style="border-right:4px solid @A@;padding-right:26px;margin-top:22px;">\n'
-  '    <div style="font-size:26px;font-weight:300;color:@T@;line-height:1.6;">تخيّل دليل هاتف ما تدخل فيه إلا إذا أرسلت نموذج. <span style="color:@A@;font-weight:600;">ومين اللي يرسل نماذج؟</span> الشركات الكبيرة اللي عندها فرق مبيعات شغلتها ترسل نماذج.</div>\n'
-  '    <div style="font-size:23px;font-weight:300;color:@M@;line-height:1.6;margin-top:10px;">أما الورشة في الخرج اللي لها عشرين سنة تصنّع قطع دقيقة؟ ما هي في الدليل. ولا بتدخل.</div>\n'
+  '  <div style="border-right:4px solid @A@;padding-right:26px;margin-top:30px;">\n'
+  '    <div style="font-family:@KUFI@;font-weight:700;font-size:46px;color:@T@;line-height:1.4;">علشان تعرفه، لازم يوصلك.</div>\n'
+  '    <div style="font-size:26px;font-weight:300;color:@M@;line-height:1.65;margin-top:14px;">وتخيّل مصنع في الخرج له عشرين سنة ما تعرف عنه، وهو بالضبط اللي كنت تدور عليه.</div>\n'
   '  </div>\n'
-  '  <div style="font-family:@KUFI@;font-weight:700;font-size:36px;color:@A@;margin-top:20px;">وهي بالضبط اللي كنت تدور عليها.</div>\n'
-  '  <div style="font-size:22px;color:@M@;margin-top:20px;margin-bottom:2px;">مع إنه:</div>\n' + ev +
+  '  <div style="font-size:22px;color:@M@;margin-top:30px;margin-bottom:2px;">مع إنه:</div>\n' + ev +
   '  </div>\n')
+
+UI = {'paper':'#FFFFFF','chrome':'#F1EEE9','side':'#FAF8F5','line':'#E6E2DB','row':'#F0EDE7',
+      'ink':'#1A1714','mut':'#6B6660','dim':'#9A938A','acc':'#E14E12','accbg':'#FFF4EE',
+      'okbg':'#E7F6EC','okink':'#12703A','okline':'#BFE5CC','warn':'#C98A16'}
 
 # 05 what we buy — REAL UI
 def sysrow(system, meta, pr, line, desc, qty, lead, std, date, mono, hot=False):
     dfont = '@MONO@' if mono else '@BODY@'
     ltr = ' dir="ltr"' if mono else ''
+    def dot(c):
+        return '<span style="width:9px;height:9px;border-radius:50%;background:' + c + ';display:inline-block;"></span>'
+    cols = 'grid-template-columns:118px 46px 1fr 78px 92px 100px 100px;'
     return (
-    '    <div style="border:1px solid @L@;background:@P@;">\n'
-    '      <div style="display:flex;align-items:center;justify-content:space-between;background:@P2@;border-bottom:1px solid @L@;padding:8px 14px;">\n'
-    '        <div style="display:flex;gap:6px;align-items:center;">\n'
-    '          <span style="width:9px;height:9px;border-radius:50%;background:#3A322C;display:inline-block;"></span>\n'
-    '          <span style="width:9px;height:9px;border-radius:50%;background:#3A322C;display:inline-block;"></span>\n'
-    '          <span style="width:9px;height:9px;border-radius:50%;background:#3A322C;display:inline-block;"></span>\n'
-    '        </div>\n'
-    '        <div style="font-family:@BODY@;font-size:15px;color:@M@;">' + system + ' &nbsp;·&nbsp; ' + meta + '</div>\n'
+    '    <div style="border:1px solid ' + UI['line'] + ';background:' + UI['paper'] + ';border-radius:7px;overflow:hidden;">\n'
+    '      <div style="position:relative;background:' + UI['chrome'] + ';'
+    'border-bottom:1px solid ' + UI['line'] + ';padding:8px 14px;">\n'
+    '        <div style="position:absolute;left:14px;top:50%;transform:translateY(-50%);display:flex;gap:6px;">'
+    + dot('#FF5F57') + dot('#FEBC2E') + dot('#28C840') + '</div>\n'
+    '        <div style="text-align:center;font-family:@BODY@;font-size:15px;color:' + UI['mut'] + ';">' + system + ' &nbsp;·&nbsp; ' + meta + '</div>\n'
     '      </div>\n'
-    '      <div style="display:grid;grid-template-columns:126px 50px 1fr 82px 96px 104px 104px;gap:10px;font-family:@BODY@;font-size:14px;'
-    'color:@M@;letter-spacing:0.1em;padding:7px 14px;border-bottom:1px solid @L@;">\n'
+    '      <div style="display:grid;' + cols + 'gap:10px;font-family:@BODY@;font-size:14px;color:' + UI['dim'] + ';'
+    'background:' + UI['side'] + ';padding:7px 14px;border-bottom:1px solid ' + UI['line'] + ';">\n'
     '        <div>رقم الطلب</div><div>البند</div><div>الوصف</div><div>الكمية</div><div>المدة</div><div>المعيار</div><div>التاريخ</div>\n'
     '      </div>\n'
-    '      <div style="display:grid;grid-template-columns:126px 50px 1fr 82px 96px 104px 104px;gap:10px;align-items:center;padding:13px 14px;">\n'
-    '        <div style="font-family:@MONO@;font-size:17px;color:@M@;">' + pr + '</div>\n'
-    '        <div style="font-family:@MONO@;font-size:17px;color:@M@;">' + line + '</div>\n'
+    '      <div style="display:grid;' + cols + 'gap:10px;align-items:center;padding:13px 14px;">\n'
+    '        <div style="font-family:@MONO@;font-size:16px;color:' + UI['dim'] + ';">' + pr + '</div>\n'
+    '        <div style="font-family:@MONO@;font-size:16px;color:' + UI['dim'] + ';">' + line + '</div>\n'
     '        <div style="min-width:0;' + ('direction:ltr;text-align:left;' if mono else '') + '">'
-        '<span style="font-family:' + dfont + ';font-size:23px;color:@T@;border-bottom:2px solid @A@;padding-bottom:3px;">' + desc + '</span></div>\n'
-    '        <div style="font-family:@BODY@;font-size:17px;color:@M@;"' + ltr + '>' + qty + '</div>\n'
-    '        <div style="font-family:' + dfont + ';font-size:17px;color:@T@;"' + ltr + '>' + lead + '</div>\n'
-    '        <div style="font-family:@MONO@;font-size:16px;color:@T@;">' + std + '</div>\n'
-    '        <div style="font-family:@MONO@;font-size:16px;color:@M@;">' + date + '</div>\n'
+        '<span style="font-family:' + dfont + ';font-size:23px;color:' + UI['ink'] + ';border-bottom:2px solid ' + UI['acc'] + ';padding-bottom:3px;">' + desc + '</span></div>\n'
+    '        <div style="font-family:@BODY@;font-size:17px;color:' + UI['mut'] + ';"' + ltr + '>' + qty + '</div>\n'
+    '        <div style="font-family:' + dfont + ';font-size:17px;color:' + UI['ink'] + ';"' + ltr + '>' + lead + '</div>\n'
+    '        <div style="font-family:@MONO@;font-size:16px;color:' + UI['ink'] + ';">' + std + '</div>\n'
+    '        <div style="font-family:@MONO@;font-size:16px;color:' + UI['mut'] + ';">' + date + '</div>\n'
     '      </div>\n'
     '    </div>\n')
 
 S['WhatWeBuy'] = slide('05','المشكلة، النصف الثاني',
   '  <div style="margin:auto 0;">\n' +
   H('اختلاف المسمّى يصعّب المهمة', 62) +
-  P('أكثر من ١٥٠ شركة، وكل وحدة عندها نظام مشتريات مختلف، ولغتين، ونصوص حرة.', 22, '@M@', 12) +
-  '  <div style="display:flex;flex-direction:column;gap:12px;margin-top:20px;">\n'
+  '  <div style="display:flex;flex-direction:column;gap:14px;margin-top:34px;">\n'
   + sysrow('شركة المحفظة «أ»','SAP MM','PR-2026-0142','0010','صمام كروي ٢ بوصة','١٢ EA','٣٠ يوم','ISO 9001','٢٠٢٦-٠١-١٤', False)
   + sysrow('شركة المحفظة «ب»','Oracle iProc','REQ-88213','003','BALL VLV 2IN SS','40 PCS','45 days','API 6D','14/01/2026', True)
   + sysrow('شركة المحفظة «ج»','Excel','-','7','Valve, ball, stainless, 2 inch','5 units','6 wks','ISO 9001','Jan 14', True)
   + '  </div>\n'
-  '  <div style="display:flex;align-items:center;gap:18px;margin-top:22px;">\n'
-  '    <div style="font-family:@KUFI@;font-weight:700;font-size:36px;color:@T@;">نفس الشي بالضبط.</div>\n'
-  '    <div style="font-size:24px;font-weight:300;color:@A@;">بس بثلاثة مسمّيات، وثلاث مُدد، وثلاثة معايير.</div>\n'
-  '  </div>\n'
   '  </div>\n')
 
 # 06 what changed
@@ -268,7 +263,6 @@ for logo, name, desc in sources:
 S['WhatChanged'] = slide('06','ما الذي تغيّر',
   '  <div style="margin:auto 0;">\n' +
   H('البيانات موجودة ولكن <span style="color:@A@;">متناثرة</span>', 66) +
-  P('يعني باحث شاطر يقعد بعد ظهر يوم واحد ويطلّعلك تقرير عن <span style="color:@T@;font-weight:600;">مصنع واحد</span>.', 26, '@M@', 16) +
   '  <div style="border:1px solid @L@;background:@P@;margin-top:22px;">\n'
   '    <div style="display:flex;align-items:center;justify-content:space-between;background:@P2@;padding:9px 18px;">\n'
   '      <div style="font-family:@BODY@;font-size:16px;color:@M@;">٩ مصادر</div>\n'
@@ -278,12 +272,12 @@ S['WhatChanged'] = slide('06','ما الذي تغيّر',
   '  </div>\n')
 
 # 07 the wall
-S['TheWall'] = slide('07','فلماذا ماحد سواها؟',
+S['TheWall'] = slide('07','فلماذا محد سواها؟',
   '  <div style="margin:auto 0;">\n'
-  '  <div style="font-family:@KUFI@;font-weight:900;font-size:78px;line-height:1.35;color:@T@;letter-spacing:-0.01em;">ماحد سواها لأنها تاخذ <span style="color:@A@;">خمس سنوات</span>.</div>\n'
-  '  <div style="font-size:32px;font-weight:300;color:@M@;margin-top:34px;line-height:1.75;">مصنع واحد يحتاج يوم كامل، و<span style="color:@T@;font-weight:600;">١٣ ألف مصنع</span> يحتاجون خمس سنوات.</div>\n'
-  '  <div style="font-family:@KUFI@;font-weight:700;font-size:52px;color:@T@;margin-top:36px;line-height:1.4;">وأول ما تخلص، تكون <span style="color:@A@;">آوت ديتد</span>!</div>\n'
-  '  <div style="font-size:24px;font-weight:300;color:@M@;margin-top:26px;">ولهذا هو مشروع استشاري بملايين الريالات، مو منتج.</div>\n'
+  '  <div style="font-size:36px;font-weight:300;color:@M@;line-height:1.5;">وليه محد سواها للآن؟</div>\n'
+  '  <div style="font-family:@KUFI@;font-weight:900;font-size:78px;line-height:1.35;color:@T@;letter-spacing:-0.01em;margin-top:10px;">لأنها تاخذ <span style="color:@A@;">خمس سنوات</span>.</div>\n'
+  '  <div style="font-family:@KUFI@;font-weight:700;font-size:52px;color:@T@;margin-top:40px;line-height:1.4;">وأول ما تخلص، بتكون معلوماتك <span style="color:@A@;">آوت ديتد</span>!</div>\n'
+  '  <div style="font-size:26px;font-weight:300;color:@M@;margin-top:40px;">ولهذا كامن مشروع استثماري، مو بس منتج.</div>\n'
   '  </div>\n')
 
 # 08 the act break, inverted
@@ -298,7 +292,7 @@ S['Solution'] = sub(HEAD +
 '    <div style="font-family:@KUFI@;font-weight:900;font-size:200px;line-height:1.2;color:@G@;letter-spacing:-0.02em;">والحل؟</div>\n'
 '  </div>\n'
 '  <div style="display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid rgba(11,10,9,0.25);padding-top:22px;">\n'
-'    <div style="font-family:@MONO@;font-size:16px;letter-spacing:0.18em;color:rgba(11,10,9,0.45);" dir="ltr">08 / 20</div>\n'
+'    <div style="font-family:@MONO@;font-size:16px;letter-spacing:0.18em;color:rgba(11,10,9,0.45);" dir="ltr">08 / 17</div>\n'
 '    <div style="font-family:@KUFI@;font-size:18px;font-weight:700;color:rgba(11,10,9,0.55);">كامن</div>\n'
 '  </div>\n'
 '</div>\n' + TAIL)
@@ -308,125 +302,15 @@ team = ''
 for img, name, role in [('fig-coordinator.png','المنسّق','يفهم الطلب وينسّقه'),
                         ('fig-detective.png','المحقّق','يدوّر مين يقدر يورّد'),
                         ('fig-auditor.png','المدقّق','يتحقق ويصنّف'),
-                        ('fig-advisor.png','المستشار','لما ماحد يقدر')]:
+                        ('fig-advisor.png','المستشار','لما محد يقدر')]:
     team += ('    <div style="flex:1 1 0;border-top:3px solid @A@;padding-top:18px;text-align:center;">\n'
-             '      <img src="' + img + '" style="height:206px;width:auto;max-width:100%;object-fit:contain;display:block;margin:0 auto 12px;">\n'
-             '      <div style="font-family:@KUFI@;font-weight:700;font-size:34px;color:@T@;">' + name + '</div>\n'
-             '      <div style="font-size:20px;font-weight:300;color:@M@;margin-top:6px;">' + role + '</div>\n'
+             '      <img src="' + img + '" style="height:236px;width:auto;max-width:100%;object-fit:contain;display:block;margin:0 auto 14px;">\n'
+             '      <div style="font-family:@KUFI@;font-weight:700;font-size:38px;color:@T@;">' + name + '</div>\n'
              '    </div>\n')
 S['TheTeam'] = slide('09','طيب كيف نحلها؟',
   '  <div style="margin:auto 0;">\n' +
   H('ببساطة. <span style="color:@A@;">نوظّف فريق.</span>', 72) +
-  P('أربعة أشخاص. وهذا وش يسوي كل واحد فيهم من ساعة ما يُرفع طلب شراء في نظام الشركة.', 24, '@M@', 14) +
-  '  <div style="display:flex;gap:30px;margin-top:38px;">\n' + team + '  </div>\n'
-  '  </div>\n')
-
-# 09 the coordinator — carries the aggregation insight
-po_cards = ''
-for co, txt, qty in [('شركة «أ»','صمام كروي ٢ بوصة','١٢ حبة'),
-                     ('شركة «ب»','BALL VLV 2IN SS','٤٠ حبة'),
-                     ('شركة «ج»','Valve, ball, stainless','٥ حبات')]:
-    po_cards += ('    <div style="flex:1 1 0;border:1px solid @L@;background:@P@;padding:16px 18px;">\n'
-                 '      <div style="font-family:@BODY@;font-size:15px;color:@M@;">' + co + '</div>\n'
-                 '      <div style="font-size:21px;color:@T@;margin-top:8px;">' + txt + '</div>\n'
-                 '      <div style="font-family:@BODY@;font-size:17px;color:@M@;margin-top:6px;">' + qty + '</div>\n'
-                 '    </div>\n')
-S['Coordinator'] = slide('10','الدور الأول',
-  '  <div style="margin:auto 0;">\n'
-  '  <div style="display:flex;align-items:center;gap:26px;">\n'
-  '    <img src="fig-coordinator.png" style="height:190px;width:auto;object-fit:contain;flex:0 0 auto;">\n'
-  '    <div style="flex:1 1 auto;min-width:0;">\n'
-  '      <div style="font-family:@KUFI@;font-weight:900;font-size:80px;line-height:1.2;color:@T@;">المنسّق</div>\n'
-  '      <div style="font-family:@BODY@;font-size:19px;color:@A@;margin-top:4px;white-space:nowrap;">يفهم وش الشي، وينسّق اللي يتشابه في طلب واحد</div>\n'
-  '    </div>\n'
-  '  </div>\n'
-  '  <div style="display:flex;gap:16px;margin-top:26px;">\n' + po_cards + '  </div>\n'
-  '  <div style="text-align:center;color:@A@;font-size:26px;margin-top:12px;">&#8595;</div>\n'
-  '  <div style="background:@A@;padding:18px 26px;margin-top:8px;display:flex;align-items:center;justify-content:space-between;">\n'
-  '    <div style="font-family:@BODY@;font-size:19px;color:rgba(11,10,9,0.8);">HS 8481.80 &nbsp;·&nbsp; ٥٧ حبة الآن &nbsp;·&nbsp; ٤٠ ألف سنوياً بالتاريخ</div>\n'
-  '    <div style="font-family:@KUFI@;font-weight:900;font-size:32px;color:@G@;">طلب واحد مجمّع</div>\n'
-  '  </div>\n'
-  '  <div style="font-family:@KUFI@;font-weight:700;font-size:42px;color:@T@;margin-top:26px;line-height:1.45;">الطلب كان متفرق لأن <span style="color:@A@;">ماحد يقدر يشوف إنه نفس الطلب</span>.</div>\n'
-  '  </div>\n')
-
-# 10-12 remaining roles
-def role_slide(num, cap, img, name, sub_t, io_label, io_text, lines, punch):
-    body = ('  <div style="margin:auto 0;">\n'
-      '  <div style="display:flex;align-items:center;justify-content:flex-start;gap:30px;">\n'
-      '    <img src="' + img + '" style="height:248px;width:auto;object-fit:contain;flex:0 0 auto;">\n'
-      '    <div style="flex:1 1 auto;min-width:0;">\n'
-      '      <div style="font-family:@KUFI@;font-weight:900;font-size:82px;line-height:1.2;color:@T@;">' + name + '</div>\n'
-      '      <div style="font-family:@BODY@;font-size:20px;color:@A@;margin-top:6px;white-space:nowrap;">' + sub_t + '</div>\n'
-      '    </div>\n'
-      '  </div>\n'
-      '  <div style="display:flex;align-items:center;gap:20px;background:@P@;border:1px solid @L@;padding:18px 26px;margin-top:24px;">\n'
-      '    <div style="font-size:28px;font-weight:400;color:@T@;flex:1 1 auto;">' + io_text + '</div>\n'
-      '    <div style="font-family:@BODY@;font-size:18px;color:@M@;flex:0 0 auto;">' + io_label + '</div>\n'
-      '  </div>\n')
-    for ln in lines:
-        body += '  <div style="font-size:27px;font-weight:300;line-height:1.7;color:@M@;margin-top:14px;">' + ln + '</div>\n'
-    body += '  <div style="font-family:@KUFI@;font-weight:700;font-size:42px;color:@A@;margin-top:24px;line-height:1.45;">' + punch + '</div>\n  </div>\n'
-    return slide(num, cap, body)
-
-S['Detective'] = role_slide('11','الدور الثاني','fig-detective.png','المحقّق','واحد لكل مورّد محتمل',
-  'المُدخل','الطلب المجمّع: ٤٠ ألف حبة سنوياً من تسع شركات',
-  ['يقرأ مواقع الشركات، يفحص السجل التجاري، يشوف مين فاز بعقود مشابهة في منافسات، يلقى الشهادات ويقرأ الكتالوجات.',
-   'والسؤال تغيّر: مو «مين يصنع هذا؟» بل «مين يقدر يخدم هذا الحجم؟» وهذا يفتح موردين ما كان طلب شركة وحدة يبررهم.'],
-  'المُخرج: مرشحون يقدرون يخدمون الحجم، ومعهم أدلتهم.')
-def apass(tag, title, inp, body):
-    return ('    <div style="flex:1 1 0;border:1px solid @L@;background:@P@;padding:22px 24px;">\n'
-            '      <div style="font-family:@MONO@;font-size:15px;letter-spacing:0.12em;color:@A@;">' + tag + '</div>\n'
-            '      <div style="font-family:@KUFI@;font-weight:700;font-size:34px;color:@T@;margin-top:8px;">' + title + '</div>\n'
-            '      <div style="font-size:18px;color:@M@;margin-top:12px;padding:9px 14px;background:@P2@;border:1px solid @L@;">'
-            'المُدخل: ' + inp + '</div>\n'
-            '      <div style="font-size:21px;font-weight:300;color:@M@;margin-top:14px;line-height:1.65;">' + body + '</div>\n'
-            '    </div>\n')
-
-S['Auditor'] = slide('12','الدور الثالث',
-  '  <div style="margin:auto 0;">\n'
-  '  <div style="display:flex;align-items:center;gap:26px;">\n'
-  '    <img src="fig-auditor.png" style="height:150px;width:auto;object-fit:contain;flex:0 0 auto;">\n'
-  '    <div style="flex:1 1 auto;min-width:0;">\n'
-  '      <div style="font-family:@KUFI@;font-weight:900;font-size:64px;line-height:1.2;color:@T@;">المدقّق</div>\n'
-  '      <div style="font-family:@BODY@;font-size:20px;color:@A@;margin-top:4px;">تشتغل في مكانين على الخريطة، مو مكان واحد.</div>\n'
-  '    </div>\n'
-  '  </div>\n'
-  '  <div style="display:flex;gap:24px;margin-top:22px;">\n'
-  + apass('بعد المحقّق','تدقيق القدرة','المرشحون اللي لقاهم المحقّق',
-          'ما تشطب التاجر، تصنّفه: مصنّع، أو مجمّع، أو موزّع معتمد، أو تاجر. وتعطي كل قدرة رمز <span style="color:@T@;">UNSPSC</span>، وهو الرمز اللي تتكلمه مساهمة.')
-  + apass('بعد المنسّق','تدقيق الطلب','طلب مجمّع جديد، ومعه معايير الشركات',
-          'ترجّع الخريطة مرتّبة لهذي الشركة بالذات: مدّة التوريد اللي تحتملها، والمعايير اللي تشترطها، والتصنيف اللي تقبله.')
-  + '  </div>\n'
-  '  <div style="font-family:@KUFI@;font-weight:700;font-size:36px;color:@A@;margin-top:24px;line-height:1.45;">لأن المورّد اللي يناسب شركة، مو بالضرورة يناسب اللي بعدها.</div>\n'
-  '  </div>\n')
-ladder = ''
-for _n, _t, _d, _hot in [
-  ('١','نشتريه','مورّد واحد يقدر يخدم الحجم اليوم', False),
-  ('٢','نقسّمه','كم مورّد محلي مع بعض، عشان الحجم ما يقصي الصغار', False),
-  ('٣','نستثمر','«تقدر لو كبّرنا طاقتك؟» توسعة، مقابل تعاقد على الحجم', True),
-  ('٤','نشارك','«تقدر تجيب مصنّع عالمي معك؟» شراكة ونقل معرفة', True),
-  ('٥','نوطّن','ماحد يقدر، فالصندوق يجيب الصناعة نفسها للمملكة', True),
-  ('٦','نستورد','ولا خيار فوق ينفع. والفجوة تنقيّد بقيمتها السنوية.', False)]:
-    ladder += ('    <div style="display:flex;align-items:center;gap:20px;border-top:1px solid @L@;padding:9px 0;">\n'
-      '      <div style="flex:0 0 auto;width:34px;height:34px;border-radius:50%;border:1px solid '
-      + ('@A@' if _hot else '@L@') + ';color:' + ('@A@' if _hot else '@M@') + ';font-family:@BODY@;font-size:18px;'
-      'display:flex;align-items:center;justify-content:center;">' + _n + '</div>\n'
-      '      <div style="flex:0 0 150px;font-family:@KUFI@;font-weight:700;font-size:29px;color:'
-      + ('@A@' if _hot else '@T@') + ';">' + _t + '</div>\n'
-      '      <div style="flex:1 1 auto;font-size:21px;font-weight:300;color:@M@;">' + _d + '</div>\n'
-      '    </div>\n')
-
-S['Strategist'] = slide('13','الدور الرابع',
-  '  <div style="margin:auto 0;">\n'
-  '  <div style="display:flex;align-items:center;gap:26px;">\n'
-  '    <img src="fig-advisor.png" style="height:148px;width:auto;object-fit:contain;flex:0 0 auto;">\n'
-  '    <div style="flex:1 1 auto;min-width:0;">\n'
-  '      <div style="font-family:@KUFI@;font-weight:900;font-size:64px;line-height:1.2;color:@T@;">المستشار</div>\n'
-  '      <div style="font-family:@BODY@;font-size:20px;color:@A@;margin-top:4px;">ما يوقف عند الفجوة. يعطيك سلّم خيارات، من الأرخص للأغلى.</div>\n'
-  '    </div>\n'
-  '  </div>\n'
-  '  <div style="margin-top:16px;">\n' + ladder + '  </div>\n'
-  '  <div style="font-family:@KUFI@;font-weight:700;font-size:33px;color:@A@;margin-top:18px;line-height:1.45;">والطلب المجمّع هو اللي يخلّي الاستثمار ممكن. طلبية عابرة ما تموّل مصنع.</div>\n'
+  '  <div style="display:flex;gap:30px;margin-top:52px;">\n' + team + '  </div>\n'
   '  </div>\n')
 
 # 13 reveal
@@ -435,16 +319,14 @@ for t, hot in [('وكلاء ذكاء اصطناعي',True),('دقيقتين لل
     chips += ('    <div style="border:1px solid ' + ('@A@' if hot else '@L@') + ';'
               + ('background:rgba(255,92,26,0.10);' if hot else '') + 'padding:14px 24px;font-size:24px;color:'
               + ('@A@' if hot else '@M@') + ';">' + t + '</div>\n')
-S['TheReveal'] = slide('14','الانكشاف',
-  '  <div style="font-size:30px;font-weight:300;color:@M@;line-height:1.7;">أربعة أشخاص. وعشان تغطي ١٢٩٤٦ مصنع تحتاج آلاف مثلهم، وبرضه بتنتظر خمس سنوات.</div>\n'
-  '  <div style="height:1px;background:@L@;margin:34px 0;"></div>\n'
-  '  <div style="font-family:@KUFI@;font-weight:700;font-size:64px;line-height:1.35;color:@M@;">بس احنا ما نوظّفهم.</div>\n'
-  '  <div style="font-family:@KUFI@;font-weight:900;font-size:132px;line-height:1.3;color:@A@;margin-top:10px;">نشغّلهم.</div>\n'
-  '  <div style="font-size:34px;font-weight:300;color:@T@;line-height:1.6;margin-top:28px;">وتشغّل أربعة آلاف بنفس سهولة أربعة. والخمس سنوات تصير أقل من عشر ساعات.</div>\n'
-  '  <div style="display:flex;gap:16px;margin-top:40px;flex-wrap:wrap;">\n' + chips + '  </div>\n', center=True)
+S['TheReveal'] = slide('10','الانكشاف',
+  '  <div style="font-family:@KUFI@;font-weight:700;font-size:72px;line-height:1.35;color:@M@;">احنا ما نوظّفهم.</div>\n'
+  '  <div style="font-family:@KUFI@;font-weight:900;font-size:148px;line-height:1.3;color:@A@;margin-top:10px;">نشغّلهم.</div>\n'
+  '  <div style="display:flex;gap:16px;margin-top:56px;flex-wrap:wrap;">\n' + chips + '  </div>\n', center=True)
 
 # 14 the map, hand drawn architecture diagram
 KU="'Thmanyah','Geeza Pro',Tahoma,sans-serif"
+MO="'IBM Plex Mono',ui-monospace,monospace"
 BO="'Thmanyah','Geeza Pro',Tahoma,sans-serif"
 
 BUST_DETECTIVE = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAL4AAAC+CAYAAACLdLWdAABfcUlEQVR42u29d3xc1Zn//z63TJ9Rb7Yky0Xuxr0XjCmmY6oBp9ESerKUEFpIQkjZAAkkIRVS6L03A8YYMNjGFduybMtNstXb9Lnt/P4YaWxTsrvf3d8GNvf9es1L0mjmamb0Oc/9nOd5zrng4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLyv4pwP4J/yufd/1V+4quLK/wvLj1o4oHv/1BcEfchWtKHfYZWtBF1eK18u2upuL0+JQDe/2CFAzj/6P8we+Y8tWzAQPnM04/a7ifsCv8LQeaauxRAAfDcdY0jhHD+Sx+yogAwa/qcIKlEMCPxeAVkJKY3EOx9/4MV6c/4n7hnAVf4/xyx29t3KMFX/mhJ53Cd77/rJz41UFNcGIwUyK0N+c6HH4UoLlBl2jDskqKE98SZyR+99UrgyddfGZqx5ThgtEf3lvh9/iLbtkKAR9U92KZhAT3AXlXVVgeDwZdWrl65su/PKP/BWcLFFf7/nIUJPPmcIj+ol967r82JLv3oa2PY1zTF3LZ7onfq+DGZNRurgVLP+DFhWtpVamuyD9yxB8pLoLubRCqDE/TxVFiw9P0VbN+yid5oD6qmkRfOB8C2LVRVO+w1BIPBV3zB0KXL3l7aePf371Cu+dHNrvhd4f//K3jP2Sfn/HXsgpvHeVTtJGXRsac6O/dNcRp26+r8I1FGV2P/6UmorkAZVm3LDFKW+3Eeew25uxF17Chhz5kk1JIiqUZCjrNmkySeFPE9TWLZmme4c99esfVAB3kFhQS8Oro3KFVVc1AUaTm20BCeUCSvvmzAwPlAO4Dr+13h/49jnH+H6nnkZrtvAGiel94+VV2z6UIy1rFi6mSP3LQRe+3Htrz2IlvvykjrLw8J5UCzYl98ntBmTUJs2i7kijVQXIgcPwJRmI9aPQDn7Q9xYlFEay/29h2IwVUo5x6PaElx56M/5tdvfUAibVA9aAiqqkld0zAtC9u2DJ/X548UFj217O2lZwPcP3aSctHmdW7kd4X/30dKKcxn3heeM+c4mQ3bPcY9fzvbO3X8d+S+5ikYFuolZzv26+9ZbK5XlCUnC1FeJuy/PQteDefck1BLinDeeB/n4edQDjQjTjkOTj8WWrtQTAtn5z6c514FQLvtasTIYZg9vWgNTcgMtPzlAb668ik2mpIxQ4fLjKRf+FiO4wwYWKVl0ulfk0rc9v6GtT2u7XGF/z8a5TO/euRE9jX/WMyePlE27oN9zSaLT8B56FmFj7cJ5cYrEHGLxI0/BMD/w2sRQ6rh2TdwPvwIZcYUxHUXIvKCiI5eMtf8kMw7q/DPmopy503ZP1i/B7lhM2LCWIzHXiS+aTOFEyfQtWM7XzvwDm2+MjxeL0YmI23TwDBNKqtrnGhXp246zpai4pIzl729tN6d8P7Pof4LZms07x9vsJsuuqn0Z/92wx+p3/MzMWFEhVyz0bDXrHf0712qWk3Nir2xTnguPhemjYPV61HzImh33wxTxyEzGcyl7yIsC+WI0ShCYj/1GnL5RyhTJ+JZMAdldC1oMivTyjLEsjVEr/shgaPn4Zsylp7BFRSeegLN++vY2B5F13VsgTANQ0gphUfTxIGW/YZH1wdouueEr5980iMrPlqTdO3p/wzKv9KbbWOJ6r37Witx3nfmlowb+569ZuP5jBlmyrJi0zHTmucXN6nOmk2IO/+Id+p4nMpS7EtvJv7jX6IEQyjRJMov/ozzo1+hjxyMePSXKFecizX1CGRTK4m/P4bz4FMweRRy8ULErEk49z9J8rivQthH5NvfxNnZgJg/i4KZU2h56Xle3p/E7/UhHQcMEwCPrtPR2SHi6YwuVTVtmMbQre3d1wJy9sx5qivb/z7av4i1EZw+XvGcfbIdu+Dmy/Wp4+8WnRmvGFVrkF+kJa66Ff9Fi7GjceSv/oQ1fizKifNwUmmoKMN7y7fhxPnQ2oXzzocYB1oIDBqM2LQVY+MOlLoG1FG1BP/yS8iPQMaCn/wRCWgLj8TX3Ip8cSny4XuyL+hvzxPz61yweS3xeCxrc1IpUukUiprVdVtbM+FwBM3jUZOppOzp6jz77u/fcfs1P7q5P+q7BS7X6nw+Z5x5nnre47+S2pgRTuZ799yqThxzp7Btxf7wQ1ucdaLK4y+gn3QM8tJzUdY3QH4I7ZYrUHsT8LfnoKwAcfHZKKqGsr8ZMbQG9dqLkacchRxQhnj0JeJ/fgS7bgfeRcdiTxqNUlOGXL2J2B2/Rtt3AOW+2xFzJkH9PpRAgNjeRk7++09JK14URSGVTpFJp/sn3XT3dmGk07J0QCWK7SBtW2i6J2/Xgf2Pbnv8xe451k7x0IYGV/huxP/sifuRhRHlmacftX8pXlA6fnjfPYoSvsoOeA3jvdWq55YrFdHQlg2b86egfP839P7uASJLzkJ8vA3zh/cSX7Uu+/PW3cg/PU78laX4Jo1HLSvGAZSMgbLwSPJG1WJVV2T/6K//jkxmENWVInTx+ZLmVsTanciTpyPia/nw8iv4YUQnFSlDN03SmTSmaWKYGQDS6RStHR3UDh6G3+sjnUz0T2i1EfSWeaePrrtlTYvIFD6sHFpkc3GFzxlnnqc+8/Sj9oqeuF1eWrpg3MVf+UE4Zc51aiMG+5o0z5xpiB3b6f3aDfjOXYTm9YCZJvyDf4PFJ2MV5aEsOoG8CxdjHDMDT0URcvMkvIlelFOPh7JCuO9hkq8vxzegHOVXt6KNr80OotUbif77fYRHDZPKM3/A9GioH2wjceuvuTu6kxedGHqvgu5ITMfBchwMM4NtWcTTGbq7OigvLSWSly9M08RyHDRFEaQS9s0/+MXDv/pZ+X3XLxh1pzfWncm8/qHmXTjDcmXsWh0BKHV1m51bLr28fF9r632njKi661uTzxhERalJLKGl/vgQ3q8twuyM4z9+AeL6i1Ca2qCrG+1rZ4LfB398FLFtF5xyFJ5QCGflRkQqjXLROagzjoABRSgpBW3VGmRRIWpxEbK1G6uxBbWkBD0Uwgl40IYOQi8pFm/v2cIP//Zz3t19AJ/Hi2kYpNIpTCNDxkhjW5aMpzOip6eLgoIiaqoHg21j2BbScXCkFN50N6d12Hl5emDBMTOOnH9D1bi1gWu/3mw8+ZJ6+5OPuLbn/0Eo/5cyVA7ArGmzzu3q6f5ZYX7BoOVX3mTJFWukmDdVlVsb4PRjEUOrMK+6FfXU41FMi/j37iBQXor43U/h2TdI/P0xAuWlKDdfj9y0kcSfHgIgePv3EKctQGnvxtqwFZHMwNHTEaEg8id/JPq7BwgePRfPL25CDquk88+P8cMn7mFlj03IF0DaFolUikwmTTqdxLYsTMuU6VSKnlhMFBQWM7RmCACpTBphZzsVOrrauXreJOa9ss0B7KlX/5tXXHdh3Px429XBo6b+RUqp9grdycdyB8C/ktXptzYLjjoukOnu/ENvtPcr6XSSZy641ZANezVZW4U69QjsrQ0oyQTWWZeT2b6T4DfORdbtwj98GMqFixGTRkJ7F0HDgsUnICfUIo04gfJSZCQClWXI55dh/fYBUvEkwe9cghhYiuPYWKfMI7x8BRxopm3dKh579EH+9uKzWIaB3+sjHo9hOTa2aR4qepKxmIimUpSXllJZUQWAmclg9k12DTNDXjDApUOOI75ggNi3bJlutLaZvo+3BfVxIx8w315TIIS4W0qpGkt+4ngeudkV/7+C8GfPnKc98/Sj1pRJ02o7O9ofAqbtb2s1rl8wRSnwBDUKQMycgLXkKszxY/EB1uBqgnd8BzFrEjKkow2rRp40G9kZR7Z2wpnzEdNGIQ0LOWEk6ncuEcYxMyThIEpDY3YQxJNC7muWctlqRNxCa9xH9yWLeeCtv/PSPb+kq6ebUCiM7vWRyqRzQk6lEpiWSTqVojeRAGD40OHkFRQiHQczkyFjGrnJbk93F1cu+SreE+YStKQwIz5ix0xQlboGW9x1v9ROXHBX4r7H8oQQt0kpRc8jtwk38v8fF35fpLdmTZs118hknsBxyru6OzIjCvz6NVPPQugqcnM9MpPEHD8Wz+9/gFO3G0/1ANQhQ7BXrsO5+VfIE45EVJbCbx4m8cpS/GeejF5YgmzYh/37h5DHzJNqOJj1hpUVKF89i1BZEdpJszEeeIEP//3nvBY8wBtKObFoL6FQmML8AhKJBBnTwLHtwyawdipBNJUiPxxmUM0wgn4/CdPATqUw+jI8/Y89dtgALohCbNsOCs6cT+VSH+3L1pMpKlbst96V2vYGI/z8/d83OmJFvxShq/9NmkKCI4Rwxf9/Ufj99mbWtFlHGpb1YjqTDhummelsb9X/tORoqK7E/sPDKDdegQD06kqo243zndsR0ShOWQnyzw+TamkjdOFiZGsXct2G7GRh6GDsaBz79w+RXrcRv8+DKCvM2pAXXkMbXsvuaSPkmr8+ztOvPE9DwABZjG6ahPwBTNMknUwcJuJPRvma6kGUlFagKwpGJkMmlfzUAJlS5OHOOWcAsPPam5g8bS7KjVfAE/uJb91MwbmLhNreqVobthrecxde8a23l0shxFVSSg1wsz3/1ya3/W26s2fOGyVt6/1EIlGQSqeM9u4udUBAE++e/12Cfi9i6CDkvCnIM76FOG4BAMlnXiL4nUvgnBOQdz4AXg1x1deQYR889ApCVzGOmYEaCeP8/Vm0dXVw5RJUr4/2S29g246tPDHCJzYmVNnR2YE/ECTo92NYVs6mZPPxycMEb6RTJE2LgsJiqgfVENQ9mI6TFX0mjTRTZGyJk07SE4sz0a/z8OlXok0ZSzgYZv2lVwEw9df34JxzHB+OmEH1/NlUfvtK6IlC3S6TUUO8vL3qJ96ffftm48mX1EPXF7h8+SO+uGjzOmbPnOcDHjQsq8C2LUM4htbT08WdAyYQDpdgDyuBbQ0Yb3+ADjhfPw2lq5NAbQ3yKyeiKCpMnYysLMT2atjxJDog500hWFGE3dKD7fXT/PXj2b59MyuWvcnbxn7iZTr02NKjCoqLijEdJ5epOTRiHxrhpeOQHw5TPbiSoqISpG1hZDKkLBMznc49R1gG0VSahSOr+XZ9BnXDFvKu+ybq1iYmnraIFmEgO9pRtu5m1K03sP1Xv6GivRPZ1UPm33+t+SaNNz2/uOmmxMJZWz1HTX3YvP1BTb/1q27k/78g/DPOPE/pW5F0qbStyaZpZgA9lUjgVxXmHzEDJg6m+7ZfUHjkPNQzj8c583i0kYNwHtuG2NeE2dmL/ur7yN8+AItPQQGUPz1O4pWlOE1fZeecMbz05OPUr3qL7YSxUylU3UMoFCbkC2CYBtI06bVMbNP8h4KP+P0MqKqhML8AgExfpdY2DaxMAsOW2JaFlYqTSBt8Y2AhN33zNjJbP8b79HLEhm1w7Gy0NWvJ8+vYFWWI2+8lf+4U1JGFtL/+CsHiKtRQKLtAxu+xvSOH/TZ2wc2r9Fu/ujNzzV1uhff/gNURgFxw1HGhdCL+sek41dJxHDOTUbrbDxDG5N1vfB+9vRMA/3e/hfXCUkRxSbZj8sLrs0e5/jLkHx4mtX0nsTPns3PcUPbcex+v6QkOyBBx2xGWY0vN48Gjanh0z6dE+0n/nrGc3KQVID8cprS0gryCQjy6B8M0MDKZTz23P8o7lsX3TjqSC4/+GgV727Gqy9AMB5lJIpIZRFkJTiyKXVGG8sATiGiUnksW88hll3DWyYspOud0RGE+WlevrUw9Qnfe/nB18vLzj82TZhyQ7mT3Sxzx+6N9Jp2eA9QAllAUxeP3U1pRjRZv49lXHqLm6ssZ32wQW7eK+nt+jWdEOcmGMWgte/hgVgW+urXsENvZVGoRf+8NrGUvo3k8QFggIOj3I1QtV3BKppIA/2F0F4pCQWExA0vL8IfCeHQP0rbIZNKkMunDcvjCMrBMg0TaYKJf5xv+Ck5b2Uswvx5xwrGoO7dhbNuN72uLsH54LyIaRb3rFuy6BmQoiAwFyc8vJG/sCBrWraX40gsQQ6uQy1ar5gOPG9p135qm//3ZXwkhLsy8/qE72f0yC7/1wH4BIG1rFNm2XIe+NQXeQBDpreJe00D/7e/w9p/LSjXiHW1YzzcLrcwjrboD2JsewhsM4tF0dMfB4w8AoCuKNDIZEqmUsBwbYduHRWfgU5NVoSjkBYPkFxSSl1dIKBSm7zVmzxB9E95PDphkLE6e4rBkxgTOmDmbsa83YG/dibNzF8rkYShHjkf74b0YdQ2I675J/OxLiSxfjXLdhfTc/ygF55yCNn86x6xcyLLHH2dUYyMFJUUQjRJftU4Lb9lmBr570QVp/bW/exfOWC6lVIUQ7mT3S57OVEzHEdLMLtxAVbO+23FyzV/oetYbKQoeDTwgpeOgazrCH0CaJoaVLRL1izzmOP0ClYcKvd/GxDIZ+vfYifj9VJWUUVhUepjYpW1hWFYuwh8qeGEZxPpszbgRo7nQkihb2vFE12PMmoG4eDGOVFDeWoU8ejrqbVejPvEqzpZ6It/+ZvaNr9xI4eUX4mzYjL2vmeKpsxi69B3q//wnambNoHzmDCLFheANCLMzLkV1yX09aLOBHuP8O4Rb2f0SCr9swEAJiEQqtUpXFGk6TrbJ7uCGT1lvjsDsHxR9WI6dsyukyAnSo3tzVdJD/bo0MxjpFCnbydmYvGCQcDhCpKCIgD+AR/fg9fnIpNO56G7b1qfOEocKfqJf52uDRjFyUAXlwWr2LX8ftW431ohRqEPKwRPG+uPDGD//Df5QADF/HqK6AjF1JMIL9o0/RQ4ZhHbFV7GXr0S8+xHqgDByVT2Ndbspv7oc8+ol6G1divzenaY8euYo/b6Hfi2E+Ipx/h0q4Eb9L2nEl8DseCopNEVxANXqi9R9v+NQyfeL+lAOjea98WxByU4lsCzzMKH7VSXro0NB8vIKRSgUlv1Czx7b+Fw70+/hU5aTE/zChUcy/bizGDFoCJm/PUXB8vUEakejL5gLQO/fnqIF0Irz8IQDyOY2vM2NaFcvgUFlOKvrkJEI8ZffInzmiVBdSXrd/VSeOZ9lW3ZQG3dIODb+3ni2ZrFipebbuSvjffTeJZlZ25/0TBj+vGt5vnzCV555+lF79sx5NZlM+pbW1v0OoPh8/pyQP4lpHR71+yO5Y1mHibzfEoW9XvLDQfJCQeHzBWQoFMbr9fVHdSlti1gsmu2pMc3DCk+HRvdPCv60mMLEgsEMqZiIHsyjqCmGOP5EZPlQAmV52BVlqLqOuexdGtZ8wOj8Coxbr8I7shalvAR78w60V1aAYaFeuJhUSCe8rwnlosXoCxcQ9hcRHjMAEcnPvoYX3sQeMwL/RYuRazYp9MSkWlby83b/mDeBlJRS/Ktneb40wp89c57y/gcrHGlbSzyaFiouLDGa9u/TWjs6sqlL9dPr5lP2wfT1oQIHciIP+bwEQxG8wSAhX+BTxzBMIzd/6I/s/WLvP3scmqGxLJNS02J4YYRv+CtYsHgxAN7R4/DsbsG++AdEAWv0MPIfugcGDUD2RIV49X3yhSZH51eQqa3Bu7uF3ohOHkBXD4lf/Qmr8QCR715OyWO/w1m+GvG9O/HMmYbvQJTYlgOUnVNCsrMD+9f3Y40eRuG930csPlm131plyYB3RN5Df7hWCPEj48mX/uUtz5dG+H3+HtNxjtAVRUYieWJYYBTxeIxEPEo8nUF+wtZ4AKF78WoKuqbj9wfRfT78Xh8eTUN8Yt9KaVuYjoN0nOzfOiRnDyAcg2TGRFjGwblDn+ABqoryWDJjAnPL/YgH1jM6v4xA5VDEwnl9p5yP6Bo9DG3rTgDa7vsDxaPGCxEKQiwhla+ehTeTIji0JluN/f3fMJo78Eweg+eWq/HEE8iCfLQ1mxBDB2FHIjivvoV6+3UMfaic7cv3MuCICvaIBKOb27AMB6UoDyWWUJK3/swK//EXN2Qy5iser/6RlFL5r+767Ar/n4sPEKbjZG2I10dRUclh4gWEULXPPZX3CxzHyJ0JctXUg/OFwya9h9qY3niCpGmJgK7JqeEA4zUf59h5jLzku+TNm4rsaEUOi8LUERAMw2OvIpcuwx4xmMKf3IjVsAdt8hHEXltO8trbJYBaEMH78L3o86dgx9PIdz6iIJYk1nggG+mPOQpxzkkYRgZx599IvvQagfMWoVxyPrJhHwMnT+CjR/5GkzePwQsWkCwrx1vXgOJREFXVwj98mCP3HQgIj3bP+0ctPJJ/8V0avjRLDwvzC9XGpr3OgJKyo2zbnmxaliWlVG3bwpEOtmNjWSYO4EgpbMcWlmViGxnStoVhmdlbMknKNPry8UnSfX02yWQcw8xaFcPIYKcTSMvESCVIpNPEoz10xOKE/T6O8Op866SjuP7q7/K9r13NQq2EAWecgveYuTjvf0TiB/egN+xBnHo8yvjhyPw8ePkt0lu241l0vFBGDUHu2IO3djBaezdOTw/xSaMItXRjd/Sit3VDLCHEsKFCH1wlvKceI4QNcs0G1Pp9yOGD0Lp6MNMGnvNPxSnKI9wRY3vLbnZv3MS0RedizxxB4MGXSD30HFpNOcotVyo40hIb99YMWHB0vTasatOBh5/03PXMk7Yb8b/AvP/Biqz9sKy/Zkzjm4CwTcMBFKsvaqv9uXs7a8CtQ/a178+4fFZ251DrYh7i1fupCPmYNHYoM0/5Gmd2xyl7fyvK4ktQ5sxG/vkljEQv2pxTEdNGCbW6gmAyI2XAi5JM4Pz9RexnX0VZfArB+bMQTV2SeBu89QFy3QbUKy4keOMl+LqTiC31GD++l0w8jgiFZPCnt8FFpwslY8Er75D43q+xu6MEj56L+psf4A0FsZ9fhvHeavTj5lJ96nxe3LubuvplDB18Pj2xKFrjAcxtu/GGgsgRNcL+xvW2MmPKLwwp3/EIsV9KqRpLVwnPcdPtf6UJ75fJ6tiAsnHLxg9GDK65A7g5bku775QtALxmtlzbP/E8VNyfJfD+zItlmWianhP74IIQA/IKOGr8EUwdPhrtr28xa/IilKOOw7zr/qy39+eh7tqFs3ENxqY6tKUfQkuKzFNPoTR3Zvvm50zGKS9BPPgUPP4iLJyHPHk61v1PY6zIXv8hsGMPjK1FBh3sijJiw6sIravDN6AcWg8IpaEUo7QQb1UZvknjSa/bmH1fm3egVpbB2Fr03z6ADAWY85M7CGzZjrGmkUTwPbwTxkAoQKZmIJ61W2BEjaJMmmDT0TVA7m39i/H0e9cLITbmsl6rtqrinmf/JZYvfhn78RXAGTG45jrNTP+osbPXo/qDeDVFeJCYpnF4ZqdP3MBhUbxf6IMLQoweWEbFzjZGTKlCPeUyjv3oYwL1+ym47jLEWx+QeGUp3lu+jfKNM1DeXYfs6kGccTTCo2G9/B6qruPMnYSazAjn/seRr74jxQlHQnUlSnc0O68YWo1tmqhrNmV3WvNqWNt34P3+NciGfVh/fQKxay/JY44kPb6K/LxyZNAntBdX4KzbIBk3EuXc47Oi704iH34aY+0WtNnT8Hz765AfQbyyAicW5eEH76N3cz2nnf91vF8/i0JTR9z5RyguQJx5InLCSFtradedF1eYjBm2yjnnuEd6Tr7wyYp3Hu2A7E7S/9ej/5ducnv39+/gmh/dLD6eeckDaxIf3PpQtN23dWOdsyuRocOw0bSs3clTHDweHc0xiYT9WXHHsoWd8b4ylLYeauMOYswIyiuG0lz/CkOdMUSKK1G3vUasLpt5sRcdQ2jSGORFp8OGHcgbf4qMRFDLi7BXb0R5/EWc2dNQRtQgdjdK1fDCbVejzZ+CsXEHzoXXk4onCTx4D/5pozBau4heeROR716OdsPl2K+/l50Ed3STiifx79qDd2wtXbpJcUtCyuUriNftRN2+k8CsyciTj8SJJZBPB7EaDyBfX4b35BOwj6vCCflRlr3HCTfeyGNLvkFLcwNDd7Ugg2HS23dir4oSmTMDdVi1Kt9ebeLRFGXIgDnOTXfPKVp8+s2Zv/3yd61X3vRLIUTSePo9naffcTh9/CEhJ1/K91fhuesamc0gfHkHx5dO+FfEfco1YDUXxc+dMu38yJAHHzeSx0/Wlm/6kJFDB9Ac7WHf2+uZftQ8iOjINzZjankMmXMie5e+gx1LMOvG23A2bEa8vxq+eZmQK9fKiAwSGFCGNmIozpBBhGZPQ558JJ6mdjIPP43m9SJ0FScSQTv6OOS4kdh1DUQF7Nr3Ab4/bCf9YQv2gRjqR4UMPvB1isaMR7l4CYF1W7DqGxD1uwCI/PRm2NeM0t2LM3MCxu8fRgMCZ5wM556A8uwbFD7xMWZJEfriUwg1teJMPQLFtJBPLEV0tKMcNRNP9QCssiIyL72K+peH0CaPg+svpSSZYPppR2Fv6yLx7nuE58zDe+R0ogdasTwK2ur1KKMGq3Jno4y9+q6px5OO4vUO5Me/+3HpknNOlC/ef4YQohWARz4r+lwLZK8kkydNpc85SOPau6Xnrmu+FC3QXzqrI6UUt37Uqtyyc8M7YlvDbBnwmnZFmWr8+F4Cl18Am+txerpRbrkSsXIDiV/9Cd/C+YjKMpL33E+mopT8d5/EWbURTyJDZuY49J37Bc++IZWFs3BmTYANO6Anipg8BvOqW0k+9wbhB+7Ce+5CzN89SXtqJy0d9TRt3fgfvt78pgKG/uRWBh53FMYDLxC98iZCF5+PetvVWB9uQPz1SejoRoaCaOecjJw3Beeu+4n/Oau48A/+Deuri7JR6sHnSN5zP3Z3NLvz8vcvQ01miP/7n7B/fT9a1QDC7zyBo2vYP7yX1SvfRK3bzej8Crw/uwmqylFbOuEXv8suxTxlDtbGHUQff16aYb8sGzveVhbO8joepU7ua39EbGtotcqKevVQyLAK85Kyq6dXa9gXZ9bk7naSvZULFyQ+6z1nVm1VPdNG8UXe6+dLFfEz19ylCCGcrgEzx9i3fHuaOnKoY3f3qOKJlwl+5xLkRacjn3kLZeYExKAyJODhIuxFx+DxePGGQwQK8hEf74TfPogzZwaeGeORZYUSwAkEEbE08pW3cd75EPGtJSjFJUQuuxBx7GzMp17mg/t/R09l9ycqC8HDf04f1ENPZTdr77uGuncWMGbMTIouuxDHTGN+vA3lyCkoy1bjdHSjnbgAecTwrKOYMBa1IIIIhRCtvegf74SQDvNn4V+zifSmOjAslHfXYba245s3FXVAOYSD2L9/BPa3oZ5wLJWd+3l+7WoARu5uxF9Vjm2aJOt2osWT+L5+Gp7qFNvjLWJweLDg3BMU85a7TbW8bJR27UW32xvr0XbuRyyYjr5+N06iyxFTJxvErVhJY0uX8feXmq3CvF3qsTManF37dyivr9wa+9qpDd7CUPqQQPWF7A36UglfzByRzd7c8u1zdRTdfOE1Q7vhcg3DgXNOgIdegd8+gLh4CXL8UJybf5VdVjj5CJRICG1fKwIF+firpFauQWyqI1gYgQ31JB57Cn8ijjqqluSjz+EbUI6YOQHl2NnI791J49U3sDmxEiqzQs8nBIA35Pn0Cw0Vkokb9KRbc3cltyxjzZZlVI4ez4jr7sLXm8S84AYYMwLlxiuQZYWwtg7n1beQ3zibwF23IapLIG7i/OkR0pvqCMybhXPFVwkU5EHGwrnhpyRXrSM0fRLqo/cii/Nwbvgl0YefIjJzElX3/py8TR9ie/NIrvko+9KGDyE0fVI2xdvSDsCU4ePZ0FIHt/yMshuvUJTulGn/6UlHDKsis2ajULq6UT0ZIfZ2CRI9HrG3u0QmukrEsOoR/pNmz7dbehBvr8bJJI3w31/Yk370tXeUcxc+He1OLBNCmFJK8UWbE3xphN+XabA7uuKF6p8eu0B2J6T2jXNVsXIDzt8fh1FDcF59i3Q8ibe6AmVfO+kDLfhDAdi8g9R7q0k/9hy+cxfhuXQJ/nUbcCqKkEcMF2yoz0bawnzk5LH4Fs6X6rzx6IPKMJ96mQ/Xr8hG+T7B94s9r/zT9b+9+1Os2FTPsl6bWCyWPQGYFj5d4+hIkKPZSNNlx1A5ejwDdvdQsGsv6tTxiLISzA1PEn/5LUId3Yhf3YoztAqloZH0pjqsxgMkXlmKb9ExiHEjs4HghCPRDrQgQ0Gs5auyYl4wjUjfzs2yoZFjjlpI0+Z1NCb2I3++jOoFCyj91hLs8iKUZ5aSjifxLTmLIb/4LdvWraVsWxMOqPb2Hao2rArlqBlE73+E0JAh0nPuKTgbNkv51ju2+NYSmZk0Ujp7WyX3PgzRKNLv0dTS6uHyK7OHy407Loms3PBxZtXWXwkhHui3QN7po21X+P8FjGvvVgEr+bWrTwtf9c1yuWGzIep2aeaq1WhXXIg4bjoKEPKoMGcysjdBsDuajfxHjEbRFYLtnehnnoAzoRb1qm/B6EqcqgrJJWeKYHUF6sI52EMqpGIdj3x6Oc1Gin3L/k5PZTfegjLy1c8WfDA/e/9Dq6I8/OFGuhLZdbf9hbAij4pP16gTkhFRh8qIQtPWjTRVQnG0jKGN+ygo8KMtPJJIyoCxI5B1u3C6e3GAwA1XwpadsHA2VsMe5HNvYre0op1zMoGlD0JrF9av/kjyuTcInXQ04vd3oJgWxiU3Ujq4iqaIjrGmER1oWLcW7bwTyKOInk2b0VZvQvnaIsS5p8DtW+m67wERufMWtKd/jVy+Fi0/gr5gLvEXXic/FEApzBfiyBkwpDo7P/z94xDNpmxFZZl0Fh9rsXaLo6zeoTBn5Dh92qj7rebu0421my/1Th+9/4tifb5MVscBKDrn9ItEtANrw2bh/f412d8cPR2lpQfj13+FyeMQ40bivPE+ctl7KCfOwxfyYYwYijjnZJyxw1DeWIX16BPZnHZVBTqKNBt2Q9cIlGGVWI+9xodPP0G0QYAvSFlx1acE3y92r9/L9m1x7n1/K+/taSGgqwR0FSORoCrs57TKMuYdMYJBA/0A9LbYtMa7cnOBjkgrG574GU/cvIfxpsppd/2C4bMnU2oKxC13k9negHb5BXjuyr5X8WAHiRUrkfE4wbGjsnuClhWin3UWkYoqZFkezhvvQ3cUZckilO4oQ0cP5tUPbmHIqMEMrRiMb2MjsaiJGfajAakVa9CAXYUqtRPGIO66H4WLcFauxdlSD+NGkhwxkHzAXvuxlOecJJxRNSgPvYCzswElvwAxaQzinBMEr7wj5Io1irHkZKnNmmCanXFH7ms+WUe8n3n9w6uEEC9+EbY9+VJkdfo3R0o/+tp89jW9ZYdD0nv6QmHvayZx+kXUTS3iHd2iYsV21qe6aR5WSkUszlnqIDxziqgaPRP77Z3osRTGETU0bV6HFTUYHirHvukSCv76Asnn3iB6+pH4Jleyc/U79BDH6w+Rr3pygu8Xe7/gQ34fby7dyk3vN5A2DHweD12JFAFsrpkwhAWzhhz2PnpbDga6HtvAn4Ie4pBO8Jutbbyx4wABXcPj8/O1sghn5mUnu94JIapGz0QN1CD3fIRXVmIMLqdg5hSsletQnngZigvQb78OdWQV9rZGzMtuzt736x8it+3kvSUX45laRWX1OPYufQel8QAVi04EYN/y9wF4o7yXSwcsILSujtA9N2OPHYty118QJxxLfNVqmXnrHUJHjEX52iIBoPz2wT57NQvv6Qtxnn0Du24HcuE8nEmjpN7WhVi5QcqdjTZjhnmFrmJWlZ0fPGrqo5n31+re2ZNNV/j/QTbHe/e1Ttd3714aPmHusc6LK8ymlga1JbGPVc+/zZ6wB8oClE8YR8vrq3gh1s2gwgjXHDvuYIalP/PyD372+kNkUp8W/CcjfMjvY9+udu5d2czLW3YR9mQft783wcjSfH4wdzSjx+SR6DHobbHJxA1SfnJW6VPvL26wua2Zn63OzjWaUiZD8gLcPW9Y9ueoQ+bthtzjC0rLSI7JTq4DW+KsT3VzeriaIWeeiHf0OMJSQTMclGHVOLoGdbuI9fbw4m/vZPiYWoz6Fqn39FI/pFAAbNy7G4CJ/gLOu+e+7PLMqnK0WRPgo03ZCXZ1uTxw+78DoF72VeHbvJu8x19FmTEFLl2MfPwl7A2bEUvOlL0jq4is/BhlzSYAqUwYK9jXZIuyEoWyAY7llecFTp77zD/T9nzhrY5x/h2q5+5r7b1X3Tg9NHb4AhIZe+Vjf1f3WDGc0vys6PuqsenOA7SUBRikZz/LprYY9Y2dNIdDzM93mDxkEHnDSg6PvH0iN/0axXkS8H+mf+8XfDyV5p5XG3lh/RYOxNKEPSppw6AzZXLssAFcO2k4PbbBi69sY39vlDUxg10dUezuOHbQy/emjfiMM4GHyaFBDNm4h/Upk0q/jmGYNPXNByojCl2lZeyodKhtUkiOCVEZyS6oWVXpsHGPzfhClT2PPw48TndbK2edvJiShd9Hz8/DfnsV4fISKi9exKqf/IHpR80R29pVNu7dzUbdZjwq4wcNZt4RM1COnY248wGcB57Avu6bqGs2kXz0OUJ33yYA9GgaBwiu3oIMBeGUOcgPNmBv2AxzZyCG9on+gSdQZkzBaG0Tni07sZobVTXgdYRhqfqw6scSb69ZLIR49p8V+b/wwtcfvknyyM2Un3vWlfZjr6mPPX6/sT7VrY0fNBilrQfKAoyoKoJ2qP+oEYDZtYW8v6eLuzfsoj1tA128DlRt2cfogWV8ZXgxhSWlFOdJ8vDnxJ3oMT7T0gB0Nce4v76dtzduYldvNk0dPsTaXF5bDGS44dl32JXJ0GnYRAoKGVIzjPFHDAJg2dKXqCwNE8z35P7WoXOH2TWF7KpvPrwA5iuTPelW0d3WSi1lh4keIB7NaiavJECsrQeA6qMmYkZ8rLv8WwyJ+sirqEBfOIt5BVNo+vNzPP5RNrc/ftBgxgOnnX0xvfWbCdTvRz70Is6HH2Wv/7WzETlyaNbOLFtFxfnn0fH7v6AlU8R37aKwdjgEw5hLn0ErLsFedAzKE0tR9jXDjCk4iTieslKUYCHamGHIjnYFcJyd+zS9MPJA8qV3t3pnT67/Z1zS6Ast/L4UptN00U1l1sYdJ27Y94F0SvPVeSUD6G1P0t3WyrwxEwkNCrK/PZuTrokZ5BmFxM1edjkZqooKSCfitKdtGmMZ9u88wHt7WijUBQPyAgyrrKKqqIBJIcnoMXmHCT6TyvCDp7ezs6mRmKOytytKQFdzXr4zlaBIkwwpjvB8Uw+deJh11EnMLSlg1PR5jBkxlKK8SO6YT44Zi3ffik8Nrv5BML12II/vzi6lbI6n2d8bZfKQQZBGFpSWicKZEQo/8Rlt7MqmTFc07mYi2UFaNqaEpg/qEPEMO4hRQxFFdQ1osyZxyhXXseP5f+ekqrHY27qoDZWgJNI0P/cKo/MrsMbXgkchcuQMnIWzsEsL8HMtFObjP246nsZG7M0f4mvugK9lL6yhxWKIkYPxlhRiZ5JQloc6ZiTq5DHC3teMY6UgGJaadyKA6mzdZwH5Siz+ROa2357kXTij6X97RdgXWvjmUy8rgF0ybuyMrvsfLdzeuNVQQMs7dT69Lyw/GPX2JsgrCVCz2aD6qIn0tmd3Phvi9XJObSmVpUN5rc1iZ1MjmzsSpCyH/RbsT8XY3LEt+0EYaf7EfCZOKSWTypBJZfD6vYwlxd/2tOHx+SnSJEkT2mO9lPhUhusKuzIGb+w4AEBV0Mtxs+fx1YvOIxXP9v6bpgmWhZXJMHf+XEJvrcmdRTKpTG4QJHoMCktKGVIcYVdHFE3T+6O5ACicGSHfV5a1Z+lW8n1lbG5rZm9XlEGFEWhNEp4ymIpIPg7QHjEpwYuIZ1CPGkaqvQs583Qi372cK6/9BfXX/5j1B3YiJ09jxOByqhcswDjpGDwjBqMX5GUnzYAeS+GsXIsZT8KIGqwh5WT+9h5KOIBnyAC011dihsN4JozFeG8tmjcgnIWzoKEJ59k3EIATiyK8AZzCiHB0DVGYr1JWaGre6iNkedHSplnL5gsh2v43sz1f7IgfKRYA9rCqMcas0ZLHP8Ypzaf3g+ypevppR7Gt4QC9m+vJGzuC0d+Yk/XMfcIfb6rUN3ZyxJihXD1M0ttSSmtHI6sae1gTMziQckgbBknTpjGR4fm9PUycUnpw0pnKcMqJ2WLRc00dGJ1xPEVBpoYLGJgX4YmNe2hMZMV7y6WXU1g6kGtuuIpkTxeXXX8NiWgUXdcx+z7oEl3HXxH+lI3KpDJ9ZwCD/FAYOqLkKQ51fYXO/nRqP2WhKjJxg/qPGhlUGGG8eXASnhwzHO/TH1IS8qLW7Wbw7d/E2hNDHV2DnHYE0X+/j6I3/864b30L9ZGHGH7xJaTHDkZsLcOzuwVlXR0sW03msafw1zXA0MGI91eTrtuJp3oAJQUFfNTcQFXFwKwF2tmAVlGGU12OaGhEVFWjPPYyxvYdOL4g+sjBqGNG4hT4hdT8qMkEsiuDbKpTnUwmI0YNHlVSVvlcKmmcpgc87f9b25t/oYW/4p0nAIg2NjpN+z5m+JhaiOisev5tqo+aSHLMcGjIRlulrQcoOfwAZQH5ws79IrRyPQPzIty3ZR/FVvZs6ikKMcCvZK9yCJxdFOLoUo2u5tinrMgpJ45kQY/B3v2pbAoy3UpT1KFJOghFkX3rdkXZ4KFUhHz89tc/ZdaRcxg3ZXwu8qNpaMlsYSvU9zcB4ql0zlYF8z3UigzrAI9Hx+iMf26F+HePb85lr/r9OoAvups19RuZMmI84tixucfvvPYmas47n4ITj0Y0NBMZXJ21We++h7b1Yxrvf5TR+RUoRRHs7Tuwu6M4He0o5x6P2DyBUCQCsyZno/6Df0KOLYO6BmTaEEplmbTyQmhb6rHXbMLRFbRBg+Go6TCiBqe1C9HUBYlmZDAf4QUxZAAkMpqz64ABB2aqm7YvT/z9xcWes0/e/L/h+ZUvsvBnb0pKAOPlN9fJNzYLIjrJMcMpKC2jgiC9H6wmryRA3tgRDDtnPPG9CZpf2QHAvCljCEV0BhVGeH9PtmC0uzuONWICc8/5Cm2+Mt7YcYA3dhxgVVM3zeEQpBPs3Z86zHcneozc9/mqh5Q/m/qsLA1TKRT8qiKEovDj39/HkgvOBaBSKLz05OMoijdndQzTpvjAR4T8PhRVR1H1wwaB1+/F6/cyvXYgPl3Dp2t0aAo9tvGpz2XZyl28lbZRC0Ls7YrmJre97UmcD3ooKC1DhrwMPf587Ld3YnX2ZtOQG7Yg5s+irSyA/cJSBk6ewP61G3K/j08ahTz1GOQ5J2Wv//uNczEHD8K59gLEt5YgJo/BM6iMmlkz0GrCKHUNCJ8HMWGsEPW7ka++kx3jw2vh0sUoHjVb2f1gA6LQiz11LMbMkYjJY3AGVyGGVgvG1mpUlhmiMH+0p7DgjfSjr03xLpxhmbc/qP3LRnzjpT87Ukqx7+qb3qu66LyPxe7WcbtfX29UXrxIY8t29j2/nryxI6g+dT7ZPEs73W2tFACUBAgNGSnYs7Ivxx7l0RPH0jB+Id+89Fs8t+BIZs+cx1fPPo9Lr7mM9/a0MGL6EqZ2b6S35bCiVXbbwh6DvHKVPPy533vWhSCW7N95TQLCMEzGKwECHbtIpNJgWaBpqPXbkWIPnkg2QluJFIqq49hmLk2aHQChnNMDyHS3iu19zaBNUYfnmjoYVlnF6JI8evwKscICNnb3Mr49idLWg6PZVF68iMo92eM1qm0YyxsZf+XVxFLtxF5bTvHwIdi6QmX5ULTj8tgezjBk0Yl45s6hw8lQesQI2LA9m8/36jhrPoZX30IMqcZuD6EmBf5WHzTvwQqH0arLUe57GBGNwglHwuKT4bllOPuasU6ZhzN5DJqWlZpq25iqiqKGsAHHdNAbWzW7q91A85eLytKlmT0ti/Wa8jeklJoQwvqXE34+lrz7tp8o1/z6p8nmnXvO2b74gted5q7qcVVTjB3R3RrAMG8elXvS7KrxUUGQWGkZw84ZT+uWdipWbM/637IA7+/pYnrtQMZZnRzo7CBkRunthh0dMYSi0BtP8OTrrzDq+z+jcO3j/bqT/T683470DUmC+R6unDS4346IFT1ZW3J6RXHWaxcPwe8VJKRArd9OWfRlCPr/U+87HA4Ti8VImxarGnskQHxHLxt1m3e6omJYZRXF+fl9nxE09hWhxg8azJ62Ho4rKia9p4n6P/8JLeJB7+nFGFxO8ci5dN71O5Q/PJhdSlldid7bDFs+YP/aDajNDQwaUk7irQ3Yv3uA0L696K1dOA8+lU1vBvOwx45A3bmb7lQPvrSDZ84YScaga+Vq8mdPQ1l8MvLxlxDJDOZ1X0fNjwiZSmGbZq4zU+o6mt1XO1VVnJFVwomX6EpDo0VrVz6tXa8aT793hRDiD5k9LbpnUJn1P93Z+YW2Ov3trK99Y6GnYljNtp2Z3lOGnHliU+Ld9zzKliSnnf91hp1/LC2Jffh/9QxW1KDy4kUYR5wEQHdbKxP9BbnjvbV2D5ViF56ebo459hR2NdRz10++C2R3Xcvs3kPdqhVULf4uHb0iV7SKhMKE/D6KCvPw+r0UVoTx+r3MmDuEG0+dyeyaQq4aUsGNE6qzNQXgxLPOoX1THQO2P5QV/X+SYChAWLEPy9MPzIsQqs1jvKlS0zciq4oKKM7Ppzg/n6pIgLpyPwOnlDDqlDFs7cymRNW63VQFB1Kx6EQyWz+m24ihx1IoB9aQau8iM2kkRTVD8Ly+no/qNyJX1cMTb5JZtSZ7/kzHsfsueqcWRIQ1bwrK+NpsxXh/NyKegFFDYHm25ZnLl8BfnkZ0JzCv/gqWz4PdEz28VeAztjuyUyaKR0OMr1WYP9kWk8cIZdaY32f2tFzurSk3+7Sg/J+P+Hd//w6lbPBQ0VfOloABcNHmdZusJ5+b+u7Rp/xC7+k9s+DKhd7k2Amyck9MNLIZLeLBAJw9Ww92tpXmQ39ffGuS3habwTvf5eSzF/PuEw+xPmXmrmIyqDBCZ/1aRPkNBMIRMqmUiITCaEE/4MdKpAh9ImgfOX8oJRXlNO3ambvvjHOOpTjzPlbT/v90lM/l9OPZjBQeH5hxUSckI/o3fzqkKp0sHkIVu2RjZ7cozs+XAOviQnx95kwa/vgSTJ6QTadGfKiXfRWeeAH1J3/CHjaYFGejA3pbF2h+KkeMYlfjXkwtjLJgInp1Jcmwn+JLLyA5cTihby0h2NolzWNmIj1e9AVzMV94HeuIsXjyI9hvrkBcvBj17dXIWBrzuq9jCYGWNkhrKtgOPlVB9WQTBo7Mvh3Fo6EoKpp2sHPGUlSFvKCUYHk08dtULDXyzZuvvebYn9xt/U+2OHzhhP/wXx5Tl1xwrg2wZtmK0LvL3x3V1ba/dmt7dxEgzrnlht7Rp85++MhCX8zx+i7Me+wtrVcRcuQN3xVWaT4NT/yN7Vt2MHzmaDhqInkzp7HxicdzKb+mXd0MnvgxldYUTrvyBvjNz9mlZDM94wvDmEAmnWJAdTFmvDErejVb2NKCYH3GYrsjJhVzxKTivlN3Hti9kOw67LnYvZ96nmObucxOf1qzYW8zMUcFIymSfft9VUYUARG5nyh0IaqKCvCVDqQLqGLXYSE0vbYJpfEALSMLGd3n69VkikxnL41rPqDqiBpKfnIdVsMBjHv+hn7cXAaOn8Tw5gbKK7JVWmNYCQGmIIM+zFQKu7sHNZMEr45iWPTWb6aguQ3PsaWIpi7So4cTDoaRKz6CK5dg+TxoaQO8ek70sm/PIwCPV8cxHWIdXSSSabrb22S0o4MBAwaQX1FOMC9f+IIeANMX8l0177afj2y+8OqvCSFa/qd8v/YFszaKEMJ+/7U3hyei0cveXf7uae9t2VwNqD1dnbntuXu6OlkJvbNGpMWEPZtESVSXY6rPzurrQIzutlaI1pI3cxqBLduZGPWynmSuwjktNQA2/Z5zR5zNuEsv5u3Xnsm9huK5p1L90Qu0xRv78+wSr5otJCXpi/7/ALv3oNg/B6uvX/9T0b7HYH/v4dZglMxFQ9Ffm0gWD5GF+YV0te0nWZzt+6lil2js7GY9myjKz8MDJI+eQPitDcR//RDesvLsuEwK2vJD+Hc3Ih97Ltt68LdfUr5xHSvefI0T5s4hs/Vjdt3/KDX7zqf4mHk4rywnuW4jQW8Ax6NRsHx99hXV1mAmujEGl+N99S3kqccTH1gGqRQWIE0h/Lp2UPQi61badu5if0sLmYxBwOdFaDqZD99g54EtqAPGoNSMRi8fKAYMGKDmVVYaxWWFx5YPHfR+KpY6TwixeuWby7VZx8y3vvTC70ETL//loX7RXwH8dFdTa/i9LZvp6eq0or09RiqTlprHIzyqhtfnU/ILi/K2tnfL1MxTJSDW2t2c9u5mampHoo4sJH3SIgKPPsmqt98jb+wIRpSEqG/shNYke/eaDB8Zgu4XmD+llrFVZ7Jx1WYGDfRTPWgPvYl0rrjEf6WDVc0Dr5rd4Cpjf2ak7xf9J6M9ZFdv7ZBeYpneXDUZclkeBuZFqKeXwtKB2WpuaXYj3f4BUMUu6Iwz5MwTsTp7UTo66W7aSfOyZdScdz7D7voJWlsP/rXb6R96vuYORChIcO4cuh/5Gw2vPYK9rQsFUHfuxp58BMb2bGeo5VHQWtuxu6NYo4fhHTIA6hqw1m7G8QVJzZsIxsH349c1CQhFGih6ADuVom7jRro7OvD5/ARCQQoieQQqBjDmlp/RunYtO159EmfPVjJ7trK3ZjT6gQNadUG+4a2oGFI8qHpZKml81R/wPPvftT3aFyDKizPPOl955oJz7TXLVvwMuGHthi120/aP06NLCjRKCgTZPT4FILe2d/cL0Rk8YmI28BSHKR8+ntTJfva3tGC27Adg+5YduRx3HlBP9mqIrVvamTQxa02M7kYinqxX7xdkJBQmGo9lc+yHRu9+G/OPyNiHR/9/IPrDntZnc3risX7xSED0T5YrIwpNUQfKAgTyC6kN6eygkGRPF4WlA3Pi384u5oweR9Nrj1D+8tvo0YNCNOdNxtmwCfPuP+M9+ki46iK09k5kQyMFkyZQUJptiRg4eQL7AX3BXKLHzSC/rgErnkQ7cT7W7kas5e9hhrNnPqWuAae1hd6rvoKvr0VDP8TWAFJR/cSjMepWryadThEqLCQQCKJpGo7XizAzxKMxBsyZgbeiQmxd9mYunZtOp9if0DV7a52ZaW4OFI8e/XgqaRwrhHjnv9Pfo/2zRS+EEEJR7JVvLv/Z9r0Hbnj6peczPV2dSrSrU/cGgsLrO1jlzC8sEqNLCqgcPg7IpiJri8OECwqoKdQpH1bL8KkT2L5mA83PPciQqkG0jxlA3sxpNP35OUglGTGlihUfbWHMrGKqh5TkCkm5NNcnCkuH4VXpc0yfb3M+5wzxWaI/NNqv/2g/y3syWX8PpFHwePTDOjEBQhGdIZVl0NMFIAL5hfJQ8QN83PgRgahJ8xuvMPrKqxk9OlvBTTbtR4ma7KzbSHVFEWU//l520fpDz6KOqmXeMcezq8aHr6iYIf580jNGIjMZxKzJqOEgpkeDEYMxw/7spLmlk+5NmwlNn0pm6BDMVAo0DdM00XzZgaF6PNjRGHUfZTNFheUV+Hw+PH4/Xp8fj64idS9CUUh2xygaOkjOKlvCmreXY7bsx+fz4/F4wONR9ycSlvbRWl0dMfxBKeUkoPP/ddc37Z8d6QO6Zt/981/f98pTT1z23PJ3zNKKgdrEmceISbXVJMsmZ1NnrWuJdXezoyPG1vr1rKx/lvzCIo6bPY/y4eOpHDKY0jyNvHCA9gMd7GxL0VJcS/KkIsZZnbnUJsPyD6t+Xlg7AMc2PyX+wwaBV/2HXl37T2RtPs/T99PVHGPVjv00Rg8uUE+athhbHMkumOlbLLO/N0poyEh8Pj8mUBvSAcRhkR/o/WA1nqiOChiDy6U5b7LwP/UWBX99AebOYHR+BXHA8XpwunsxXl+Or7mV4NFzCLz2CHvI7r85vqiY5NHgPPwcMuwTeuXlsPwj9uzYJqddeCFKd5T8khK6x1cdNtp1Xcfn9F04wzDYuGlDn+jLPyV4TVXQPdnPX9U0MrEUHq/OzBMWsuHd90jFD2YTPB6P2gyZ8kSiqvNA22XFA8tuX/nm8v+nS5n+04R/5lnnK88++7h91y23/3Lp+ysu+2DZK8bMBSdqX7nuNwQCWTH5kyksI4k28lj8QE3ATzKZorO7i23vPcuDTz5K2YAVfPuiCyk59mja2zpZvX4HLds30rT9Y7a2d9NVUsAJ9Q1UHzWR0YOCuZaG/b1R2ts7KCkp/lzxK97IP3wPjm1iRM1cNfY/EvtnRftMKsOylbtYEzPo37U9jYJmJFhUOehTx5h+3FmoHp10fiFqT1fu/kB+VvwA24tCTKwYgjZrBlpbD+muLtlbv1lse/4VRldVE7jrNoyeLpy3P0QtyMdqPIAIBSi4/lK2/fbObKPfgZ2MfOsd7FQ7ibfeRS2IoE4YK7tfeYtxMog9bTzixRWkhtSQHDEcbyZzUFB9VkfqOg2bt2AbJoXl5YQLCtED2avOaH1XsOm/OIfaV9nVFBXHdHAUyYS5c9i78WNaO9qzUR8o0XXF7uqSKVgoFOX2mUcf+f/k8/8pBawzzjxPfebpR+27brn9/Pe2bP7OR+++mSkcMEg7/fKf50SfTKZIJBNkLEkimSCRTNDR1UUimeD0GRXcecf1PPnU0xw3ex5X3/BdfnjVlRxo2EnL9o3ZM0N7ts6/tb2bVXPnkTdzGuFuPdfHM9Qo5MVXtuHYJvFU+jN99z9sp4hG6ez6fL/ffyZwbDN3+yzRb93Sm7M4/dHeSCQYOaCIytJwLto3RR1CQ0aSN3IMtpE9lp2fLS7VhnRqQzqB/EIKSweSLB7Crhof8pxTSa75SISWrRflMiuc7qadyAkjiVRVEX38eeTKtYjvXYEzoAK8GtWnzgdgWqCE5IiBeEePQy2IkKmtkWLhPJIDC+iaUotIpLGaG0kePaHvvaQPL1QFNeJtbUQ7Og4TvcfjwePxIBQld1mmwwKGc1DHlmkxaPw4qquq+kXfr1kBVDm2HRZCyP5C5xc94otnnn7UkVJ6zzzr/Nu2rPtA9sTiyk3fu4xgIEgymcqJP/eEvg/Io0gyDuxpiVFU4KektIhv/dulTDl+ET+59RpW3nYb55xyOrvr19PT1Ul+YXZiuN/SGQcYaxqpvHgRvR+spndzPXuG5fPxyhbGz63qm8x+IkJnoiiZQJ+378JKpHBsk3272tm+eQ9lxVXoU6pQWtto2q/Q3txy2PNHj8nLnVE+y9fv3WuyYlM9PXGDWCw7eUib2bP2osriw461vzfK0eddnet58fn8pNMp7E9EfiA7B+rYgWdfEzt3bGPsujpit15FVbGfsL+Ezn270Bpb0FZvogfI//1PUWZMgmffYHjMi2/+IERJCXvmT2LEoHK49SryqqpwvJ7sRrTnfB31vXVQUYX1if8Vfa8vFc+wa+dOIsXFB0Wva2hqVqOWfVD0li0BC1XTsC0LGwuvxwuKwDItyofXonm9ZJoPW52m8t+4sIn2T4j2yjNPP2rfetkVR7ce2D+8sanJqh5cqwbHZ9sMchE/fdAq9F9+E8CrCeqaTQbkdVFSWkQ8lmLyqHLx2FOPcOPNv5B/fugvHHn8Weyuz+aaB4+YyEDNpG3wNMp/MJreR//KvrfXU33URPLak2xZtZ9BU4YT8Wcj/6GTWsc2saItue/jqTS71/fwyDvrqBOS/FAK1m2nJx4jGaw4fJ4ba6NqY4CrZ49mypQKovHYp3z9pi27WBMz5IGUk4tY7WmbhSNrGFtakduJrT/al02YTG9XJ6pHxzbMzxR/IL+QcEEBdEDq5bezZ72eZoZEdJRLv4GxYi15j72FWVKEDeSF81D8Ppzqcvjph6hDq2jd1U7pgWyyROnoxHj5Tbj0AnqXZxv+8vMLsV9egTxxPj2qRn4qieUPoHm9YFn4PD527tmN0DQKSkrRAwF0Vem77JLaZ3VEn+APil/VyIk/Y2RQNQ2PV8cyLYoHVdOSydDS2ioLInmo0AlEAYT4r++Z8L9+KaC6us0KIIsHDbuhtfnAxP2tLfYR4yYqE+ediiItvH1XHkymUiBl7qIPSImDgi0FXhV2dtiU+QyKivNIp0yElOKE4+ayfV8PK5Y+w0mz56IWZhdLlBfm4/X7iasetI2rGTl+FPFMGnNPO5GaQjYv30HNhKxtMCwLj64RT6X53ZvN1H2wBdvS6dgd5a2V9Xz79dW83xXDEirdGYtmU6AA0kggjQTRWA/pZAyvprI/muSd3a2MDUYoKvYcJvplK3exvCdDe9rGSCUFQDSRYrTPw7eOKCVtJbITW8ukrq2XY6//GZruwbLtrE0QAmk7WH17/0ufn+5ognBBASVBD7ssL74XlzL2tLPwh4Jog2pwBg3AenUp4u/PEwiH0K/8OtTW4DS3o7R3k37xDSKjhvPRlk3srttCjZLBt6eb/a8uxav5sdZvouT0M/B/vAsScZRJ42j2CYKqiqPreHw+dL+fVCpJ8959lFZW4Y/koff7eUVBURRUTUM6Ds4ncjECidL3GNO0sW0HASiKguM4REpLIJNxNF1TNa93Zbio4LGH//KY+szzTzlfBqtjSynF0QsWTujqbBNhr1fJLyxCKAoZyyGZPBjp05mM8Hm98pOR38gGSLFse4aRvS1MHlVOOmXKdMrkzjuu5w/FYR588lG+evZ52W7HgoJcVqj2lCVUvPgcve1Jqi9eRNOfn2NjJEP6aYuzzhyfsyM/eHo7y/a0kkok0Lc0gWnQHE+Tsh3K88L4PB7ShoFp2KQAve/qmUkz+7UrkSKgZ3dg+NHrq7h/0Jxch+eylbt4rqkj6+szJmkUkqZNwKNzzdwhBzM56QSrGns4+tJbKBlYSUdrC4oQuV4XqWn4+tKG6fThk+khlWWoIwsxBpfjnDIT668vogNWUqCn6ukqO42io2bgtLQTve7H5Icj+C9ajDpmJHmbX6V/9tJfBwgUFRNvbUFr68HevgN1eC12OMjA5hbaBtccUmaDvXv3EsjPJxwOoeta7n8nHQfrH+RfDrU8Xq9OJmOSSWewNQuvz4fj2JQOGyLNzl5iyfjGP72yQzn/hGGifx3EF1n4ApCP/PXxYCadLoynP33V8c7uw/1qui9b4PN6P2V7PIqkrtkEWhg3tK8gZVhc+G+XsqMjxv2P/I3vXPGdnOgBlr6/gqYRQzly5hj2vbCcvDEDOKUvz39/UTsXzS+hqznG+n0HAJWwR6UrYZCyBJqmM7rASzSRIo1NSWEBVZEAtSLzmW/2+aYeukzJro4oD62K8pXpkcPy9bFYjDQKmNmMzuLBxYemL+Wqxh5R/ZUbqJo5h662VnRFwZYSRQhsQFMEVp+nbk8YuWifmwOctAg7tgcYTPDdNaQ3bMF36kLiF30XX3UlSjSJaOlE27qTOBC47WqUcSOZOnYusS0HSI4Zjox5cz0/AvBv2559c2OGocQ+3bjU1dVNJmNQWFqWTVdqKpZlH2Zb/zNGQxMCWxVYFtnnp9N4fT4UVYhgRRF06QcuOTHPOfLjbdqXwuMDxLq7dbKXoc313vSfCn1eb07snzcApOOIT3r+fb1R5o3wUlTgBxyOXXwlu+vX8/RLz3Pmyafh70tv9md6JtQ3orT1UDF0ANv6BsCOXdu4Z9c2vn3hXKoiAfb27cYwtjhIfihMrcgwvTZrn5raYrniUr6vJvc6S4cd3K5k3pZe7nr/Y3b1pnl74ybyOotZ3pOhMZrMZXAwDdGetrlyVDHTq/IhnaAp6rC/N0r1V26Qc+bMEB2tLeh971cVAltKhKYhLQtNEbksT1VRHul0KncWsPML2fPyc4yIZ+sX2tadWBcvpmDeVGhswfj9w3jGj8ntnixaOlFGZkOyU3qw5mEMLsfz2BrMsD+7jXrYByMrib+5it3Th3PoJunt+5sIhkL4FfEPI7vXqwPWwUHR18fTH/XRtFyK07Lsg+L3eBVLkY43Er65vaVzaUl50d7/lwruPyuPn5S2FfNqCmlNo7Oni1QqRVFBIYlk4nPFD4h0JtMvfgz6xZ+dDK+oh+q8GDXlYUDhjCt/wQM/upC6VStIFdZAezc9XZ109nSxfWgxUy9eRHPf8kWA2iaF1WNKuH95OxOHDublzQ3MGTuUK4fX4A15clt/5/vKyC/N7ppcO6j84D+08PCU3sQppXw/NJ3rX/2IXb0JHnSyA6/f3mAaJFFZOHIg06v8OcEPzIsw/3t3i5pRo2nf34Sq69jys4uTqq6TiEYpCXpQPTqH1ptDhYVIYOsjDzF6yVewXngdAWiBIInNO7Afew61vRN529VoHgWWfoi1rymbx99cT2DoAIRdity0h+3xFgaHs+t61QljES0pgh3dufy61++jta0d2zCJDCwg5UjCZgZLP1xiwraQgG19zsCQDpat0H/t7U+Jn4xAOo4v5BsUKYg809MVXQBE//TKDuWSE2v/0+L/387jS0Bces1lGSOTOdAXmZxMIkGgde1hqct+a/NZ9A+K/oszG47Ao0gsI8m2Vlu+trGHYr2X48fnc971v+W11R/h79pDf4en7kje7HTQ/voWve1J8mZOo7c9SeXFizj9shtIFg9hfcNuBpcV0xOPMXhKHoMn5jN2TDVzJk9l7JhqphxXnRN9wt9Lwt97yAqtgwwapLMgT80JPhaLkTaMPltmMlxIakWGVY099BYNoPjkS5h4871EioroaG0hGMnLefpctqnvZ1XXMRLZNGikqAhV11E9OlLTUD06ihCkT1qEDHnxz5uKvOYraG09WPUNJDs70FN926OXl8DAgZCxSN5zP2F/dtG+saYRM+Jj246tiHgGPZZChn2IhfOQ769CVGZ7e/Jti0wqTVtTI4Xl5Xj7zjiGaee8vbAthG1hoGDazsGMTl+kRzoHf5ZO/9UqhSYEqqahaSoIBcuWJNKGEo+lDI9Hm+T1+R795W0/ERefMEz5r+Tz/9cj/pGFEfWdrqgFbPXo3gVGOpVdRLFjH8dO8pNMp7L5/HTq8wbOoeIXPq8XoSiyX/weRWI4Qg7I00RRgZ/TZ1Tw6uChrKzfSX5hEft2Zj1qZ0c7H8yq4MhOyfY/P0f1xYvwzjiWdDrFcSeekrVEL2XblfsXm2f8GRI9Btt3ttP0diy3RWB+KMzVs0f3bUHIoZ2dua7Kkl77YKQH2mMpxo0Yy2mnngFA2eChDK4qRxEiJ2YAU1EIBIIkkwmUz0jbpdMpgpEImn7IvpymidA0VCHQKgdhLJxIbNsOiOiYy94lGfZTFI6gnHU5yrCh2A2NMLYWa+9u7O4o4aII1UdNpBOo7v/gQ16IJ1EnjMVuakXs24ty5tchk/X5Bw4coD1hMKLg4JZXmXSKYMCH7AvfxiFxVtoWqHo2rWkdjPa5gdB/Fs2KWaqahqplL99qWTaZjKkBRijsP+GKm7/7cyHE9VLK/3T7wv965bboqJP6wpX6pqevEufYNus/eDNbvOqLFgGfH5/Xi8/rFXx+a7BMZzKyP6oYjujP+PDhPoV0yqaoIMi5V/97rpcfwLQsenu7aOzslvaBmKz+8U2y5OTzcpNCyC4dPP3kM9jVm+belc2HDYDfrNvNFW9v4lcfN7GqqZv39rTQ1d522JYkhxaplvdkiGXMXMtueyxF9aAhXP7t65k8Yxoz5s2msqwIK5nKiV5qGlLTcr0qgUDwsMivKwrRzk58Pj/eQLCvdqSh6Z7cha4BvF4PSs1ojJffxLexEW31JvxvrcLxBVGuvxR7ziTEnX/EWrEGpbiE4NFzsx2tM6dRNqaE9c2bDn5uFUXY08ZjP/0aqSE1oPmpqm+iR9XYunNPbmINoGQO2VDrE6IXZgbT/seu5NAcfy5KK+rB6A9k0hmtL/Jfl0oalwkhrD7xf/GE/8zTjzp9H8g7qu5p9YbztWisR3b2dNH2wRO5AlYg4CfY9w/tsz2fOwA+YX2ER5EimU7xzg6LeCzFgnEFzDjqZHq6OvEGgmRMA68q2JhQpfzlD+1hRx1LyOORkeLinFVQhOCsr13AeWecy0urN7D+o/0UVmT3vbx29jiGlhZSURChJOwnoKu81mbh9XspKszLFcHWf9TGve9vpTGaBCNNGgUjkaB60BBuvOFWSoIemlo7iXd1IQ7m+aTUDv7vpKbR29PT16TlzX3t7ujoK1jlHxR9/0335M4Omu7BV13Dnh3b6G7aSero6agFERLTxuBEAsh9+4mvWof6qz9nuzB/8wNEcQme19fTuqWd2JbsvkUiniEwdQqxbTvQdu8jefQErPoGMls/ztUS+qM8QNpxMPqWdArbwpO9vAGi7+rywsx8amL7Sa9vW5Y89Czf386gan0VYKGQyZhqPJayfH79vlQ8c8Z/Vvz/jF4decaZ56kbP17fg+O8XlJQKKLdXXZ/qvHQ6u0nxf+PBsCh4u+P+h1dXby6vpMV9Rkm1VaTTsTpb3P2BfIkIIqKi9X+yVkgHCavsCibKTFNLMti0flfZerxZ3DlSx/x4bvZy3UGQwGG5PnweTy52/p9B7h/eTvvvruPN5du5f7l7dy/cU82g9NncdpjKQKlFVz5zStz0bH/azqdok/wnzm4E9HenKi7Wppzvv5Q0R82APqsj7RMgpE8Bk6egB5NU3TtZXh/dhOe3S04Le1k9hzoazFIIoZUY3o0LD0ri/79SQHUAWGMYSVEXl4B40aijhgO8QTe0eNI9vQQLiigPWGQjMVQjDSWZZFOp7ESiayvN82c6Pv9P6bxmYI/dP52WAGob4BpiorX48Xr1dFUITIZk3gs5Whe/YFU0hgmhLAe/stj6heyO7OPP3h0/SvecL7S1dqMR9V44/HfcO0VF7CpI3jYIEgkE4dNetOZjDg0GvSLv6/gJfrz/ACWkcQ/8ljKq57PRn3dg65pQhgZ4rEo5QMH0JVO4VcE3j6P2tnRgTAyBAJBbrziMm7o6uSapSs5ri374ccclbA3W4Dq54X1W3hbsXM99f32pl/0FeVl/NtVNzCksoz2hHGYNQDIxGN4Q2GEZXFo1D9U/P1EiooO9/V9+JRspqw/CgtNx7Is9p97CoPeWEG3EaOgqhzx43tx2jvxhwKkrrqIgKJird2EzhHQFWM4EXa17c0tTqk5+Uh8GxvpjfVin3wOhZt3I9/9EG3kcEw1CXqIWHc3iWgvgXC4b/KeyWV3Dmvw6yvymaYJHl/O5x8idtFnd/qnB4eJ3yZb0NJQQQNVQ7Ety3YcO0/TtSd6uqLH5BWEe87/xuLP7dX/p3RnPvP0ozagbNyycaWqaq8PqBigdba32gDrP3iT93amOaL4YHGkP/If2tH3j/y/dJyc6DVPIHeMwSMmkunuJKRreAVk+j8S3YPX58fx+PoqvYUUFRdjGibpVBJ/KMxPbrmZQRNmsXTLDtbvO5DN0Bwi+v7vD6QcYhmT9liCtGHQZcq+iexovv/9nzF62MGcf3vi0xFPWBaqR//UfbZhYhsmHo+HUGHhIT1hhysj3Scen8+H0A4eJ1JcjFYThifeJLZtB1bjAczXl+GMGor/gjNwvn4a4pXl2LffC93dGLNG557rGVHOtnApmbfewR42GFk5kPSKNTiHXOa0qiiPZE8XiWgUI5XCsiysZIpkLJYTep/oxaEDQNr/YC4qP38eYFkWKAJNUfu9v2pkTEPTxESvz/dXIYTzwVvvqJ+X6fmn7atzd7bsIWzbusmv6anSioFi566dEuCxe7+Lx++nWO89TPz9E99D21kPGQCHRxXns+fDvek0MuuVpcfrlaFwBK/Pi0dX8egHz4794jcSSeKxKKFwhNtv+C6Dxkxhb1c0l5JMG0bu1i/2/o1o22NZj3vMiYu4/NvX5wpM/RbnkxG/PWHQ2NlLIhpFWBaZeIxMX3ObFvATKS7GHwrnvP6h9uYzT+d990vr4ADd8erLGC+/Sero6YhQCEJZ8Tot7WS2N5BetxEZ8FL+la8C2QU8yZljqFm+LnuAc44hk0qjt3eijxxMpKQYZ89WpKYRyC9k8+Y6Un2vOZ1OkU4lyaRTGKbdPwDkoXOBw1Kbh2fv5GfZnEN/7hc/isjaO0XV4rFUxufXT0kljev7FqSrXyjhX0PCObIwomzetmVDPJW8Iy+vUAPs1rZsN+RP77yPI0aV58RfrPd+SvyfGADi0AFwqEfsj/qTaqtRdQ++YAjp8eILhkS4oBDbspD6p+sG4YJCIn3ij0Z7ySss4vYbvsvMBSdiorK7tYP2WIrOlElnyqQ9lqK5O0pzd3anhCkz5nLbrT/jO1//GiVBT66q2p85Osyi+PxUFeVREvTkzgSRoiIKiosJ5Ofn1qgC5AcCqP2T188RvU9RPvW7LVUj0Xuyn2fRtZfh/+G1aA37EC+8idqStT0AdjgEZYU4pfnkjR0BwP61GzBmjcYK+PH84B60UIB42kC2tqPUjKaptTN3NuufeAMYiWRukvtJMukUZjL5uVFfOs6nBN8/ue0vbB3W6ZYdAFo6ZVqart0Riybn9U121X96d+Zhqb5swUctU60PpTd4SllZxcC9jXuNgNcnTCMh127cJZcsXijDdq+MZRwZUDPSVEMy4PdLK5OUthSyr4NTfiJKyOyJUpG6pst5I7xyQJ6UDfXb5epVH0ivP+DYiZgsHljF+UvOk6ZpSwUpHcuStnPweJl0Soby8qVpmbK3vV06jiPzCovk1PHjZG3tWDlmUJW0/WFZ6A9IbyAoy8oq5OSZ8+Spc+bIU89YIpecc6asrBooYz3duWNqmp77qmm6tPoyF5ZlSU3TpTcQkLq0pGVZMq+oWEqE1DRNaprWfwxH8flwHEcCUsnu2fmpmyaEtPo+G4mQtpGRgUierPB6ZLB2lPTXVkkxoFx2/f7vMr1+iwzoAcnZJ0pl2oTscfe1yr0Na6QvqMvCph7pSCFLzj5VCl2XcvUmGTh3kfR8XC/txkYZHlsrP+7okiWF+dL2BuTu7dtlSWGBtCxLNvcmZV7AKzWvV2qaLhUjLdPZ7QQlID2OLaXXJ1VVyf0vhW1JUyJVRUhVVaWS3ZFa9uXzs+9PUaWiqpKsh5eKKqSqaVJRFRDSEUJRFVUcdd011//dH/Al7/7+Hcrr7yyTX5TJrQTklraeTI0v73yf17d89IjRJVvrt+L1+dhdv54bb/4FP73jesLhFBnLoQaHPS0xyM9mNA7t5vwsAgE/RQXZNaqx7m7SmTT9CwXPPPk0QmE/mqJmT5nBABnTxEql+vLP2cg8sLoKTdOIdnSQTqcJhSNMnjCGyRPG8K2yMjKpNN3RXoSm4+vLGqXTaSzzYOTOZLLfq4pAHBKJg31+3nIkqiLwBoIEI3n09vSgaVpuogjgV0RuHuL1+Yl1d+Hxf/aaXwfIUwQpR/Z57uyEV55zKixbj/PYa6jzxuPdsQe7OwonH4c2fzoaYD/+KvLPDzBtwHBWJ7Zj1Lcw5MwTUaImvo0b8OFB/PVJlDEjELMmU7StgdqBXho7e6mpKKZ1dwNbd+7JngESBql4grwSslZSePH22W7FSON4fPh1jaDfh9VXp7AtC60vsnu8OoqiHmLfxOd4fonTl+7sf7zHow12bN8fpJTnAlzzo5u/MFmd/v+Rumff3q1OOrmotKL6l9WDatT1G9dx1FHH5sT/41u+Q8Yy2NMSo8M8fMOmz6ny5mg+kMDj9+c6NAHKhg5nwVFzSKdMMkbmU4UTw7RzPjSThkA4TG9PD10tzbmMSn3DXpLpDEXFxdnsiWnQm0xgHXL6VYXI2RJhWdiA7Pu9pojDHmsbJgknTsDn7UsxxrJZGsfB4/eTciT0vaZcW0Aqha/P8qU/kQJUFAXDyfbsm+kUpuPQrih4l71LurkDH6AvXIB4fzVWWRHsa8aJBOC5V4nX7UTOHk3s8eUUaWF2jhtKzfL3kPX7MS5eTH40SaIzSnBbw6HNhySCHsoGD6Vu1YpcO3gj4A+1Hf7aMpns6+0v2H1G+tLsa77T+jdOU1UsExRV4NiSTDqNlUqRSKYPqyF4fX4C4RChSNjRdK02nTDG+UPejf/blxv6b/UNfda6zP8J/v867peNz1v7+l95/Bf9s/wsj/9FFH9/ilL0paKElLLv+6PELWtahJRS3LKmRdyypiV33+fd+p/b/5xDj3/osT9560H71H2HPr4H7bCfE/dfcthjjfPv+NRjP3lM4/w7RA9a7nboc/7Ra/usv/FfvfU/t/9vf9b7P/R19z+m/77Pen+HvvbP+v/9M25uaHNxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFx+YLw/wFFynSJ+9wVUwAAAABJRU5ErkJggg=='
@@ -476,130 +358,325 @@ def arrow(d):
 saudi = ('M 32,28 L 62,10 L 114,20 L 136,38 L 148,50 L 156,60 L 150,68 L 164,80 '
          'L 156,100 L 124,118 L 88,130 L 58,112 L 44,86 L 36,58 Z')
 dots = [(72,52),(104,44),(126,74),(92,92),(62,76),(114,104),(140,60),(80,110)]
-mapg = ('<g transform="translate(484,177)">'
+mapg = ('<g transform="translate(523,68)">'
         '<path d="' + saudi + '" fill="rgba(255,92,26,0.16)" stroke="#FF5C1A" stroke-width="2.4" stroke-linejoin="round"/>'
         + ''.join('<circle cx="%d" cy="%d" r="3.6" fill="#FF5C1A"/>' % (a,b) for a,b in dots)
         + '<text x="100" y="168" text-anchor="middle" font-family="' + KU + '" font-weight="900" font-size="26" fill="#FF5C1A">الخريطة</text>'
-        + '<text x="100" y="190" text-anchor="middle" font-family="' + BO + '" font-size="14" fill="#7C766D">قدرات + طلب مجمّع</text>'
+        + '<text x="100" y="190" text-anchor="middle" font-family="' + BO + '" font-size="13" fill="#7C766D">الأساس القائم + قدرات + طلب مجمّع</text>'
         '</g>')
 
-diagram = ('<svg viewBox="0 0 1392 545" style="width:100%;height:auto;">'
+# The Auditor is one box in two halves: the capability audit on top fed by the Detective,
+# the request audit underneath fed by the Coordinator. Both empty into the map.
+auditor_box = (
+  '<rect x="775" y="30" width="180" height="268" rx="3" fill="#141210" stroke="#3A322B" stroke-width="1.4"/>'
+  '<text x="865" y="78" text-anchor="middle" font-family="' + KU + '" font-weight="700" font-size="18" fill="#FF5C1A">تدقيق القدرة</text>'
+  '<line x1="795" y1="96" x2="935" y2="96" stroke="#3A322B" stroke-width="1"/>'
+  '<image href="' + BUST_AUDITOR + '" x="837" y="118" width="56" height="56" preserveAspectRatio="xMidYMid meet"/>'
+  '<text x="865" y="202" text-anchor="middle" font-family="' + KU + '" font-weight="900" font-size="23" fill="#F7F3EC">المدقّق</text>'
+  '<text x="865" y="224" text-anchor="middle" font-family="' + BO + '" font-size="13" fill="#7C766D">وكيل ذكاء اصطناعي</text>'
+  '<line x1="795" y1="248" x2="935" y2="248" stroke="#3A322B" stroke-width="1"/>'
+  '<text x="865" y="280" text-anchor="middle" font-family="' + KU + '" font-weight="700" font-size="18" fill="#FF5C1A">تدقيق الطلب</text>')
+
+diagram = ('<svg viewBox="0 0 1392 340" style="width:100%;height:auto;">'
  '<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">'
  '<path d="M0,1 L9,5 L0,9 z" fill="#5A5049"/></marker></defs>'
- + '<rect x="470" y="167" width="240" height="210" rx="4" fill="rgba(255,92,26,0.05)" stroke="#FF5C1A" stroke-width="1.6"/>'
+ + '<rect x="505" y="58" width="232" height="210" rx="4" fill="rgba(255,92,26,0.05)" stroke="#FF5C1A" stroke-width="1.6"/>'
  + mapg
- + box(1146, 15, 236, 88, 'مصادر عامة', 'سجلات · منافسات · شهادات · استيراد', dashed=True, fs=18)
- + box(1146, 228, 236, 88, 'مصادر داخلية', 'مساهمة وأنظمة الشركات', dashed=True, accent=True, fs=18)
- + box(1146, 441, 236, 88, 'طلبات شراء', 'من أنظمة الشركات', dashed=True, fs=18)
- + box(960, 15, 190, 88, 'المحقّق', 'وكيل ذكاء اصطناعي', img=BUST_DETECTIVE, fs=18)
- + box(740, 15, 190, 88, 'المدقّق', 'تدقيق القدرة', img=BUST_AUDITOR, fs=18)
- + box(960, 441, 190, 88, 'المنسّق', 'وكيل ذكاء اصطناعي', img=BUST_COORDINATOR, fs=18)
- + box(740, 441, 190, 88, 'المدقّق', 'تدقيق الطلب', img=BUST_AUDITOR, fs=18)
- + box(240, 15, 200, 88, 'المستشار', 'سلّم الخيارات', img=BUST_ADVISOR, fs=18)
- + box(14, 26, 200, 66, 'سجل الفجوات', accent=True, fs=18)
- + box(14, 239, 200, 66, 'قائمة موردين موثّقة', accent=True, fs=17)
- + box(14, 452, 200, 66, 'نسبة التغطية', accent=True, fs=18)
- + arrow('M1146,59 H1154')
- + arrow('M960,59 H934')
- + arrow('M740,59 H640 Q620,59 620,79 V163')
- + arrow('M1146,272 H714')
- + arrow('M1146,485 H1154')
- + arrow('M960,485 H934')
- + arrow('M740,485 H640 Q620,485 620,465 V381')
- + arrow('M470,240 H456 Q448,240 448,228 V71 Q448,59 442,59')
- + arrow('M240,59 H222')
- + arrow('M470,272 H222')
- + arrow('M470,320 H452 Q440,320 440,332 V473 Q440,485 428,485 H222')
+ + auditor_box
+ + box(1200, 30, 182, 76, 'مصادر عامة', 'سجلات · منافسات · شهادات', dashed=True, fs=17)
+ + box(1200, 222, 182, 76, 'طلبات شراء', 'من أنظمة الشركات', dashed=True, fs=17)
+ + box(985, 30, 196, 76, 'المحقّق', 'وكيل ذكاء اصطناعي', img=BUST_DETECTIVE, fs=17)
+ + box(985, 222, 196, 76, 'المنسّق', 'وكيل ذكاء اصطناعي', img=BUST_COORDINATOR, fs=17)
+ + box(330, 126, 160, 76, 'المستشار', 'سلّم الخيارات', img=BUST_ADVISOR, fs=17)
+ + box(175, 126, 140, 76, 'سجل الفجوات', accent=True, fs=17)
+ + box(20, 126, 140, 76, 'نسبة التغطية', accent=True, fs=17)
+ + arrow('M1200,68 H1185')
+ + arrow('M1200,260 H1185')
+ + arrow('M985,68 H951')
+ + arrow('M985,260 H951')
+ + arrow('M775,164 H741')
+ + arrow('M505,164 H494')
+ + arrow('M330,164 H319')
+ + arrow('M175,164 H164')
  + '</svg>')
 
-S['TheMap'] = slide('15','ما الذي يبنونه',
+S['TheMap'] = slide('11','ما الذي يبنونه',
   '  <div style="margin:auto 0;">\n'
-  '  <div style="display:flex;align-items:baseline;gap:18px;">\n'
-  '    <div style="font-family:@KUFI@;font-weight:900;font-size:46px;color:@T@;">مو إجابات. بل <span style="color:@A@;">خريطة</span>.</div>\n'
-  '    <div style="font-size:22px;font-weight:300;color:@M@;">وجهان: وش تقدر المملكة تورّده، ووش تشتريه المحفظة مجمّعاً</div>\n'
-  '  </div>\n'
-  '  <div style="margin-top:12px;">' + diagram + '</div>\n'
+  '  <div style="font-family:@KUFI@;font-weight:900;font-size:52px;color:@T@;">خريطة كامن <span style="color:@A@;">للقدرات المحلية</span></div>\n'
+  '  <div style="margin-top:18px;">' + diagram + '</div>\n'
   '  </div>\n')
 
-# 15 the journey of one request
-jcells = [
- (None,                    'طلب شراء',     'يُرفع في نظام الشركة',        'صمام كروي ٢ بوصة، ١٢ حبة'),
- ('bust-coordinator.png',   'المنسّق',       'يفهمه وينسّقه مع غيره',       'طلب مجمّع: ٤٠ ألف سنوياً'),
- ('bust-auditor.png',      'المدقّق',       'يقرأ معايير الشركة',          'المدة والجودة المطلوبة'),
- ('bust-detective.png',    'المحقّق',       'يدوّر مين يخدم الحجم',        'مرشحون ومعهم أدلتهم'),
- ('bust-auditor.png',      'المدقّق',       'يتحقق ويصنّف كل مرشح',        'مصنّع · مجمّع · موزّع · تاجر'),
- ('bust-advisor.png',   'المستشار',  'لما ماحد يقدر يورّده',        'سلّم خيارات، مو فجوة بس'),
-]
-jrow = ''
-for img, name, does, out in jcells:
-    pic = ('      <img src="' + img + '" style="width:72px;height:72px;object-fit:contain;display:block;margin:0 auto 10px;">\n') if img \
-          else '      <div style="width:72px;height:72px;margin:0 auto 10px;border:1px dashed @L@;"></div>\n'
-    jrow += ('    <div style="flex:1 1 0;text-align:center;">\n' + pic +
-             '      <div style="font-family:@KUFI@;font-weight:700;font-size:24px;color:@T@;">' + name + '</div>\n'
-             '      <div style="font-size:15px;font-weight:300;color:@M@;margin-top:5px;line-height:1.45;">' + does + '</div>\n'
-             '      <div style="font-size:15px;color:@A@;margin-top:7px;line-height:1.45;">' + out + '</div>\n'
-             '    </div>\n')
-    if img != 'bust-advisor.png':
-        jrow += '    <div style="flex:0 0 20px;display:flex;align-items:center;justify-content:center;color:@A@;font-size:22px;">&#8592;</div>\n'
+# 16 the vetted list. A light product screen on the dark deck, so it reads as a real
+# screenshot rather than another diagram. Its own palette on purpose.
 
-douts = ''
-for t, d in [('قائمة موردين موثّقة','بتصنيفهم وأدلتهم، وتقسيم الطلب بينهم لو ماحد يقدر يشيله كامل'),
-             ('سجل الفجوات','طلب مجمّع بقيمته السنوية، ينتظر أول من يورّده'),
-             ('نسبة التغطية','كم من إنفاق المحفظة نقدر نشتريه من هنا')]:
-    douts += ('    <div style="flex:1 1 0;border-top:3px solid @A@;padding-top:14px;">\n'
-              '      <div style="font-family:@KUFI@;font-weight:700;font-size:25px;color:@T@;">' + t + '</div>\n'
-              '      <div style="font-size:17px;font-weight:300;color:@M@;margin-top:6px;line-height:1.5;">' + d + '</div>\n'
-              '    </div>\n')
+def _ic(d, c, w='1.6'):
+    return ('<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="' + c + '" stroke-width="' + w
+            + '" stroke-linecap="round" stroke-linejoin="round">' + d + '</svg>')
+I_LIST  = '<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>'
+I_BLD   = '<path d="M3 21h18M5 21V7l7-4 7 4v14"/><path d="M9 21v-5h6v5"/>'
+I_ALERT = '<path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17h.01"/>'
+I_CHART = '<path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/>'
+I_FACT  = '<path d="M3 21h18M4 21V10l5 3V10l5 3V7l5 3v11"/>'
+I_BOX   = '<path d="M3 8l9-5 9 5v8l-9 5-9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/>'
+I_SRCH  = '<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>'
 
-S['Journey'] = slide('16','رحلة طلب واحد',
-  '  <div style="margin:auto 0;">\n'
-  '  <div style="display:flex;align-items:baseline;gap:18px;">\n'
-  '    <div style="font-family:@KUFI@;font-weight:900;font-size:48px;color:@T@;">رحلة طلب واحد</div>\n'
-  '    <div style="font-size:23px;font-weight:300;color:@M@;">من طلب صغير في نظام شركة، إلى صفقة يقدر يخدمها مورّد محلي</div>\n'
-  '  </div>\n'
-  '  <div style="display:flex;align-items:flex-start;margin-top:22px;">\n' + jrow + '  </div>\n'
-  '  <div style="display:flex;justify-content:space-around;color:@L@;font-size:22px;margin-top:10px;">'
-  '<span>&#8595;</span><span>&#8595;</span><span>&#8595;</span><span>&#8595;</span><span>&#8595;</span></div>\n'
-  '  <div style="background:@A@;padding:18px 26px;margin-top:6px;display:flex;align-items:center;justify-content:space-between;">\n'
-  '    <div style="font-size:18px;color:rgba(11,10,9,0.78);">وجهان: وش تقدر المملكة تورّده، ووش تشتريه المحفظة مجمّعاً</div>\n'
-  '    <div style="font-family:@KUFI@;font-weight:900;font-size:34px;color:@G@;">الخريطة</div>\n'
-  '  </div>\n'
-  '  <div style="font-size:17px;color:@M@;margin-top:9px;text-align:center;">ويبقى فيها للأبد. فالطلب اللي بعده يبدأ من خريطة أكبر، ومن طلب مجمّع أكبر.</div>\n'
-  '  <div style="display:flex;gap:26px;margin-top:20px;">\n' + douts + '  </div>\n'
-  '  </div>\n')
+def nav(icon, label, active=False):
+    return ('        <div style="display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:7px;'
+      + ('background:' + UI['accbg'] + ';' if active else '')
+      + 'font-size:17px;color:' + (UI['acc'] if active else UI['mut']) + ';margin-top:3px;">'
+      + _ic(icon, UI['acc'] if active else UI['dim']) + '<span>' + label + '</span></div>\n')
 
-# 17 outreach, how a supplier on the map becomes a supplier in the room
-def stage(n, bar, channel, wait, cost, note, hot=False):
-    return ('    <div style="flex:1 1 0;">\n'
-      '      <div style="height:8px;background:@L@;">\n'
-      '        <div style="height:8px;width:' + bar + ';background:' + ('@A@' if hot else '#6E4326') + ';"></div>\n'
-      '      </div>\n'
-      '      <div style="border:1px solid ' + ('@A@' if hot else '@L@') + ';border-top:0;padding:24px 26px;'
-      + ('background:rgba(255,92,26,0.06);' if hot else 'background:@P@;') + 'min-height:236px;">\n'
-      '        <div style="font-family:@MONO@;font-size:15px;letter-spacing:0.14em;color:@M@;">' + n + '</div>\n'
-      '        <div style="font-family:@KUFI@;font-weight:700;font-size:38px;color:' + ('@A@' if hot else '@T@') + ';margin-top:8px;">' + channel + '</div>\n'
-      '        <div style="font-size:21px;color:@T@;margin-top:12px;">' + wait + '</div>\n'
-      '        <div style="font-family:@MONO@;font-size:17px;color:@A@;margin-top:12px;" dir="ltr">' + cost + '</div>\n'
-      '        <div style="font-size:18px;font-weight:300;color:@M@;margin-top:12px;line-height:1.6;">' + note + '</div>\n'
-      '      </div>\n'
+def row(name, city, klass, cr, lead, std, conf, verified, last=False):
+    pct = int(float(conf) * 100)
+    sourced = ('        <div style="font-family:@BODY@;font-size:15px;padding:4px 11px;border-radius:5px;'
+               'background:' + UI['paper'] + ';color:' + UI['mut'] + ';border:1px solid ' + UI['line'] + ';">اكتشفه كامن</div>\n')
+    badge = sourced + (
+        ('        <div style="font-family:@BODY@;font-size:15px;padding:4px 11px;border-radius:5px;'
+         'background:' + UI['okbg'] + ';color:' + UI['okink'] + ';border:1px solid ' + UI['okline'] + ';">موثّق من كامن</div>\n')
+        if verified else
+        ('        <div style="display:flex;align-items:center;gap:7px;font-size:15px;color:' + UI['dim'] + ';">'
+         '<span style="width:7px;height:7px;border-radius:50%;background:' + UI['warn'] + ';display:inline-block;"></span>'
+         'بانتظار التسجيل</div>\n'))
+    chip = lambda t: ('<span style="font-family:@MONO@;font-size:13px;color:' + UI['mut'] + ';background:' + UI['chrome']
+                      + ';border-radius:5px;padding:4px 9px;" dir="ltr">' + t + '</span>')
+    return ('      <div style="display:flex;align-items:center;gap:14px;padding:14px 20px;'
+      + ('' if last else 'border-bottom:1px solid ' + UI['row'] + ';')
+      + ('background:' + UI['accbg'] + ';' if verified else '') + '">\n'
+      '        <div style="flex:0 0 auto;width:38px;height:38px;border-radius:9px;background:' + UI['chrome'] + ';'
+      'display:flex;align-items:center;justify-content:center;">' + _ic(I_FACT if 'مصنّع' in klass else I_BOX, UI['mut']) + '</div>\n'
+      '        <div style="flex:1 1 auto;min-width:0;">\n'
+      '          <div style="font-size:21px;color:' + UI['ink'] + ';line-height:1.3;">' + name + '</div>\n'
+      '          <div style="font-size:15px;font-weight:300;color:' + UI['dim'] + ';margin-top:3px;">' + city + ' · ' + klass
+      + ' · <span style="font-family:@MONO@;font-size:13px;" dir="ltr">CR ' + cr + '</span></div>\n'
+      '        </div>\n'
+      '        <div style="flex:0 0 auto;display:flex;gap:7px;">' + chip(lead) + chip(std) + '</div>\n'
+      '        <div style="flex:0 0 96px;display:flex;align-items:center;gap:8px;">\n'
+      '          <div style="flex:1 1 auto;height:5px;border-radius:3px;background:' + UI['row'] + ';">'
+      '<div style="width:' + str(pct) + '%;height:5px;border-radius:3px;background:'
+      + (UI['okink'] if verified else UI['dim']) + ';"></div></div>\n'
+      '          <div style="font-family:@MONO@;font-size:13px;color:' + (UI['okink'] if verified else UI['dim']) + ';" dir="ltr">' + str(pct) + '</div>\n'
+      '        </div>\n'
+      '        <div style="flex:0 0 300px;display:flex;gap:8px;align-items:center;">\n' + badge + '        </div>\n'
+      '      </div>\n')
+
+rows = (row('مصنع الرياض للصمامات الصناعية','الرياض','مصنّع','1010384712','30 d','ISO 9001','0.94', True)
+      + row('ورشة الخرج للتشغيل الدقيق','الخرج','مصنّع','1011629044','45 d','ISO 9001','0.71', False)
+      + row('الشركة الخليجية للتوريدات','الدمام','موزّع معتمد','2050118836','21 d','API 6D','0.88', True)
+      + row('مصنع القصيم للسبائك','بريدة','مصنّع','1128470053','60 d','SASO','0.66', False, last=True))
+
+def legend(t, ok, desc):
+    style = ('background:' + UI['okbg'] + ';color:' + UI['okink'] + ';border:1px solid ' + UI['okline'] + ';') if ok             else ('background:' + UI['paper'] + ';color:' + UI['mut'] + ';border:1px solid ' + UI['line'] + ';')
+    return ('    <div style="flex:1 1 0;display:flex;align-items:flex-start;gap:14px;">\n'
+      '      <div style="flex:0 0 auto;font-family:@BODY@;font-size:16px;padding:5px 12px;'
+      'border-radius:5px;' + style + '">' + t + '</div>\n'
+      '      <div style="flex:1 1 auto;font-size:18px;font-weight:300;color:@M@;line-height:1.5;">' + desc + '</div>\n'
       '    </div>\n')
 
-S['Outreach'] = slide('17','الوصول',
+S['Suppliers'] = slide('15','المُخرج',
   '  <div style="margin:auto 0;">\n'
-  '  <div style="display:flex;align-items:baseline;gap:18px;">\n'
-  '    <div style="font-family:@KUFI@;font-weight:900;font-size:56px;color:@T@;">لقيناه. طيب كيف نوصله؟</div>\n'
-  '    <div style="font-size:22px;font-weight:300;color:@M@;">كل مرحلة ما تشتغل إلا على اللي ما ردّ قبلها</div>\n'
+  '  <div style="margin-top:18px;border-radius:11px;overflow:hidden;background:' + UI['paper'] + ';'
+  'box-shadow:0 18px 44px rgba(0,0,0,0.55);">\n'
+  '    <div style="position:relative;background:' + UI['chrome'] + ';padding:11px 16px;'
+  'border-bottom:1px solid ' + UI['line'] + ';">\n'
+  '      <div style="position:absolute;left:16px;top:50%;transform:translateY(-50%);display:flex;gap:8px;">\n'
+  '        <span style="width:11px;height:11px;border-radius:50%;background:#FF5F57;display:inline-block;"></span>\n'
+  '        <span style="width:11px;height:11px;border-radius:50%;background:#FEBC2E;display:inline-block;"></span>\n'
+  '        <span style="width:11px;height:11px;border-radius:50%;background:#28C840;display:inline-block;"></span>\n'
+  '      </div>\n'
+  '      <div style="text-align:center;font-size:15px;color:' + UI['mut'] + ';">كامن · قائمة الموردين</div>\n'
+  '    </div>\n'
+  '    <div style="display:flex;">\n'
+  # sidebar, first child so it lands on the right in RTL
+  '      <div style="flex:0 0 196px;background:' + UI['side'] + ';border-left:1px solid ' + UI['line'] + ';padding:16px 12px;">\n'
+  '        <div style="font-family:@KUFI@;font-weight:900;font-size:22px;color:' + UI['ink'] + ';padding:0 14px 12px;">كامن</div>\n'
+  + nav(I_LIST, 'الطلبات') + nav(I_BLD, 'الموردين', True) + nav(I_ALERT, 'الفجوات') + nav(I_CHART, 'التغطية') +
+  '      </div>\n'
+  '      <div style="flex:1 1 auto;min-width:0;">\n'
+  '        <div style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid ' + UI['line'] + ';">\n'
+  '          <div style="flex:0 0 auto;display:flex;align-items:center;gap:9px;border:1px solid ' + UI['line'] + ';'
+  'border-radius:8px;background:' + UI['paper'] + ';padding:9px 13px;">' + _ic(I_SRCH, UI['dim'], '1.8')
+  + '<span style="font-size:18px;color:' + UI['ink'] + ';">صمام كروي ٢ بوصة</span></div>\n'
+  '          <div style="flex:1 1 auto;font-size:16px;font-weight:300;color:' + UI['dim'] + ';">الطلب المجمّع: ٤٠ ألف حبة سنوياً من تسع شركات</div>\n'
+  '          <div style="flex:0 0 auto;font-family:@MONO@;font-size:14px;color:' + UI['dim'] + ';" dir="ltr">4 results</div>\n'
+  '        </div>\n'
+  '        <div style="display:flex;align-items:center;gap:14px;padding:8px 20px;background:' + UI['side'] + ';'
+  'border-bottom:1px solid ' + UI['line'] + ';font-size:14px;color:' + UI['dim'] + ';letter-spacing:0.05em;">\n'
+  '          <div style="flex:1 1 auto;">المورّد</div>\n'
+  '          <div style="flex:0 0 auto;">المدة والمعيار</div>\n'
+  '          <div style="flex:0 0 96px;">الثقة</div>\n'
+  '          <div style="flex:0 0 300px;">الحالة</div>\n'
+  '        </div>\n'
+  + rows +
+  '      </div>\n'
+  '    </div>\n'
   '  </div>\n'
-  '  <div style="display:flex;gap:22px;margin-top:26px;">\n'
-  + stage('المرحلة الأولى','100%','بريد إلكتروني','ننتظر ٥ أيام','~ $0.0001','الكبار اللي عندهم فرق مبيعات يردّون هنا. وهم أصلاً أغلبهم مسجّل.')
-  + stage('المرحلة الثانية','55%','واتساب','ننتظر ٣ أيام','~ $0.04','ومعه رابط التسجيل. الورشة الصغيرة تقرأ واتساب، ما تقرأ إيميل شركات.')
-  + stage('المرحلة الثالثة','22%','وكيل صوتي','يتصل على الباقي','< $1.00','مكالمة بالعربي. وهنا صار العدد صغير، فالمكالمة تسوى.', True)
+  '  <div style="display:flex;gap:40px;margin-top:20px;">\n'
+  + legend('اكتشفه كامن', False, 'كامن لقاه وعرّفه من الأدلة العامة. ولسا لازم يسجّل في مساهمة.')
+  + legend('موثّق من كامن', True, 'كامن وصله، وسجّل في مساهمة، ودقّقناه وتحقّقنا منه.')
   + '  </div>\n'
-  '  <div style="display:flex;align-items:baseline;gap:20px;margin-top:24px;">\n'
-  '    <div style="font-family:@KUFI@;font-weight:700;font-size:34px;color:@T@;">القناة الغالية ما توصل إلا للباقي القليل.</div>\n'
-  '    <div style="font-size:20px;font-weight:300;color:@M@;">ولهذا نقدر نوصل لأصغر ورشة. مو كرم، حساب.</div>\n'
+  '  </div>\n')
+
+# 13 zoom one: the right-hand limb of the map, blown up. The Detective both
+# finds the supplier and reaches out to him, so the funnel is his, not a
+# fourth character's.
+def mini(x, w, label, ring=False):
+    c = '#FF5C1A' if ring else '#3A342E'
+    t = '#F7F3EC' if ring else '#4C463F'
+    return ('<rect x="%.0f" y="10" width="%.0f" height="30" rx="2" fill="none" stroke="%s" stroke-width="1"/>' % (x, w, c)
+            + '<text x="%.0f" y="30" text-anchor="middle" font-family="%s" font-size="13" fill="%s">%s</text>'
+              % (x + w / 2, BO, t, label))
+
+minimap = ('<svg viewBox="0 0 1392 92" style="width:100%;height:auto;">'
+  + mini(1256, 136, 'مصادر عامة', True) + mini(1116, 124, 'المحقّق', True) + mini(1004, 96, 'المدقّق', True)
+  + mini(860, 128, 'الخريطة') + mini(732, 112, 'المستشار')
+  + mini(604, 112, 'سجل الفجوات') + mini(476, 112, 'نسبة التغطية')
+  + '<rect x="994" y="2" width="398" height="46" fill="none" stroke="#FF5C1A" stroke-width="1.6"/>'
+  + '<line x1="994" y1="48" x2="4" y2="88" stroke="#FF5C1A" stroke-width="1" stroke-dasharray="5 5" opacity="0.5"/>'
+  + '<line x1="1392" y1="48" x2="1390" y2="88" stroke="#FF5C1A" stroke-width="1" stroke-dasharray="5 5" opacity="0.5"/>'
+  + '</svg>')
+
+def zcard(title, sub, lines, out, dashed=False, img=None):
+    head = ('      <div style="display:flex;align-items:center;gap:12px;">\n'
+            + (('        <img src="' + img + '" style="width:50px;height:50px;object-fit:contain;">\n') if img else '')
+            + '        <div>\n'
+            '          <div style="font-family:@KUFI@;font-weight:900;font-size:30px;color:@T@;">' + title + '</div>\n'
+            '          <div style="font-size:16px;color:@A@;margin-top:2px;">' + sub + '</div>\n'
+            '        </div>\n      </div>\n')
+    body = ''
+    for ln in lines:
+        body += ('      <div style="font-size:20px;font-weight:300;color:@T@;line-height:1.45;margin-top:8px;">'
+                 '<span style="color:@A@;">·</span> ' + ln + '</div>\n')
+    return ('    <div style="flex:1 1 0;display:flex;flex-direction:column;border:1px '
+      + ('dashed #6E6259' if dashed else 'solid @L@') + ';background:' + ('transparent' if dashed else '@P@')
+      + ';padding:18px 20px;">\n' + head
+      + '      <div style="margin-top:10px;">\n' + body + '      </div>\n'
+      '      <div style="margin-top:auto;padding-top:12px;">\n'
+      '        <div style="font-size:20px;color:@A@;line-height:1.4;">&#8592; ' + out + '</div>\n'
+      '      </div>\n    </div>\n')
+
+darrow = ('    <div style="flex:0 0 26px;display:flex;align-items:center;justify-content:center;'
+          'color:@A@;font-size:26px;">&#8592;</div>\n')
+
+# the outreach funnel: fewer left at every stage, so a costlier channel stays cheap
+CX = 590.0
+
+def band(y0, y1, hw0, hw1, op, channel, wait, cost, note):
+    h = y1 - y0
+    pts = '%.0f,%.0f %.0f,%.0f %.0f,%.0f %.0f,%.0f' % (CX - hw0, y0, CX + hw0, y0, CX + hw1, y1, CX - hw1, y1)
+    return ('<polygon points="' + pts + '" fill="rgba(255,92,26,' + op + ')" stroke="#FF5C1A" stroke-width="1.2"/>'
+      + '<text x="%.0f" y="%.0f" text-anchor="middle" font-family="%s" font-weight="700" font-size="25" fill="#F7F3EC">%s</text>'
+        % (CX, y0 + h * 0.46, KU, channel)
+      + '<text x="%.0f" y="%.0f" text-anchor="middle" font-family="%s" font-size="16" fill="#C9C3BA">%s</text>'
+        % (CX, y0 + h * 0.80, BO, wait)
+      + '<line x1="%.0f" y1="%.0f" x2="1064" y2="%.0f" stroke="#3A342E" stroke-width="1" stroke-dasharray="4 5"/>'
+        % (CX + (hw0 + hw1) / 2 + 8, y0 + h / 2, y0 + h / 2)
+      + '<text x="1226" y="%.0f" text-anchor="middle" font-family="%s" font-size="18" fill="#7C766D">%s</text>'
+        % (y0 + h * 0.42, BO, note)
+      + '<text x="1226" y="%.0f" text-anchor="middle" font-family="%s" font-size="17" fill="#FF5C1A" '
+        'direction="ltr">%s</text>' % (y0 + h * 0.82, MO, cost))
+
+funnel = ('<svg viewBox="0 0 1392 236" style="width:100%;height:auto;">'
+  + band(2, 70, 420, 280, '0.10', 'بريد إلكتروني', 'فيه رابط التسجيل  ·  ننتظر ٥ أيام', '~ $0.0001', 'كل اللي لقيناهم')
+  + band(84, 152, 280, 150, '0.18', 'واتساب', 'نفس الرابط  ·  ننتظر ٣ أيام', '~ $0.04', 'اللي ما ردّ على البريد')
+  + band(166, 234, 150, 64, '0.30', 'مكالمة صوتية', 'وكيل ذكاء اصطناعي يتصل', '< $1.00', 'اللي ما ردّ على الواتساب')
+  + '</svg>')
+
+S['Discovery'] = slide('12','زووم · الاكتشاف',
+  '  <div style="margin:auto 0;">\n'
+  '  <div style="font-family:@KUFI@;font-weight:900;font-size:44px;color:@T@;">وش يصير قبل ما يوصل <span style="color:@A@;">الخريطة</span>؟</div>\n'
+  '  <div style="margin-top:8px;">' + minimap + '</div>\n'
+  '  <div style="display:flex;gap:16px;align-items:stretch;">\n'
+  + zcard('مصادر عامة','ما تحتاج إذن من أحد',
+          ['منافسات · ترميز · صنع في السعودية', 'التجارة · الموارد البشرية · المقاولين'],
+          'اسم ورقم سجل', dashed=True)
+  + darrow
+  + zcard('المحقّق','يبحث، ويتواصل',
+          ['يقرأ الموقع والسجل والترسيات', 'ويتواصل مع اللي يلقاه'],
+          'مورّد ومعه أدلته', img='bust-detective.png')
+  + darrow
+  + zcard('المدقّق','يتحقّق',
+          ['يدقّق في معلومات المحقّق', 'يصنّف ويوثّق المورّد'],
+          'قدرة موثّقة تدخل الخريطة', img='bust-auditor.png')
+  + '  </div>\n'
+  '  <div style="display:flex;align-items:baseline;gap:16px;margin-top:16px;">\n'
+  '    <div style="font-family:@KUFI@;font-weight:900;font-size:28px;color:@T@;">تواصل المحقّق</div>\n'
+  '    <div style="font-size:18px;font-weight:300;color:@M@;">وكل رسالة فيها <span style="color:@A@;">رابط التسجيل في مساهمة</span>.</div>\n'
   '  </div>\n'
-  '  <div style="font-size:19px;font-weight:300;color:@M@;margin-top:10px;">والرابط يوديه لتسجيل <span style="color:@T@;">مساهمة</span>. كامن نظام داخلي، ما فيه شي عليه للمورّد.</div>\n'
+  '  <div style="margin-top:4px;">' + funnel + '</div>\n'
+  '  </div>\n')
+
+# 13 zoom two: the other limb of the map, blown up at the Advisor. Same zoom
+# grammar as 12, so the two read as one pair.
+def mini2(x, w, label, ring=False):
+    c = '#FF5C1A' if ring else '#3A342E'
+    t = '#F7F3EC' if ring else '#4C463F'
+    return ('<rect x="%.0f" y="10" width="%.0f" height="30" rx="2" fill="none" stroke="%s" stroke-width="1"/>' % (x, w, c)
+            + '<text x="%.0f" y="30" text-anchor="middle" font-family="%s" font-size="13" fill="%s">%s</text>'
+              % (x + w / 2, BO, t, label))
+
+minimap2 = ('<svg viewBox="0 0 1392 92" style="width:100%;height:auto;">'
+  + mini2(1256, 136, 'مصادر عامة') + mini2(1116, 124, 'المحقّق') + mini2(1004, 96, 'المدقّق')
+  + mini2(860, 128, 'الخريطة', True) + mini2(732, 112, 'المستشار', True)
+  + mini2(604, 112, 'سجل الفجوات', True) + mini2(476, 112, 'نسبة التغطية', True)
+  + '<rect x="466" y="2" width="404" height="46" fill="none" stroke="#FF5C1A" stroke-width="1.6"/>'
+  + '<line x1="466" y1="48" x2="4" y2="88" stroke="#FF5C1A" stroke-width="1" stroke-dasharray="5 5" opacity="0.5"/>'
+  + '<line x1="870" y1="48" x2="1388" y2="88" stroke="#FF5C1A" stroke-width="1" stroke-dasharray="5 5" opacity="0.5"/>'
+  + '</svg>')
+
+# the chain, enlarged: the map hands the Advisor a gap, he hands back a decision
+def chainbox(title, sub, accent=False, dashed=False, img=None, grow=1):
+    bd = ('dashed #6E6259' if dashed else ('solid @A@' if accent else 'solid @L@'))
+    bg = ('transparent' if dashed else ('rgba(255,92,26,0.07)' if accent else '@P@'))
+    return ('    <div style="flex:' + str(grow) + ' 1 0;display:flex;align-items:center;gap:14px;border:1px ' + bd + ';'
+      'background:' + bg + ';padding:16px 20px;">\n'
+      + (('      <img src="' + img + '" style="height:66px;width:auto;object-fit:contain;">\n') if img else '')
+      + '      <div>\n'
+      '        <div style="font-family:@KUFI@;font-weight:900;font-size:27px;color:'
+      + ('@A@' if accent else '@T@') + ';">' + title + '</div>\n'
+      + (('        <div style="font-size:17px;font-weight:300;color:@M@;margin-top:3px;line-height:1.4;">' + sub + '</div>\n') if sub else '')
+      + '      </div>\n    </div>\n')
+
+carrow = ('    <div style="flex:0 0 22px;display:flex;align-items:center;justify-content:center;'
+          'color:@A@;font-size:24px;">&#8592;</div>\n')
+
+# and what he actually asks, rung by rung
+def rung(n, name, tool, hot=False):
+    return ('    <div style="flex:1 1 0;display:flex;align-items:center;gap:16px;border:1px solid '
+      + ('@A@' if hot else '@L@') + ';background:' + ('rgba(255,92,26,0.06)' if hot else '@P@') + ';padding:22px 24px;">\n'
+      '      <div style="flex:0 0 auto;width:34px;height:34px;border-radius:50%;border:1px solid '
+      + ('@A@' if hot else '@L@') + ';color:' + ('@A@' if hot else '@M@') + ';font-family:@BODY@;font-size:17px;'
+      'display:flex;align-items:center;justify-content:center;">' + n + '</div>\n'
+      '      <div style="flex:0 0 auto;font-family:@KUFI@;font-weight:900;font-size:36px;color:'
+      + ('@A@' if hot else '@T@') + ';">' + name + '</div>\n'
+      '      <div style="margin-right:auto;font-family:@KUFI@;font-weight:700;font-size:24px;color:'
+      + ('@A@' if hot else '@T@') + ';background:' + ('rgba(255,92,26,0.12)' if hot else '@P2@')
+      + ';border:1px solid ' + ('@A@' if hot else '@L@') + ';padding:10px 20px;">' + tool + '</div>\n'
+      '    </div>\n')
+
+S['Decisions'] = slide('13','زووم · القرار',
+  '  <div style="margin:0 0 auto;">\n'
+  '  <div style="font-family:@KUFI@;font-weight:900;font-size:44px;color:@T@;">ولما <span style="color:@A@;">الخريطة</span> تقول محد يقدر؟</div>\n'
+  '  <div style="margin-top:8px;">' + minimap2 + '</div>\n'
+  '  <div style="display:flex;gap:14px;align-items:stretch;">\n'
+  + chainbox('الخريطة','', dashed=True)
+  + carrow
+  + chainbox('المستشار','ما يوقف عند «محد يقدر». يجرّب ست درجات بالترتيب، وما ينزل درجة إلا لما تفشل اللي فوقها',
+             accent=True, img='fig-advisor.png', grow=2)
+  + carrow
+  + chainbox('سجل الفجوات','اللي ما انحل، مقيّد بقيمته السنوية', accent=True)
+  + carrow
+  + chainbox('نسبة التغطية','اللي قدرنا نغطّيه محلياً، بعد كل درجة', accent=True)
+  + '  </div>\n'
+  '  <div style="display:flex;gap:16px;margin-top:24px;">\n'
+  + rung('١','نشتريه','أمر شراء')
+  + rung('٢','نقسّمه','ترسية مقسّمة')
+  + rung('٣','نستثمر','توسعة مقابل تعاقد', True)
+  + '  </div>\n'
+  '  <div style="display:flex;gap:16px;margin-top:16px;">\n'
+  + rung('٤','نشارك','شراكة ونقل معرفة', True)
+  + rung('٥','نوطّن','استثمار مباشر', True)
+  + rung('٦','نستورد','استيراد')
+  + '  </div>\n'
   '  </div>\n')
 
 # 15 the math
@@ -612,21 +689,20 @@ for k, a, b in [('الوقت','٥ سنوات','أقل من ١٠ ساعات'),
              '      <div style="font-size:27px;font-weight:300;color:@M@;">' + a + '</div>\n'
              '      <div style="font-size:27px;font-weight:600;color:@T@;">' + b + '</div>\n'
              '    </div>\n')
-S['TheMath'] = slide('18','الحساب',
+S['TheMath'] = slide('14','الحساب',
   '  <div style="margin:auto 0;">\n'
   '  <div style="display:grid;grid-template-columns:200px 1fr 1fr;gap:30px;padding-bottom:12px;font-family:@BODY@;font-size:17px;">\n'
   '    <div></div><div style="color:@M@;">الطريقة القديمة</div><div style="color:@A@;">كامن</div>\n'
   '  </div>\n' + rows +
-  '  <div style="font-family:@KUFI@;font-weight:700;font-size:52px;color:@T@;margin-top:46px;line-height:1.4;">الجزء الغالي ما كان أبداً التفكير. <span style="color:@A@;">كان عدد الأيام.</span></div>\n'
+  '  <div style="font-family:@KUFI@;font-weight:700;font-size:56px;color:@T@;margin-top:46px;line-height:1.4;">نفس الشغل. بس <span style="color:@A@;">بساعات، مو بسنوات.</span></div>\n'
   '  </div>\n')
 
 # 16 close
-S['TheClose'] = slide('19','الختام',
+S['TheClose'] = slide('16','الختام',
   '  <div style="width:340px;height:12px;background:@A@;margin-bottom:44px;"></div>\n'
   '  <div style="font-family:@KUFI@;font-weight:900;font-size:86px;line-height:1.3;color:@M@;">مساهمة تعرف <span style="color:@T@;">مين سجّل</span>.</div>\n'
   '  <div style="font-family:@KUFI@;font-weight:900;font-size:86px;line-height:1.3;color:@T@;">كامن يعرف <span style="color:@A@;">اللي ما رفع يده</span>.</div>\n'
-  '  <div style="font-size:32px;font-weight:300;color:@M@;margin-top:44px;line-height:1.7;">الأولى لستة بأسماء اللي رفعوا أيديهم. والثانية خريطة لللي موجود فعلاً، بما فيهم كل اللي ما رفع يده أبداً.</div>\n'
-  '  <div style="font-size:24px;color:@M@;margin-top:34px;">احنا مو بديل للمنصة. احنا الطبقة اللي تحتها.</div>\n', center=True)
+  '  <div style="font-size:30px;color:@M@;margin-top:50px;">احنا مو بديل للمنصة. احنا الطبقة اللي تحتها.</div>\n', center=True)
 
 # A · as-is
 asis_flow = ''
@@ -650,7 +726,7 @@ S['AsIs'] = slide('بدوننا','كيف يُجاب السؤال اليوم',
   '    <div style="flex:1 1 0;border:1px solid #D93830;background:rgba(217,56,48,0.08);padding:22px 26px;">\n'
   '      <div style="font-family:@BODY@;font-size:16px;color:#D93830;">النتيجة الثانية</div>\n'
   '      <div style="font-family:@KUFI@;font-weight:700;font-size:30px;color:#D93830;margin-top:8px;">ما لقى اسم</div>\n'
-  '      <div style="font-size:21px;font-weight:300;color:@M@;margin-top:8px;line-height:1.6;">«ماحد يصنعه محلياً» ← استيراد، أو شراء من وكيل محلي يستورد ويبيع.</div>\n'
+  '      <div style="font-size:21px;font-weight:300;color:@M@;margin-top:8px;line-height:1.6;">«محد يصنعه محلياً» ← استيراد، أو شراء من وكيل محلي يستورد ويبيع.</div>\n'
   '    </div>\n'
   '    <div style="flex:1 1 0;border:1px solid @L@;padding:22px 26px;">\n'
   '      <div style="font-family:@BODY@;font-size:16px;color:@M@;">النتيجة الأولى</div>\n'
@@ -658,10 +734,10 @@ S['AsIs'] = slide('بدوننا','كيف يُجاب السؤال اليوم',
   '      <div style="font-size:21px;font-weight:300;color:@M@;margin-top:8px;line-height:1.6;">يرسل طلب عرض سعر لثلاثة أو خمسة من نفس اللستة.</div>\n'
   '    </div>\n'
   '  </div>\n'
-  '  <div style="font-family:@KUFI@;font-weight:700;font-size:42px;color:@A@;margin-top:28px;">و«ماحد يصنعه محلياً» مو حقيقة، بل «ماحد في لستتي».</div>\n'
+  '  <div style="font-family:@KUFI@;font-weight:700;font-size:42px;color:@A@;margin-top:28px;">و«محد يصنعه محلياً» مو حقيقة، بل «محد في لستتي».</div>\n'
   '  </div>\n')
 
-S['Team'] = slide('20','من نحن',
+S['Team'] = slide('17','من نحن',
   '  <div style="margin:auto 0;">\n'
   '  <div style="width:180px;height:10px;background:@A@;margin-bottom:26px;"></div>\n'
   '  <div style="font-family:@KUFI@;font-weight:900;font-size:76px;line-height:1.3;color:@T@;letter-spacing:-0.01em;">ثلاثة أشخاص. <span style="color:@A@;">وآلاف الوكلاء</span>.</div>\n'
@@ -695,10 +771,10 @@ for name, src in S.items():
     open(name + '.dc.html', 'w', encoding='utf-8').write(src)
 
 order = ['Main','Question','Blind','WhoMakes','WhatWeBuy','WhatChanged','TheWall','Solution','TheTeam',
-         'Coordinator','Detective','Auditor','Strategist','TheReveal','TheMap','Journey','Outreach','TheMath','TheClose','Team']
+         'TheReveal','TheMap','Discovery','Decisions','TheMath','Suppliers','TheClose','Team']
 titles = ['١ الغلاف','٢ السؤال','٣ لا أحد يفرّق','٤ اللي يرفع يده','٥ اختلاف المسمّى','٦ ما تغيّر',
-          '٧ جدار ٥ سنوات','٨ والحل؟','٩ نوظّف فريق','١٠ المنسّق','١١ المحقّق','١٢ المدقّق','١٣ المستشار',
-          '١٤ الانكشاف','١٥ الخريطة','١٦ رحلة الطلب','١٧ الوصول','١٨ الحساب','١٩ الختام','٢٠ الفريق']
+          '٧ جدار ٥ سنوات','٨ والحل؟','٩ نوظّف فريق','١٠ الانكشاف','١١ الخريطة',
+          '١٢ زووم الاكتشاف','١٣ زووم القرار','١٤ الحساب','١٥ قائمة الموردين','١٦ الختام','١٧ الفريق']
 abs_=[]
 for i, f in enumerate(order):
     col, row = i % 4, i // 4

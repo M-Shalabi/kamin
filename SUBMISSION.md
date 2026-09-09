@@ -9,7 +9,7 @@
 
 **KAMIN (كامن), The National Capability Graph**
 
-*كامن* means what is present but undiscovered, the thing that is there before anyone has found it. Slogan: **It exists. Nobody has seen it.**
+*كامن* means what is present but undiscovered, the thing that is there before anyone has found it. On the deck: **a live map of local industrial capability.**
 
 **One line:** MUSAHAMA knows who registered. KAMIN knows who never raised a hand, and can prove where nobody in the Kingdom can supply at all.
 
@@ -35,7 +35,7 @@ KAMIN is a live capability layer for Saudi industry. It is built and continuousl
 
 4. **The Advisor** proposes options rather than reporting a gap. Where the map cannot serve the pooled order as it stands, it walks a ladder upward from the cheapest viable intervention until one holds: **buy it** from one supplier; **split it** across several so the volume does not exclude small players; **invest**, asking the supplier whether they could serve it if PIF expanded their capacity, against a contract for the volume; **partner**, asking whether they could bring a global manufacturer in with technology transfer; **localise**, where PIF attracts or builds the industry itself; or **import**, logging the gap with its annual value. Rungs three and four are asked, not inferred, and an unanswered rung is never recorded as a refusal. This is what separates a buyer from an owner: a procurement department can only note a gap, an owner can capitalise it, and what makes those rungs financeable is the pooled multi-year offtake rather than a one-off order.
 
-**Reaching the supplier.** A supplier discovered and never contacted changes nothing, so KAMIN closes the loop with a three-stage cascade, cheapest channel first, each stage running only on the previous stage's non-responders: email and wait five days, WhatsApp with a registration link and wait three days, then a voice agent for whoever is left. **Cost is bounded by the funnel rather than the population**, so reaching the smallest workshop by voice is affordable precisely because the large suppliers with sales teams answered the free email first. The economics hold even under a pessimistic funnel, which is why no optimistic response rate is load-bearing. The link goes to MUSAHAMA's own registration: KAMIN keeps no login, no upload and no approval queue.
+**Reaching the supplier.** A supplier discovered and never contacted changes nothing, so the Detective does not stop at finding: the same role reaches out, through a three-stage cascade, cheapest channel first, each stage running only on the previous stage's non-responders: email and wait five days, WhatsApp with a registration link and wait three days, then a voice agent for whoever is left. **Cost is bounded by the funnel rather than the population**, so reaching the smallest workshop by voice is affordable precisely because the large suppliers with sales teams answered the free email first. The economics hold even under a pessimistic funnel, which is why no optimistic response rate is load-bearing. The link goes to MUSAHAMA's own registration: KAMIN keeps no login, no upload and no approval queue.
 
 **Key features**
 

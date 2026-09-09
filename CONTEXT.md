@@ -19,7 +19,7 @@ The agent that turns one demand line into a normalised specification with an HS 
 _Avoid_: Resolver, matcher
 
 **Detective** (المحقّق):
-The agent that investigates one candidate supplier and returns capabilities, each with evidence.
+The agent that investigates one candidate supplier and returns capabilities, each with evidence, then reaches out to that supplier through the outreach cascade. Finding and reaching are one role, not two.
 _Avoid_: Scout, investigator
 
 **Specifier** (المُحدِّد):
@@ -91,7 +91,7 @@ The suppliers PIF and its portcos already know, from MUSAHAMA, vendor masters an
 _Avoid_: Existing vendors, known set, legacy suppliers
 
 **Outreach cascade** (سلسلة الوصول):
-Email, then WhatsApp, then a voice agent, each stage running only on the previous stage's non-responders. How a capability on the map becomes a supplier registered on MUSAHAMA. KAMIN holds no registration of its own.
+The Detective's second job. Email, then WhatsApp, then an AI voice agent, each stage running only on the previous stage's non-responders, and every message carrying MUSAHAMA's own registration link. It is not a fourth role: the agent that finds the supplier is the agent that reaches them. How a capability on the map becomes a supplier registered on MUSAHAMA. KAMIN holds no registration of its own.
 _Avoid_: Campaign, sequence, drip
 
 **Supplier** (المورّد):

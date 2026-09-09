@@ -30,7 +30,7 @@ KAMIN is not a search box and it does not wait to be asked. It is an internal sy
 
 REACHING THE SUPPLIER
 
-A supplier discovered and never contacted changes nothing, so KAMIN closes the loop with a three-stage cascade, cheapest channel first, each stage running only on the previous stage's non-responders: email and wait five days, WhatsApp with a registration link and wait three days, then a voice agent for whoever is left. Cost is bounded by the funnel rather than the population, so reaching the smallest workshop by voice is affordable precisely because the large suppliers with sales teams answered the free email first. The economics hold even under a pessimistic funnel, which is why no optimistic response rate is load-bearing. The link goes to MUSAHAMA's own registration: KAMIN keeps no login, no upload and no approval queue.
+A supplier discovered and never contacted changes nothing, so the Detective does not stop at finding: the same role reaches out, through a three-stage cascade, cheapest channel first, each stage running only on the previous stage's non-responders: email and wait five days, WhatsApp with a registration link and wait three days, then a voice agent for whoever is left. Cost is bounded by the funnel rather than the population, so reaching the smallest workshop by voice is affordable precisely because the large suppliers with sales teams answered the free email first. The economics hold even under a pessimistic funnel, which is why no optimistic response rate is load-bearing. The link goes to MUSAHAMA's own registration: KAMIN keeps no login, no upload and no approval queue.
 
 KEY FEATURES
 
