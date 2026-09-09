@@ -12,24 +12,35 @@
 ```
 KAMIN is a live capability layer for Saudi industry, built and continuously refreshed by a swarm of AI agents. It answers a question PIF cannot answer today: for everything the portfolio buys, who in the Kingdom could actually supply it, and where can we prove nobody can.
 
+WHERE THE MAP STARTS
+
+Before any public discovery, KAMIN loads what PIF already holds: MUSAHAMA records, portfolio company vendor masters, and the engagement history of every supplier any portco has bought from, past or current. That incumbent baseline carries the strongest evidence on the map, because a delivered contract proves capability in a way no public source can, and it is still the minority of Saudi industry. Everything the agents find beyond it is discovery lift computed as a set difference rather than asserted, and the distance between incumbent coverage and map coverage is the sourcing opportunity in riyals.
+
 HOW IT WORKS
 
-KAMIN is not a search box and it does not wait to be asked. It wakes on a signal that already exists inside every portfolio company: a purchase request raised in the ERP. From that single line, four agent roles run in sequence.
+KAMIN is not a search box and it does not wait to be asked. It is an internal system with no supplier-facing surface, and it runs on two clocks: on event, when a purchase request is raised in a portfolio company ERP, and on a daily schedule that works the map for suppliers worth reaching. From that single line, four agent roles run in sequence.
 
 1. The Coordinator resolves the request. Procurement text is messy, bilingual and free-form. "صمام كروي ٢ بوصة", "BALL VLV 2IN SS" and "Valve, ball, stainless, 2 inch" are the same object written by three systems that will never agree. The Coordinator normalises each line into a specification anchored to an HS code, then pools every matching line across the 150+ portfolio companies and across purchase history. Twelve units in one company and forty in another become one order of 40,000 a year. Pooling itself is trivial arithmetic. Seeing that scattered requests are the same request is the hard part, and it is exactly why aggregated demand has stayed invisible.
 
 2. The Detective searches for who can serve that pooled volume. It starts from the Ministry of Industry's Tarmeez catalogue and deliberately goes past it: 3,153 factories are registered there against 12,946 operating in the Kingdom, so 76 percent of Saudi industry sits outside the national catalogue. The Detective reads company web presence, commercial registers, awarded contracts on Etimad, certifications and product literature. Because the question is now "who can serve 40,000 units a year" rather than "who makes this", it surfaces providers whose economics a single company's occasional order could never have justified.
 
-3. The Auditor verifies each candidate adversarially, and classifies instead of eliminating: manufacturer, assembler, authorised distributor, or trader. A local trader is still a local supplier. It employs Saudis and retains margin domestically, so its local content is lower, not zero. This gradient follows LCGPA methodology, which measures value added rather than legal form. Every claim carries a citation, an evidence tier and a confidence score.
+3. The Auditor verifies each candidate adversarially, and classifies instead of eliminating: manufacturer, assembler, authorised distributor, or trader. A local trader is still a local supplier. It employs Saudis and retains margin domestically, so its local content is lower, not zero. This gradient follows LCGPA methodology, which measures value added rather than legal form. Every claim carries a citation, an evidence tier and a confidence score. The same pass assigns each capability its UNSPSC code, the taxonomy MUSAHAMA speaks and the one that, unlike HS, expresses services as well as goods. And the Auditor works in a second place: after the Coordinator, a request audit takes a pooled order together with the requesting portcos' own bars, maximum lead time, required standards, minimum class, and returns the map ranked for them. That is what surfaces the third reason a purchase leaves the Kingdom: not that nobody makes it, and not that nobody knows who does, but that the supplier is real, local, verified and still does not meet this company's bar. Where two portcos in one pooled order disagree, the order splits rather than averaging the requirement. The capability audit writes to the map; the request audit only reads it.
 
-4. The Advisor handles what is left. Where nobody in the Kingdom can supply the pooled order, it builds the case: annual value, regulatory obligation under the LCGPA Mandatory List, and which existing plant could pivot into it with equipment it already owns.
+4. The Advisor proposes options rather than reporting a gap. Where the map cannot serve the pooled order as it stands, it walks a ladder upward from the cheapest viable intervention until one holds: buy it from one supplier; split it across several so the volume does not exclude small players; invest, asking the supplier whether they could serve it if PIF expanded their capacity, against a contract for the volume; partner, asking whether they could bring a global manufacturer in with technology transfer; localise, where PIF attracts or builds the industry itself; or import, logging the gap with its annual value. Rungs three and four are asked, not inferred, and an unanswered rung is never recorded as a refusal. This is what separates a buyer from an owner: a procurement department can only note a gap, an owner can capitalise it, and what makes those rungs financeable is the pooled multi-year offtake rather than a one-off order.
+
+REACHING THE SUPPLIER
+
+A supplier discovered and never contacted changes nothing, so KAMIN closes the loop with a three-stage cascade, cheapest channel first, each stage running only on the previous stage's non-responders: email and wait five days, WhatsApp with a registration link and wait three days, then a voice agent for whoever is left. Cost is bounded by the funnel rather than the population, so reaching the smallest workshop by voice is affordable precisely because the large suppliers with sales teams answered the free email first. The economics hold even under a pessimistic funnel, which is why no optimistic response rate is load-bearing. The link goes to MUSAHAMA's own registration: KAMIN keeps no login, no upload and no approval queue.
 
 KEY FEATURES
 
+- The incumbent baseline first. MUSAHAMA and portco data seed the map before any public discovery, which turns discovery lift and coverage from claims into computed figures.
 - Cross-lingual demand resolution, the component that makes aggregate demand computable at all.
 - Outside-in discovery. Every supplier directory that exists is a list of who raised their hand, which selects for firms with business-development teams and misses the specialised workshop that has machined precision parts for twenty years. KAMIN finds suppliers from public evidence instead of waiting for them to register.
 - Classification, not elimination, with a declared evidence hierarchy behind every confidence score, so a procurement officer can audit the claim and a judge can challenge it.
 - Split fulfilment. Where no single provider can absorb a pooled order, KAMIN proposes a split across several, which is what lets small local players serve large demand instead of being excluded by size.
+- An option ladder, not a gap report. Buy, split, invest in capacity, partner for technology transfer, localise, import. The pooled offtake is what makes the middle rungs financeable.
+- Reach, not registration. A cost-ordered outreach cascade carries both the capability confirmation and the Advisor's questions, and hands the supplier to MUSAHAMA.
 - A gap ledger: pooled forward demand with its annual value, waiting for the first provider who can serve it. An investment memo, not a report.
 - Coverage: the share of portfolio spend that is locally satisfiable today, and it moves.
 - It compounds. Everything the agents learn stays on the map, so the next request starts from a bigger map and larger pooled demand.
@@ -151,6 +162,10 @@ The graph is an asset that compounds. Each refresh cycle improves coverage witho
 ```
 كامن طبقة حيّة لقدرات الصناعة السعودية، تُبنى وتُحدَّث باستمرار عبر منظومة من وكلاء الذكاء الاصطناعي، وتجيب عن سؤال لا يستطيع الصندوق الإجابة عنه اليوم: لكل ما تشتريه شركات المحفظة، من في المملكة يستطيع توريده فعلاً، وأين يمكن إثبات أن لا أحد يستطيع.
 
+من أين تبدأ الخريطة
+
+قبل أي اكتشاف عام، يحمّل كامن ما لدى الصندوق أصلاً: سجلات مساهمة، وقوائم موردي شركات المحفظة، وتاريخ تعامل كل مورّد اشترت منه أي شركة، سابقاً أو حالياً. وهذا الأساس القائم يحمل أقوى دليل على الخريطة، لأن عقداً سُلّم فعلاً يثبت القدرة بما لا يثبته أي مصدر عام، ومع ذلك يبقى أقلية الصناعة السعودية. وكل ما يجده الوكلاء فوق هذا الخط هو رفع اكتشاف محسوب لا مُدّعى، والمسافة بين تغطية الموردين القائمين وتغطية الخريطة كاملةً هي فرصة التوريد بالريال.
+
 آلية العمل
 
 النظام ليس محرك بحث ولا ينتظر أن يُسأل، بل ينطلق من إشارة قائمة في كل شركة محفظة: طلب شراء يُرفع في نظام تخطيط الموارد. ومن هذا السطر الواحد تعمل أربعة أدوار على التوالي.
@@ -159,9 +174,13 @@ The graph is an asset that compounds. Each refresh cycle improves coverage witho
 
 ٢. المحقّق يبحث عمّن يستطيع خدمة هذا الحجم المجمّع. يبدأ من كتالوج ترميز لوزارة الصناعة ويتجاوزه عمداً: ٣١٥٣ مصنعاً مسجّلاً مقابل ١٢٩٤٦ مصنعاً عاملاً في المملكة، أي أن ٧٦٪ من الصناعة السعودية خارج الكتالوج الوطني. يقرأ المحقّق مواقع الشركات والسجلات التجارية وترسيات العقود في منافسات والشهادات وأدلة المنتجات. ولأن السؤال صار «من يستطيع خدمة أربعين ألف قطعة سنوياً» بدلاً من «من يصنع هذا»، فإنه يكشف موردين لم يكن طلب شركة واحدة عابر ليبرّر جدواهم.
 
-٣. المدقّق يتحقق من كل مرشّح بمنهج تفنيدي، ويصنّف بدل أن يستبعد: مصنّع، أو مجمّع، أو موزّع معتمد، أو تاجر. فالتاجر المحلي مورّد محلي أيضاً؛ يوظّف سعوديين ويبقى هامشه داخل البلد، فمحتواه المحلي أقل لا معدوم. وهذا التدرّج يوافق منهجية هيئة المحتوى المحلي التي تقيس القيمة المضافة لا الشكل النظامي للمنشأة. ويحمل كل ادعاء مصدره ومرتبته في هرم الأدلة ودرجة ثقته.
+٣. المدقّق يتحقق من كل مرشّح بمنهج تفنيدي، ويصنّف بدل أن يستبعد: مصنّع، أو مجمّع، أو موزّع معتمد، أو تاجر. فالتاجر المحلي مورّد محلي أيضاً؛ يوظّف سعوديين ويبقى هامشه داخل البلد، فمحتواه المحلي أقل لا معدوم. وهذا التدرّج يوافق منهجية هيئة المحتوى المحلي التي تقيس القيمة المضافة لا الشكل النظامي للمنشأة. ويحمل كل ادعاء مصدره ومرتبته في هرم الأدلة ودرجة ثقته. وتمنح المرحلة نفسها كل قدرة رمز UNSPSC، وهو التصنيف الذي تتحدثه مساهمة، والذي يعبّر عن الخدمات لا السلع فقط بخلاف رمز HS. ويعمل المدقّق في موضع ثانٍ: بعد المنسّق، يأخذ تدقيق الطلب طلباً مجمّعاً ومعه معايير الشركات الطالبة، أي أقصى مدة توريد تحتملها والمعايير التي تشترطها وأدنى تصنيف تقبله، ويعيد الخريطة مرتّبة لها. وهذا ما يكشف السبب الثالث لخروج الشراء من المملكة: لا أن أحداً لا يصنعه، ولا أن أحداً لا يعرف من يصنعه، بل أن المورّد حقيقي ومحلي ومتحقَّق منه، ومع ذلك لا يبلغ معيار هذه الشركة. وحين تختلف شركتان في طلب مجمّع واحد، يُقسَّم الطلب بدل أن يُتوسَّط الشرط. تدقيق القدرة يكتب في الخريطة، وتدقيق الطلب يقرأها فقط.
 
-٤. المستشار يتولى ما تبقّى. فحيث لا يستطيع أحد في المملكة توريد الطلب المجمّع، يبني الحالة الاستثمارية: القيمة السنوية، والالتزام النظامي ضمن القائمة الإلزامية لهيئة المحتوى المحلي، وأي مصنع قائم يمكنه التحوّل إليه بمعداته الحالية.
+٤. المستشار يقترح خيارات بدل أن يبلّغ عن فجوة. فحيث تعجز الخريطة عن خدمة الطلب المجمّع كما هو، يصعد سلّماً من أرخص تدخّل مجدٍ حتى تثبت درجة: نشتريه من مورّد واحد؛ أو نقسّمه بين عدة موردين حتى لا يُقصي الحجمُ الصغار؛ أو نستثمر، بأن نسأل المورّد إن كان يستطيع خدمته لو وسّع الصندوق طاقته مقابل تعاقد على الحجم؛ أو نشارك، بأن نسأله إن كان يستطيع أن يأتي بمصنّع عالمي مع نقل المعرفة؛ أو نوطّن، فيجلب الصندوق الصناعة نفسها؛ أو نستورد، وتُقيَّد الفجوة بقيمتها السنوية. والدرجتان الثالثة والرابعة تُسألان ولا تُستنتجان، والدرجة التي لم يُجَب عنها لا تُسجَّل رفضاً أبداً. وهذا ما يفصل المشتري عن المالك: إدارة المشتريات لا تملك إلا تسجيل الفجوة، أما المالك فيستطيع تمويلها، والذي يجعل تلك الدرجات قابلة للتمويل هو الحجم المجمّع متعدد السنوات لا الطلبية العابرة.
+
+الوصول إلى المورّد
+
+المورّد الذي يُكتشف ولا يُتواصل معه لا يغيّر شيئاً، ولهذا يُغلق كامن الدائرة بسلسلة من ثلاث مراحل، الأرخص أولاً، وكل مرحلة لا تعمل إلا على من لم يردّ في سابقتها: بريد إلكتروني وانتظار خمسة أيام، ثم واتساب مع رابط التسجيل وانتظار ثلاثة أيام، ثم وكيل صوتي لمن تبقّى. والتكلفة محدودة بالقُمع لا بحجم المجتمع، فالوصول إلى أصغر ورشة بمكالمة ممكن تحديداً لأن كبار الموردين ذوي فرق المبيعات ردّوا على البريد المجاني أولاً. والحساب يصمد حتى في أسوأ الفروض، ولهذا لا تقوم الفكرة على نسبة استجابة متفائلة. والرابط يقود إلى تسجيل مساهمة نفسه: لا يحتفظ كامن بحساب ولا رفع ملفات ولا طابور اعتماد.
 
 الخصائص الرئيسية
 

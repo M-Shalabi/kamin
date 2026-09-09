@@ -20,9 +20,11 @@ Saudi Arabia's Public Investment Fund owns more than 150 companies. Those compan
 
 A lot of it comes from abroad.
 
-Some of it comes from abroad for a good reason: nobody in the Kingdom makes it. And some of it comes from abroad for a frustrating reason: somebody two hours down the road makes it, and the person buying simply didn't know they existed.
+Some of it comes from abroad for a good reason: nobody in the Kingdom makes it. Some of it comes from abroad for a frustrating reason: somebody two hours down the road makes it, and the person buying simply didn't know they existed.
 
-**Nobody can tell those two cases apart.** That is the entire problem, and everything below is about fixing it.
+And some of it comes from abroad for a third reason, the sneakiest one: they *were* found, they are local and real, and they still do not fit. Their lead time is longer than that company can carry, or their quality sits under its bar. And the bar is not the same from one portfolio company to the next.
+
+**Nobody can tell those three cases apart.** That is the entire problem, and everything below is about fixing it.
 
 ---
 
@@ -118,17 +120,30 @@ They take the aggregated order and hunt: company websites, the commercial regist
 
 One rule: never say anything without saying where you learned it.
 
-### 3. The Auditor
+### 3. The Auditor, twice
 
-They verify each candidate **to classify, not to strike off**: manufacturer, assembler, authorised distributor, or trader, each with a different local-content weight.
+She is the only one who works in two places on the map.
 
-Because a local trader **is still a local supplier**, Saudi employees, local assets, margin that stays in the country. Lower local content, not zero. That gradient is exactly what LCGPA's methodology measures, so classifying beats gatekeeping.
+**After the Detective**, they verify each candidate **to classify, not to strike off**: manufacturer, assembler, authorised distributor, or trader, each with a different local-content weight.
+
+Because a local trader **is still a local supplier**, Saudi employees, local assets, margin that stays in the country. Lower local content, not zero. That gradient is exactly what LCGPA's methodology measures, so classifying beats gatekeeping. They also stamp each capability with its **UNSPSC** code, which is the code MUSAHAMA speaks, so the two registers can understand each other.
+
+**After the Coordinator**, they do something different: they read the requesting company's own bar, and hand back the map ranked *for that company*. Lead time it can carry, standards it requires, class it accepts. This is the third case from the opening, caught before it wastes anyone's week.
 
 ### 4. The Advisor
 
-They work where the answer is **nobody**. What is the pooled order worth annually? Does regulation require it local? Which existing plant could supply it if asked?
+They work where the answer is **nobody**, and they do not stop at the gap. They hand back a ladder, cheapest rung first:
 
-**This is where aggregation pays off.** A gap used to be a fact. Now it's an investment case, because the demand is pooled and forward-looking: a volume worth tooling up for.
+1. **Buy it**, if one supplier can serve the volume today.
+2. **Split it** between several, so the size of the order doesn't exclude the small.
+3. **Invest.** Go to the supplier and ask: *could you, if we expanded your capacity?* Capex, against a contract for the volume.
+4. **Partner.** *Could you bring a global manufacturer in with you?* A joint venture, and knowledge transfer.
+5. **Localise.** Nobody can, so the Fund brings the industry itself into the Kingdom.
+6. **Import**, and log the gap with its annual value.
+
+Rungs 3 and 4 are **asked, not inferred**, and an unanswered rung is never treated as a no.
+
+**This is where aggregation pays off, and it's also the difference between a buyer and an owner.** A purchasing department can only note a gap. An owner can capitalise it. And what makes rungs 3 to 5 financeable is the pooled, multi-year volume: a one-off order finances nothing.
 
 ## What comes out
 

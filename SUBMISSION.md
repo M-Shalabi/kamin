@@ -21,7 +21,9 @@
 
 KAMIN is a live capability layer for Saudi industry. It is built and continuously refreshed by a swarm of AI agents, and it answers a question PIF cannot answer today: for everything the portfolio buys, who in the Kingdom could actually supply it, and where can we prove nobody can.
 
-**How it works.** The system is not a search box and it does not wait to be asked. It wakes up on a signal that already exists in every portfolio company: a purchase request raised in the ERP. From that one line, four agent roles run in sequence.
+**Where the map starts.** Before any public discovery, KAMIN loads what PIF already holds: MUSAHAMA records, portfolio company vendor masters, and the engagement history of every supplier any portco has bought from, past or current. That incumbent baseline carries the strongest evidence on the map, because a delivered contract proves capability in a way no public source can, and it is still the minority of Saudi industry. Everything the agents find beyond it is **discovery lift computed as a set difference rather than asserted**, and the distance between *incumbent coverage* and *map coverage* is the sourcing opportunity in riyals.
+
+**How it works.** The system is not a search box and it does not wait to be asked. KAMIN is an internal system with no supplier-facing surface, and it runs on two clocks: on event, when a purchase request is raised in a portfolio company ERP, and on a daily schedule that works the map for suppliers worth reaching. From that one line, four agent roles run in sequence.
 
 1. **The Coordinator** resolves the request. Procurement text is messy, bilingual and free-form: `صمام كروي ٢ بوصة`, `BALL VLV 2IN SS` and `Valve, ball, stainless, 2 inch` are the same object written by three systems that will never agree. The Coordinator normalises each line into a specification anchored to an HS code, then pools every matching line across the 150+ portfolio companies and across purchase history. Twelve units in one company and forty in another become one order of 40,000 a year. Pooling itself is trivial arithmetic. Seeing that scattered requests *are* the same request is the hard part, and it is exactly why aggregated demand has stayed invisible.
 
@@ -29,14 +31,21 @@ KAMIN is a live capability layer for Saudi industry. It is built and continuousl
 
 3. **The Auditor** verifies each candidate adversarially, and **classifies instead of eliminating**: manufacturer, assembler, authorised distributor, or trader. A local trader is still a local supplier; it employs Saudis and retains margin domestically, so its local content is lower, not zero. This gradient follows LCGPA methodology, which measures value added rather than legal form. Every claim carries a citation, an evidence tier and a confidence score.
 
-4. **The Advisor** handles what is left. Where nobody in the Kingdom can supply the pooled order, it builds the case: annual value, regulatory obligation under the LCGPA Mandatory List, and which existing plant could pivot into it with the equipment it already owns.
+   The same pass assigns each capability its **UNSPSC** code, the taxonomy MUSAHAMA speaks and the one that, unlike HS, expresses services as well as goods. And the Auditor works in a second place: after the Coordinator, a **request audit** takes a pooled order together with the requesting portcos' own bars, maximum lead time, required standards, minimum class, and returns the map ranked *for them*. This is what surfaces the third reason a purchase leaves the Kingdom: not that nobody makes it, and not that nobody knows who does, but that the supplier is real, local, verified and still does not meet this company's bar. Where two portcos in one pooled order disagree, the order splits rather than averaging the requirement. The capability audit writes to the map; the request audit only reads it.
+
+4. **The Advisor** proposes options rather than reporting a gap. Where the map cannot serve the pooled order as it stands, it walks a ladder upward from the cheapest viable intervention until one holds: **buy it** from one supplier; **split it** across several so the volume does not exclude small players; **invest**, asking the supplier whether they could serve it if PIF expanded their capacity, against a contract for the volume; **partner**, asking whether they could bring a global manufacturer in with technology transfer; **localise**, where PIF attracts or builds the industry itself; or **import**, logging the gap with its annual value. Rungs three and four are asked, not inferred, and an unanswered rung is never recorded as a refusal. This is what separates a buyer from an owner: a procurement department can only note a gap, an owner can capitalise it, and what makes those rungs financeable is the pooled multi-year offtake rather than a one-off order.
+
+**Reaching the supplier.** A supplier discovered and never contacted changes nothing, so KAMIN closes the loop with a three-stage cascade, cheapest channel first, each stage running only on the previous stage's non-responders: email and wait five days, WhatsApp with a registration link and wait three days, then a voice agent for whoever is left. **Cost is bounded by the funnel rather than the population**, so reaching the smallest workshop by voice is affordable precisely because the large suppliers with sales teams answered the free email first. The economics hold even under a pessimistic funnel, which is why no optimistic response rate is load-bearing. The link goes to MUSAHAMA's own registration: KAMIN keeps no login, no upload and no approval queue.
 
 **Key features**
 
+- **The incumbent baseline first.** MUSAHAMA and portco data seed the map before any public discovery, which turns discovery lift and coverage from claims into computed figures.
 - **Cross-lingual demand resolution**, the component that makes aggregate demand computable at all.
 - **Outside-in discovery.** Every existing supplier directory is a list of who raised their hand, which selects for firms with business-development teams and misses the specialised workshop that has machined precision parts for twenty years. KAMIN finds suppliers from public evidence instead of waiting for them to register.
 - **Classification, not elimination**, with a declared evidence hierarchy behind every confidence score, so a procurement officer can audit the claim and a judge can challenge it.
 - **Split fulfilment.** Where no single provider can absorb a pooled order, KAMIN proposes a split across several, which is what lets small local players serve large demand instead of being excluded by size.
+- **An option ladder, not a gap report.** Buy, split, invest in capacity, partner for technology transfer, localise, import. The pooled offtake is what makes the middle rungs financeable.
+- **Reach, not registration.** A cost-ordered outreach cascade carries both the capability confirmation and the Advisor's questions, and hands the supplier to MUSAHAMA.
 - **A gap ledger**, pooled forward demand with its annual value, waiting for the first provider who can serve it. An investment memo, not a report.
 - **Coverage**, the share of portfolio spend that is locally satisfiable today, and it moves.
 - **It compounds.** Everything the agents learn stays on the map, so the next request starts from a bigger map and larger pooled demand.
@@ -53,8 +62,9 @@ The agents do not operate on generic web search. They work against a structured 
 
 | Tier | Sources | Standing |
 |---|---|---|
+| **0, Buyer-attested** | A portco's own record that this supplier delivered this thing | Strongest evidence that exists, and private to the portfolio. A delivered engagement proves *this buyer* was served, where an award proves only that a contract existed |
 | **1, Third-party verified** | Etimad contract awards · Made in Saudi certification (audited, ≥40% value-add) · ISO/SASO certifications | Strongest. A delivered public contract is proof of capability, not a claim about it |
-| **2, Official registry declaration** | Tarmeez product registrations · commercial register activity codes · MLCP chamber listings | Declared to a government body, accountable, but still self-reported. Covers 3,153 of 12,946 factories |
+| **2, Official registry declaration** | Tarmeez product registrations · commercial register activity codes · MLCP chamber listings · HRSD Saudization and headcount · Ministry of Commerce activity · Saudi Contractors Authority grading | Declared to a government body, accountable, but still self-reported. Covers 3,153 of 12,946 factories |
 | **3, Self-published** | Company websites, product literature, catalogues | Marketing copy. Requires corroboration before it supports a claim |
 | **4, Inferred** | Adjacency, equipment signals, capacity and hiring indicators | Never stands alone. Must be corroborated by a higher tier |
 

@@ -4,10 +4,10 @@ import re, json
 from tr_en import TR
 
 ORDER = ['Main','Question','Blind','WhoMakes','WhatWeBuy','WhatChanged','TheWall','Solution','TheTeam',
-         'Coordinator','Detective','Auditor','Strategist','TheReveal','TheMap','Journey','TheMath','TheClose','Team']
+         'Coordinator','Detective','Auditor','Strategist','TheReveal','TheMap','Journey','Outreach','TheMath','TheClose','Team']
 TITLES = ['1 Cover','2 The Question','3 Nobody Can Tell','4 Raise Your Hand','5 Different Names','6 What Changed',
           '7 The 5-Year Wall','8 So What Now','9 Hire A Team','10 Coordinator','11 Detective','12 Auditor',
-          '13 Advisor','14 The Reveal','15 The Map','16 One Request','17 The Math','18 The Close','19 The Team']
+          '13 Advisor','14 The Reveal','15 The Map','16 One Request','17 Outreach','18 The Math','19 The Close','20 The Team']
 
 AR_FONT = "'Thmanyah','Geeza Pro',Tahoma,sans-serif"
 EN_FONT = "'Archivo','Geeza Pro','Helvetica Neue',Arial,sans-serif"
@@ -62,12 +62,14 @@ def mirror(svg):
 
 def mirror_themap(html):
     """Mirror the diagram so it flows left to right, but leave the Saudi outline group unflipped."""
-    a = html.index('<g transform="translate(484,140)">')
+    m = re.search(r'<g transform="translate\((\d+),(\d+)\)">', html)
+    tx, ty = int(m.group(1)), int(m.group(2))
+    a = m.start()
     b = html.index('</g>', a) + 4
     head, group, tail = html[:a], html[a:b], html[b:]
     i = head.rindex('<svg')
-    # 484 + 196 keeps the outline's optical centre where its mirrored frame lands
-    group = group.replace('translate(484,140)', 'translate(%g,140)' % (W - 484 - 196))
+    # the outline's own centre is at local x=98, so mirroring the frame means placing it here
+    group = group.replace(m.group(0), '<g transform="translate(%g,%d)">' % (W - tx - 196, ty))
     return head[:i] + mirror(head[i:]) + group + mirror(tail)
 
 
@@ -93,9 +95,9 @@ def build(name):
     if name == 'TheMap':
         body = mirror_themap(body)
         # the english source list is wider than its box, so set it on two lines
-        body = re.sub(r'<text([^>]*?)y="97.0"([^>]*)>Registries[^<]*</text>',
-                      lambda m: '<text%sy="92.0"%s>Registries \u00b7 tenders</text>'
-                                '<text%sy="110.0"%s>certificates \u00b7 imports</text>'
+        body = re.sub(r'<text([^>]*?)y="78.0"([^>]*)>Registries[^<]*</text>',
+                      lambda m: '<text%sy="73.0"%s>Registries \u00b7 tenders</text>'
+                                '<text%sy="91.0"%s>certificates \u00b7 imports</text>'
                                 % (m.group(1), m.group(2), m.group(1), m.group(2)), body)
     out = (head + body).replace(AR_FONT, EN_FONT)
     open('EN_' + name + '.dc.html', 'w', encoding='utf-8').write(out)

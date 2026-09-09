@@ -155,8 +155,8 @@
    "page": "page-1"
   },
   {
-   "file": "TheMath.dc.html",
-   "title": "١٧ الحساب",
+   "file": "Outreach.dc.html",
+   "title": "١٧ الوصول",
    "x": 0,
    "y": 4640,
    "w": 1600,
@@ -164,8 +164,8 @@
    "page": "page-1"
   },
   {
-   "file": "TheClose.dc.html",
-   "title": "١٨ الختام",
+   "file": "TheMath.dc.html",
+   "title": "١٨ الحساب",
    "x": 1760,
    "y": 4640,
    "w": 1600,
@@ -173,9 +173,18 @@
    "page": "page-1"
   },
   {
-   "file": "Team.dc.html",
-   "title": "١٩ الفريق",
+   "file": "TheClose.dc.html",
+   "title": "١٩ الختام",
    "x": 3520,
+   "y": 4640,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "Team.dc.html",
+   "title": "٢٠ الفريق",
+   "x": 5280,
    "y": 4640,
    "w": 1600,
    "h": 900,
@@ -335,8 +344,8 @@
    "page": "page-1"
   },
   {
-   "file": "EN_TheMath.dc.html",
-   "title": "17 The Math",
+   "file": "EN_Outreach.dc.html",
+   "title": "17 Outreach",
    "x": 0,
    "y": 12760,
    "w": 1600,
@@ -344,8 +353,8 @@
    "page": "page-1"
   },
   {
-   "file": "EN_TheClose.dc.html",
-   "title": "18 The Close",
+   "file": "EN_TheMath.dc.html",
+   "title": "18 The Math",
    "x": 1760,
    "y": 12760,
    "w": 1600,
@@ -353,9 +362,18 @@
    "page": "page-1"
   },
   {
-   "file": "EN_Team.dc.html",
-   "title": "19 The Team",
+   "file": "EN_TheClose.dc.html",
+   "title": "19 The Close",
    "x": 3520,
+   "y": 12760,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_Team.dc.html",
+   "title": "20 The Team",
+   "x": 5280,
    "y": 12760,
    "w": 1600,
    "h": 900,
