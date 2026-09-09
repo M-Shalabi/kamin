@@ -47,7 +47,7 @@ export function ColdMiss({ supplierId, pending, hasRecording }: { supplierId: st
         </div>
       </div>
       {lines.length > 0 && <pre ref={box} className="mono mt-3 max-h-80 overflow-auto whitespace-pre-wrap rounded p-3 text-xs" style={{ background: "var(--ink)", color: "#e9e4da" }}>{lines.join("\n")}</pre>}
-      {state === "done" && <p className="mt-2 text-sm" style={{ color: "#1f7a3a" }}>Written to the graph{lines.some((l) => l.startsWith("▷ done")) ? ". Reloading." : "."}</p>}
+      {state === "done" && <p className="mt-2 text-sm" style={{ color: "var(--ok)" }}>Written to the graph{lines.some((l) => l.startsWith("▷ done")) ? ". Reloading." : "."}</p>}
     </section>
   );
 }

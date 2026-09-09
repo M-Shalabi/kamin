@@ -80,7 +80,7 @@ export async function orderDetail(id: string) {
   return { ...o, lines, matches };
 }
 
-export type SupplierRow = { id: string; name_ar: string | null; name_en: string | null; city_en: string | null; region_en: string | null; source: string; in_tarmeez: boolean; in_mlcp: boolean; in_made_in_saudi: boolean; detective_status: string; capability_count: number; supported_count: number; best_class: string | null };
+export type SupplierRow = { id: string; name_ar: string | null; name_en: string | null; cr_number: string | null; city_en: string | null; region_en: string | null; source: string; in_tarmeez: boolean; in_mlcp: boolean; in_made_in_saudi: boolean; detective_status: string; capability_count: number; supported_count: number; best_class: string | null };
 
 export async function supplierList(f: { family?: string; region?: string; cls?: string; verdict?: string; registry?: string; q?: string } = {}): Promise<SupplierRow[]> {
   const famLike = f.family === "valve" ? "8481%" : f.family === "pump" ? "8413%" : f.family === "fitting" ? "7307%" : f.family === "flange" ? "7307%" : "%";
@@ -90,7 +90,7 @@ export async function supplierList(f: { family?: string; region?: string; cls?: 
   const verdict = f.verdict ? sql`and c.verdict = ${f.verdict}` : sql``;
   const q = f.q ? sql`and (s.name_ar ilike ${"%" + f.q + "%"} or s.name_en ilike ${"%" + f.q + "%"} or s.cr_number = ${f.q})` : sql``;
   return sql<SupplierRow[]>`
-    select s.id, s.name_ar, s.name_en, s.city_en, s.region_en, s.source, s.in_tarmeez, s.in_mlcp, s.in_made_in_saudi, s.detective_status,
+    select s.id, s.name_ar, s.name_en, s.cr_number, s.city_en, s.region_en, s.source, s.in_tarmeez, s.in_mlcp, s.in_made_in_saudi, s.detective_status,
            count(c.id)::int as capability_count, count(c.id) filter (where c.verdict = 'supported')::int as supported_count,
            (array_agg(c.class order by case c.class when 'manufacturer' then 0 when 'assembler' then 1 when 'authorised_distributor' then 2 else 3 end))[1] as best_class
     from suppliers s join capabilities c on c.supplier_id = s.id
@@ -119,8 +119,9 @@ export async function capabilityDetail(id: string) {
            exists (select 1 from mandatory_list m where m.hs4 = left(c.hs6, 4)) as mandatory
     from capabilities c join suppliers s on s.id = c.supplier_id left join products p on p.tariff_code = c.tariff_code where c.id = ${id}`;
   if (!c) return null;
-  const evidence = await sql<{ id: string; tier: number; source_type: string; source_url: string; excerpt: string | null; title: string | null; run_id: string | null; fetched_at: string }[]>`
-    select id, tier, source_type, source_url, excerpt, title, run_id, fetched_at::text as fetched_at from evidence where capability_id = ${id} order by tier, fetched_at`;
+  const evidence = await sql<{ id: string; tier: number; source_type: string; source_url: string; excerpt: string | null; title: string | null; run_id: string | null; role: string | null; fetched_at: string }[]>`
+    select e.id, e.tier, e.source_type, e.source_url, e.excerpt, e.title, e.run_id, r.role, e.fetched_at::text as fetched_at
+    from evidence e left join runs r on r.id = e.run_id where e.capability_id = ${id} order by e.tier, e.fetched_at`;
   const runs = await sql<{ id: string; role: string; status: string; model: string; started_at: string; seconds: number | null }[]>`
     select r.id, r.role, r.status, r.model, r.started_at::text as started_at, extract(epoch from (r.finished_at - r.started_at))::float as seconds
     from runs r where r.id = ${c.audit_run_id} or r.id in (select run_id from evidence where capability_id = ${id} and run_id is not null) or r.input_ref = ${c.supplier_id} order by r.started_at`;
@@ -145,4 +146,62 @@ export async function unenrichedSectorSuppliers(limit = 20) {
 export async function supplierRelations(id: string) {
   return sql<{ predicate: string; object: string; object_id: string | null; object_name: string | null; source_url: string | null; excerpt: string | null }[]>`
     select r.predicate, r.object, r.object_id, s.name_en as object_name, r.source_url, r.excerpt from relations r left join suppliers s on s.id = r.object_id where r.subject_id = ${id} order by r.predicate, r.object`;
+}
+
+/* ── Agent attribution ────────────────────────────────────────────────────
+   Who did what. Every claim in the product was written by one of five roles,
+   and each run carries the trajectory behind it — so attribution is a join,
+   never a label we assert. */
+
+export type AgentRole = "coordinator" | "detective" | "specifier" | "auditor" | "advisor";
+
+export type AgentStat = {
+  role: string;
+  runs: number;
+  ok: number;
+  failed: number;
+  avg_seconds: number | null;
+  tokens_in: number | null;
+  tokens_out: number | null;
+  produced: number;
+  last_run_at: string | null;
+};
+
+/** Per-role run counts, timings and the count of records each role wrote. */
+export async function agentStats(): Promise<AgentStat[]> {
+  return sql<AgentStat[]>`
+    with r as (
+      select role,
+             count(*)::int as runs,
+             count(*) filter (where status = 'ok')::int as ok,
+             count(*) filter (where status <> 'ok')::int as failed,
+             avg(extract(epoch from (finished_at - started_at)))::float as avg_seconds,
+             max(started_at)::text as last_run_at
+      from runs where input_ref not like 'test%' group by role
+    ),
+    t as (
+      select r.role, sum(s.tokens_in)::int as tokens_in, sum(s.tokens_out)::int as tokens_out
+      from run_steps s join runs r on r.id = s.run_id where r.input_ref not like 'test%' group by r.role
+    ),
+    p as (
+      select 'detective' as role, count(*)::int as produced from evidence e join runs r on r.id = e.run_id where r.role = 'detective'
+      union all select 'specifier', count(*)::int from evidence e join runs r on r.id = e.run_id where r.role = 'specifier'
+      union all select 'auditor', count(*)::int from capabilities where audit_run_id is not null
+      union all select 'coordinator', count(*)::int from demand_lines where run_id is not null
+      union all select 'advisor', count(*)::int from gap_cases
+    )
+    select r.role, r.runs, r.ok, r.failed, r.avg_seconds, r.last_run_at,
+           coalesce(t.tokens_in, 0) as tokens_in, coalesce(t.tokens_out, 0) as tokens_out,
+           coalesce(p.produced, 0) as produced
+    from r left join t on t.role = r.role left join p on p.role = r.role
+    order by r.runs desc`;
+}
+
+/** The most recent runs of one role, for a "see it for yourself" link. */
+export async function recentRuns(role: string, limit = 6) {
+  return sql<{ id: string; input_ref: string; status: string; model: string; started_at: string; seconds: number | null }[]>`
+    select id, input_ref, status, model, started_at::text as started_at,
+           extract(epoch from (finished_at - started_at))::float as seconds
+    from runs where role = ${role} and input_ref not like 'test%'
+    order by started_at desc limit ${limit}`;
 }
