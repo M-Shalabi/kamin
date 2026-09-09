@@ -20,9 +20,11 @@ Saudi Arabia's Public Investment Fund owns more than 150 companies. Those compan
 
 A lot of it comes from abroad.
 
-Some of it comes from abroad for a good reason: nobody in the Kingdom makes it. Some of it comes from abroad for a frustrating reason: somebody two hours down the road makes it, and the person buying simply didn't know they existed.
+Some of it comes from abroad for a good reason: nobody in the Kingdom makes it.
 
-And some of it comes from abroad for a third reason, the sneakiest one: they *were* found, they are local and real, and they still do not fit. Their lead time is longer than that company can carry, or their quality sits under its bar. And the bar is not the same from one portfolio company to the next.
+Some of it comes from abroad because the local supplier does not fit: their quality, their lead time, or a different standard. And the bar is not the same from one portfolio company to the next, so the same supplier fits one and misses for another.
+
+And some of it comes from abroad for the saddest reason: somebody two hours down the road makes it, and the person buying simply didn't know they existed.
 
 **Nobody can tell those three cases apart.** That is the entire problem, and everything below is about fixing it.
 

@@ -348,7 +348,7 @@ Sequenced so each step is independently verifiable and nothing later invalidates
 6. **Pass B, request audit.** The new run mode and the four fit states.
 7. **The option ladder.** `volume_status`, the `options` table, and rungs 1 and 2 computed from the map. Rungs 3 to 5 produce their questions and their economics; the answers arrive through outreach. This is the largest single build in the spec because it makes the Advisor stateful.
 8. **Outreach.** Stage 1 real, stages 2 and 3 designed and costed. Carries both the Auditor's confirmation and the Advisor's rung 3 and 4 questions. The most independently shippable piece and the most defensible to leave partly on the roadmap.
-9. **Deck and docs.** All twelve markdown files, `CONTEXT.md`, both supplier files, the twenty-slide deck in both languages, the three PDFs, the canvas.
+9. **Deck and docs.** All twelve markdown files, `CONTEXT.md`, both supplier files, the deck in both languages (17 slides after the 2026-09-09 cut), the three PDFs, the canvas.
 
 Steps 1 to 8 are the build. Step 9 is the deliverable, and can proceed in parallel with the build from the moment this spec is approved.
 

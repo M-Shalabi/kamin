@@ -92,99 +92,72 @@
    "page": "page-1"
   },
   {
-   "file": "Coordinator.dc.html",
-   "title": "١٠ المنسّق",
-   "x": 1760,
-   "y": 2320,
-   "w": 1600,
-   "h": 900,
-   "page": "page-1"
-  },
-  {
-   "file": "Detective.dc.html",
-   "title": "١١ المحقّق",
-   "x": 3520,
-   "y": 2320,
-   "w": 1600,
-   "h": 900,
-   "page": "page-1"
-  },
-  {
-   "file": "Auditor.dc.html",
-   "title": "١٢ المدقّق",
-   "x": 5280,
-   "y": 2320,
-   "w": 1600,
-   "h": 900,
-   "page": "page-1"
-  },
-  {
-   "file": "Strategist.dc.html",
-   "title": "١٣ المستشار",
-   "x": 0,
-   "y": 3480,
-   "w": 1600,
-   "h": 900,
-   "page": "page-1"
-  },
-  {
    "file": "TheReveal.dc.html",
-   "title": "١٤ الانكشاف",
+   "title": "١٠ الانكشاف",
    "x": 1760,
-   "y": 3480,
+   "y": 2320,
    "w": 1600,
    "h": 900,
    "page": "page-1"
   },
   {
    "file": "TheMap.dc.html",
-   "title": "١٥ الخريطة",
+   "title": "١١ الخريطة",
    "x": 3520,
-   "y": 3480,
+   "y": 2320,
    "w": 1600,
    "h": 900,
    "page": "page-1"
   },
   {
-   "file": "Journey.dc.html",
-   "title": "١٦ رحلة الطلب",
+   "file": "Discovery.dc.html",
+   "title": "١٢ زووم الاكتشاف",
    "x": 5280,
-   "y": 3480,
+   "y": 2320,
    "w": 1600,
    "h": 900,
    "page": "page-1"
   },
   {
-   "file": "Outreach.dc.html",
-   "title": "١٧ الوصول",
+   "file": "Decisions.dc.html",
+   "title": "١٣ زووم القرار",
    "x": 0,
-   "y": 4640,
+   "y": 3480,
    "w": 1600,
    "h": 900,
    "page": "page-1"
   },
   {
    "file": "TheMath.dc.html",
-   "title": "١٨ الحساب",
+   "title": "١٤ الحساب",
    "x": 1760,
-   "y": 4640,
+   "y": 3480,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "Suppliers.dc.html",
+   "title": "١٥ قائمة الموردين",
+   "x": 3520,
+   "y": 3480,
    "w": 1600,
    "h": 900,
    "page": "page-1"
   },
   {
    "file": "TheClose.dc.html",
-   "title": "١٩ الختام",
-   "x": 3520,
-   "y": 4640,
+   "title": "١٦ الختام",
+   "x": 5280,
+   "y": 3480,
    "w": 1600,
    "h": 900,
    "page": "page-1"
   },
   {
    "file": "Team.dc.html",
-   "title": "٢٠ الفريق",
-   "x": 5280,
+   "title": "١٧ الفريق",
+   "x": 0,
    "y": 4640,
    "w": 1600,
    "h": 900,
@@ -281,99 +254,72 @@
    "page": "page-1"
   },
   {
-   "file": "EN_Coordinator.dc.html",
-   "title": "10 Coordinator",
-   "x": 1760,
-   "y": 10440,
-   "w": 1600,
-   "h": 900,
-   "page": "page-1"
-  },
-  {
-   "file": "EN_Detective.dc.html",
-   "title": "11 Detective",
-   "x": 3520,
-   "y": 10440,
-   "w": 1600,
-   "h": 900,
-   "page": "page-1"
-  },
-  {
-   "file": "EN_Auditor.dc.html",
-   "title": "12 Auditor",
-   "x": 5280,
-   "y": 10440,
-   "w": 1600,
-   "h": 900,
-   "page": "page-1"
-  },
-  {
-   "file": "EN_Strategist.dc.html",
-   "title": "13 Advisor",
-   "x": 0,
-   "y": 11600,
-   "w": 1600,
-   "h": 900,
-   "page": "page-1"
-  },
-  {
    "file": "EN_TheReveal.dc.html",
-   "title": "14 The Reveal",
+   "title": "10 The Reveal",
    "x": 1760,
-   "y": 11600,
+   "y": 10440,
    "w": 1600,
    "h": 900,
    "page": "page-1"
   },
   {
    "file": "EN_TheMap.dc.html",
-   "title": "15 The Map",
+   "title": "11 The Map",
    "x": 3520,
-   "y": 11600,
+   "y": 10440,
    "w": 1600,
    "h": 900,
    "page": "page-1"
   },
   {
-   "file": "EN_Journey.dc.html",
-   "title": "16 One Request",
+   "file": "EN_Discovery.dc.html",
+   "title": "12 Zoom · Discovery",
    "x": 5280,
-   "y": 11600,
+   "y": 10440,
    "w": 1600,
    "h": 900,
    "page": "page-1"
   },
   {
-   "file": "EN_Outreach.dc.html",
-   "title": "17 Outreach",
+   "file": "EN_Decisions.dc.html",
+   "title": "13 Zoom · The Decision",
    "x": 0,
-   "y": 12760,
+   "y": 11600,
    "w": 1600,
    "h": 900,
    "page": "page-1"
   },
   {
    "file": "EN_TheMath.dc.html",
-   "title": "18 The Math",
+   "title": "14 The Math",
    "x": 1760,
-   "y": 12760,
+   "y": 11600,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_Suppliers.dc.html",
+   "title": "15 The Supplier List",
+   "x": 3520,
+   "y": 11600,
    "w": 1600,
    "h": 900,
    "page": "page-1"
   },
   {
    "file": "EN_TheClose.dc.html",
-   "title": "19 The Close",
-   "x": 3520,
-   "y": 12760,
+   "title": "16 The Close",
+   "x": 5280,
+   "y": 11600,
    "w": 1600,
    "h": 900,
    "page": "page-1"
   },
   {
    "file": "EN_Team.dc.html",
-   "title": "20 The Team",
-   "x": 5280,
+   "title": "17 The Team",
+   "x": 0,
    "y": 12760,
    "w": 1600,
    "h": 900,

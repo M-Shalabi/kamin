@@ -158,18 +158,20 @@ capability of any class. Definitions in `CONTEXT.md`, mechanics in `BUILD_PLAN.m
 
 ## 7. Current state of the deliverables
 
-- **Deck: 20 slides plus an unnumbered appendix, in both Arabic and English**, 42 artboards on one
-  canvas. Slide 8 is the inverted-colour interstitial, slide 17 the outreach cascade, slide 20 the team.
+- **Deck: 17 slides plus an unnumbered appendix, in both Arabic and English**, 36 artboards on one
+  canvas. Slide 8 is the inverted-colour interstitial, slide 12 the discovery zoom with the outreach
+  funnel, slide 13 the decision zoom with the option ladder, slide 15 the supplier-list product
+  screen, slide 17 the team.
 - **The English deck is derived, not hand-written.** `deck/gen_en.py` reads each Arabic artboard and
-  applies a 287-entry translation map from `deck/tr_en.py`, flips `dir`, swaps the font stack,
+  applies the translation map in `deck/tr_en.py`, flips `dir`, swaps the font stack,
   converts Arabic-Indic numerals, flips the flow arrows and mirrors the map diagram. So a change to
   `deck/gen2.py` propagates to both languages, and any new Arabic string fails loudly until it is
   translated. Do not hand-edit `EN_*.dc.html`. `deck/render.py` builds the three PDFs, and
   `python3 deck/render.py --only Blind,TheMap` spot-checks single slides while iterating.
-- **PDFs:** `KAMIN-Pitch-Deck.pdf` (40 pages, AR then EN), `-AR.pdf` and `-EN.pdf` (20 each), fonts
+- **PDFs:** `KAMIN-Pitch-Deck.pdf` (34 pages, AR then EN), `-AR.pdf` and `-EN.pdf` (17 each), fonts
   embedded so exports keep their typography.
 - **Canonical name:** كامن / KAMIN, "the thing that exists but has never been found".
-  Slogan: **موجود. بس ما أحد شافه.**
+  Positioning line on the deck: **خريطة حيّة للقدرات المحلية.** (the old slogan موجود. بس ما أحد شافه. was dropped 2026-09-09)
 - **Team of three:** Mohammed Shalabi (Owner, AI-Native Principle Engineer), Ali Bamuallim
   (Product Consultant), Abdulaziz Al Harthi (Data Engineer / DevOps). `BUILD_PLAN.md` is written
   against these three by name.
@@ -213,13 +215,47 @@ Every decision below is written into `CONTEXT.md` (names), `docs/adr/` (reasonin
   disclosure rather than a per-line badge. Chosen for vividness over my recommendation of personas.
 - **Cold miss on stage:** a Tarmeez supplier with declared capabilities only, enriched live.
 
-**Deck drift to fix at the next regeneration** (`deck/gen2.py` + `deck/tr_en.py`): slides 15 and
-16 say "Gap register" in English, canonical is "Gap ledger"; `deck/Strategist.dc.html` and its EN
-twin are the Advisor slide under its old name. `SUBMISSION.md` §5 said "Scout" and "Resolver";
+**Deck drift to fix at the next regeneration** (`deck/gen2.py` + `deck/tr_en.py`): the English map
+and decision slides say "Gap register", canonical is "Gap ledger". The `Strategist`, `Coordinator`,
+`Detective`, `Auditor`, `Roles`, `Journey` and `Outreach` artboards were deleted on 2026-09-09 and
+their content folded into slides 9, 12 and 13. `SUBMISSION.md` §5 said "Scout" and "Resolver";
 fixed to Detective and Coordinator on 2026-09-02.
 
 **Machine note:** the data volume was at 96% on 2026-09-02. Langfuse is deferred until space is
 freed; Postgres runs first.
+
+---
+
+## 9. The deck cut of 2026-09-09, second pass
+
+The deck went from 20 slides to 17 and changed shape, not just wording. What moved, and why it
+matters beyond the deck:
+
+- **The four role slides and the grouped `Roles` slide are gone.** Slide 9 now shows the four
+  figures and their names only. What each role does lives on the two zoom slides. The roles
+  themselves did not change; only where they are explained.
+- **The Detective is the outreach.** The cascade is not a fourth agent. The role that finds a
+  supplier from public evidence is the role that emails, then WhatsApps, then calls them.
+  `CONTEXT.md` now says so under both **Detective** and **Outreach cascade**.
+- **The Auditor audits, it does not start from disbelief.** The deck said "tries to disprove the
+  claim first"; it now says "audits what the Detective found, classifies and documents the
+  supplier". The adversarial verification in the code is unchanged; the framing on stage is not
+  a claim about method.
+- **Reason two and reason three swapped**, so the deck lands on the discovery claim rather than on
+  the fit claim. Reason two is now stated plainly as quality, lead time, or a different standard,
+  with the per-portco detail moved off the slide and into the request audit.
+- **The old slogan was dropped.** Cover reads *الموجود الغير مكتشف* with **خريطة حيّة للقدرات المحلية**
+  as the line under it.
+- **Slide 7 changed its conclusion.** It used to say the old way is a multi-million riyal consulting
+  project; it now says KAMIN is an investment case, not just a product.
+- **The product screens are light.** Slides 5 and 15 both render as real application windows on the
+  dark deck, sharing one light palette. That palette is the starting point for the actual UI and is
+  written down in `prompt.md`.
+- **`prompt.md` is new**: the English design brief for the product UI, screen by screen, with the
+  rules the interface must not break.
+
+Still open from this pass: nothing in the code changed, so the agent work listed in section 8
+remains exactly as it was.
 
 ---
 
@@ -230,8 +266,8 @@ The design changed on five axes at once. `docs/superpowers/specs/2026-09-09-incu
 **Resolved by the user, and it changes the numbers.** MUSAHAMA and portfolio company data **are** available. Layer 0 is real, so incumbent coverage and discovery lift are measured rather than simulated. The asymmetry that remains, and that must be said on stage: **the incumbent baseline is real, the demand lines are still simulated** against real HS import values.
 
 **Numbers now on a slide that are not yet measured.**
-- **Outreach per-contact costs**, `~$0.0001` email, `~$0.04` WhatsApp, `<$1.00` voice, on slide 17. These are order-of-magnitude, not quotes. Price the WhatsApp Business API for Saudi Arabia and the voice stack from real vendors before saying them out loud.
-- **Response rates for all three cascade stages are unmeasured, and are deliberately absent from the slide.** The bar widths on slide 17 are a visual metaphor with no percentage attached, which is intentional: the cost argument is structural, so it survives a pessimistic funnel and needs no optimistic rate. Do not add percentages later.
+- **Outreach per-contact costs**, `~$0.0001` email, `~$0.04` WhatsApp, `<$1.00` voice, on slide 12. These are order-of-magnitude, not quotes. Price the WhatsApp Business API for Saudi Arabia and the voice stack from real vendors before saying them out loud.
+- **Response rates for all three cascade stages are unmeasured, and are deliberately absent from the slide.** The funnel bands on slide 12 are a visual metaphor with no percentage attached, which is intentional: the cost argument is structural, so it survives a pessimistic funnel and needs no optimistic rate. Do not add percentages later.
 - **Reachability is measurable today and has not been measured.** `suppliers` already holds `email`, `phone` and `website` from Tarmeez, so the share of candidates with a usable contact is computable from the graph as it stands. Run it: it bounds the funnel with a real number, and it is a better thing to show than a guessed rate.
 - The `$0.30` per factory estimate from before is unchanged and still unmeasured.
 
@@ -245,4 +281,4 @@ The design changed on five axes at once. `docs/superpowers/specs/2026-09-09-incu
 
 **Compliance surfaces to name before they surprise anyone.** The WhatsApp Business API requires pre-approved message templates and has opt-in rules, and outbound voice at scale has its own regulatory surface in the Kingdom. Both are ordinary B2B procurement outreach; both have a shape worth checking in week one rather than week three.
 
-**"AI-Native Principle Engineer"** on slide 20 is as supplied. If *Principal* was meant, it changes in the deck, three PDFs, both pitch files and the canvas.
+**"AI-Native Principle Engineer"** on slide 17 is as supplied. If *Principal* was meant, it changes in the deck, three PDFs, both pitch files and the canvas.
