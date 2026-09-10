@@ -88,7 +88,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ k
 
         {rows.length === 0 && (
           <p className="card p-4 text-sm leading-relaxed">
-            Nothing in this view right now — <span className="mono">{n("covered")}</span> pooled orders are covered,{" "}
+            Nothing in this view right now. <span className="mono">{n("covered")}</span> pooled orders are covered,{" "}
             <span className="mono">{n("manufacturing_gap")}</span> are manufacturing gaps,{" "}
             <span className="mono">{n("supply_gap")}</span> are supply gaps
             {counts.unmatched ? <> and <span className="mono">{counts.unmatched.n}</span> are not matched yet</> : null}.
@@ -119,7 +119,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ k
                 <Td><Kind k={r.gap_kind} /></Td>
                 <Td><SpecStatus s={r.spec_status} /></Td>
                 <Td><Int v={r.supported_count} /></Td>
-                <Td className="text-xs">{r.pivots ?? <span style={{ color: "var(--faint)" }}>—</span>}</Td>
+                <Td className="text-xs">{r.pivots ?? <span style={{ color: "var(--faint)" }}>·</span>}</Td>
               </Tr>
             ))}
           </Table>

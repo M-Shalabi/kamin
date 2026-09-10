@@ -20,7 +20,7 @@ const plexMono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500", "600
 const plexArabic = IBM_Plex_Sans_Arabic({ subsets: ["arabic"], weight: ["400", "500", "600"], variable: "--font-plex-arabic", display: "swap" });
 
 export const metadata: Metadata = {
-  title: { default: "KAMIN — the supply map", template: "%s · KAMIN" },
+  title: { default: "KAMIN · the supply map", template: "%s · KAMIN" },
   description: "What Saudi industry can supply, set against what the portfolio buys. Every claim carries its evidence.",
   robots: { index: false, follow: false },
 };

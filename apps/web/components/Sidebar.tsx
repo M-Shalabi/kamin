@@ -58,6 +58,20 @@ const ITEMS: Item[] = [
     ),
   },
   {
+    href: "/graph",
+    label: "Relations",
+    arabic: "العلاقات",
+    match: (p) => p.startsWith("/graph"),
+    icon: (
+      <svg viewBox="0 0 16 16" width="15" height="15" {...stroke}>
+        <circle cx="3.6" cy="4.2" r="1.7" />
+        <circle cx="12.4" cy="3.4" r="1.7" />
+        <circle cx="8" cy="12.4" r="1.7" />
+        <path d="M4.9 5.4 7.1 11M11.4 4.9 8.9 11M5.3 4 10.7 3.6" />
+      </svg>
+    ),
+  },
+  {
     href: "/agents",
     label: "Agents",
     arabic: "الوكلاء",

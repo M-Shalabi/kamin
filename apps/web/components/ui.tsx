@@ -19,10 +19,10 @@ const chip = "inline-flex items-center rounded px-1.5 py-0.5 text-[0.6875rem] le
    so they read as affirmative and 3–4 read as provisional. The full label is
    the title, because a bare "T2" means nothing to a first-time reader. */
 const TIER_LABEL: Record<number, string> = {
-  1: "Tier 1 — third-party verified (certifier, award or standards body page)",
-  2: "Tier 2 — official registry declaration (Tarmeez, commercial register, MLCP)",
-  3: "Tier 3 — self-published (the supplier's own site or catalogue)",
-  4: "Tier 4 — inferred (adjacency or equipment signal; never stands alone)",
+  1: "Tier 1, third-party verified (certifier, award or standards body page)",
+  2: "Tier 2, official registry declaration (Tarmeez, commercial register, MLCP)",
+  3: "Tier 3, self-published (the supplier's own site or catalogue)",
+  4: "Tier 4, inferred (adjacency or equipment signal; never stands alone)",
 };
 
 export const Tier = ({ t }: { t: number | null | undefined }) =>
@@ -128,7 +128,7 @@ const INVESTIGATED: Record<string, { label: string; fg: string; bg: string; titl
     label: "not yet investigated",
     fg: "var(--faint)",
     bg: "var(--chip)",
-    title: "No Detective has run against this supplier yet. This is not a negative finding — it is an absence of one.",
+    title: "No Detective has run against this supplier yet. This is not a negative finding; it is an absence of one.",
   },
   error: {
     label: "run failed",
@@ -162,10 +162,15 @@ export const Investigated = ({ s }: { s: string | null }) => {
    names the role wherever a claim appears, and links to the run that produced
    it, so "which agent did this?" is answerable in one click from anywhere. */
 
+/* The four roles the deck presents. The Specifier is deliberately not a fifth:
+   CONTEXT.md defines it as "the Detective's second pass over one supplier", so
+   it carries the Detective's colour and says so in its name. Its runs are real
+   and its evidence rows still resolve here — the deck's four is a grouping, not
+   a deletion. */
 export const AGENTS = {
   coordinator: { en: "Coordinator", ar: "المنسّق", tint: "#5B7CC7", does: "Turns one purchase line into a normalised specification with an HS anchor, then pools it with matching lines across companies and time." },
   detective:   { en: "Detective",   ar: "المحقّق",  tint: "#8A63C4", does: "Investigates one candidate supplier and returns capabilities, each with evidence. This is what finds companies no registry holds." },
-  specifier:   { en: "Specifier",   ar: "المُحدِّد", tint: "#0F8A8A", does: "Reads the supplier's catalogues and datasheets and writes the specifications they actually state — sizes, ratings, materials, standards." },
+  specifier:   { en: "Detective, second pass", ar: "المحقّق، تمريرة ثانية", tint: "#8A63C4", does: "The Detective's second pass: reads the supplier's catalogues and datasheets and writes the specifications they actually state, with sizes, ratings, materials and standards." },
   auditor:     { en: "Auditor",     ar: "المدقّق",  tint: "#C0632A", does: "Tries to refute one capability and assigns its class. Built to say no." },
   advisor:     { en: "Advisor",     ar: "المستشار", tint: "#12703A", does: "Turns one gap into an investment case: what is missing, what it is worth, what it would take." },
 } as const;
@@ -182,7 +187,7 @@ export function Agent({ role, runId, withArabic = false }: { role: string; runId
     <span
       className={`${chip} gap-1.5 font-medium`}
       style={{ background: `color-mix(in oklab, ${tint} 12%, transparent)`, color: tint }}
-      title={a ? `${a.en} — ${a.does}` : role}
+      title={a ? `${a.en}: ${a.does}` : role}
     >
       <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: tint }} />
       {label}
@@ -237,7 +242,7 @@ export function Legend() {
       </dl>
       <p className="mt-3 border-t pt-2.5" style={{ borderColor: "var(--line)", color: "var(--muted)" }}>
         <span className="mono">T1</span>–<span className="mono">T4</span> mark evidence tier. Only{" "}
-        <span className="mono">T1</span> and <span className="mono">T2</span> — a third party or an official registry —
+        <span className="mono">T1</span> and <span className="mono">T2</span>, a third party or an official registry,
         count toward coverage. A claim resting on the supplier's own website is shown but never counted.
       </p>
     </details>

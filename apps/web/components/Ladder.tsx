@@ -54,7 +54,7 @@ export function Ladder({ c, compact = false }: { c: Summary; compact?: boolean }
       share: c.coverage_type,
       lines: c.line_coverage_type,
       label: "Product type verified",
-      gloss: "The supplier names the actual product type with nothing in conflict — but size and rating are unconfirmed.",
+      gloss: "The supplier names the actual product type with nothing in conflict, but size and rating are unconfirmed.",
       tone: "warn",
     },
     {
@@ -142,7 +142,7 @@ export function Ladder({ c, compact = false }: { c: Summary; compact?: boolean }
           <span className="mono font-semibold" style={{ color: "var(--accent)" }}>
             {fmtPct(c.coverage_spec)}
           </span>
-          . That gap is the thing nobody can see today — and it is what KAMIN exists to measure.
+          . That gap is the thing nobody can see today, and it is what KAMIN exists to measure.
         </p>
       )}
     </section>

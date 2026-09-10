@@ -22,7 +22,10 @@ const PRODUCES: Record<string, string> = {
   advisor: "investment cases written",
 };
 
-const ORDER = ["coordinator", "detective", "specifier", "auditor", "advisor"];
+/* The four roles the deck presents. The Specifier is the Detective's second
+   pass, so it is rendered inside the Detective card rather than as a fifth
+   peer: same agent, same colour, a later stage of the same investigation. */
+const ORDER = ["coordinator", "detective", "auditor", "advisor"];
 
 function Stat({ value, label, tone }: { value: string; label: string; tone?: string }) {
   return (
@@ -38,6 +41,7 @@ export default async function Page() {
   const byRole = new Map(stats.map((s) => [s.role, s]));
   const roles = ORDER.filter((r) => byRole.has(r));
   const runsByRole = await Promise.all(roles.map((r) => recentRuns(r, 4)));
+  const spec = byRole.get("specifier") ?? null;
 
   const totalRuns = stats.reduce((a, s) => a + s.runs, 0);
   const totalIn = stats.reduce((a, s) => a + (s.tokens_in ?? 0), 0);
@@ -46,14 +50,14 @@ export default async function Page() {
   return (
     <div className="space-y-7">
       <section>
-        <SectionHead eyebrow="Who did what" title="Five agents built this map">
+        <SectionHead eyebrow="Who did what" title="Four agents built this map">
           <p className="mono text-xs" style={{ color: "var(--muted)" }}>
             {fmtInt(totalRuns)} runs · {fmtInt(totalIn)} tokens in · {fmtInt(totalOut)} out
           </p>
         </SectionHead>
         <p className="max-w-4xl text-sm leading-relaxed" style={{ color: "var(--muted)" }}>
           Nothing on the map was written by hand. Each role does one job against one input and leaves a full
-          trajectory — every step, every token, every page it read. Any claim anywhere in the product links back
+          trajectory: every step, every token, every page it read. Any claim anywhere in the product links back
           to the run that produced it, so the answer to <em>&ldquo;how do you know that?&rdquo;</em> is always one
           click away.
         </p>
@@ -89,12 +93,36 @@ export default async function Page() {
                   <Stat value={fmtInt(s.runs)} label="runs" />
                   <Stat value={fmtInt(s.ok)} label="completed" tone="var(--ok)" />
                   <Stat value={fmtInt(s.failed)} label="failed" tone={s.failed ? "var(--bad)" : undefined} />
-                  <Stat value={s.avg_seconds ? `${Math.round(s.avg_seconds)}s` : "—"} label="average run" />
+                  <Stat value={s.avg_seconds ? `${Math.round(s.avg_seconds)}s` : "·"} label="average run" />
                 </div>
+
+                {role === "detective" && spec && (
+                  <div className="mt-4 rounded-md border p-4" style={{ borderColor: "var(--line)", background: "var(--sunken)" }}>
+                    <div className="flex flex-wrap items-baseline gap-2">
+                      <span className="cond text-base font-semibold" style={{ color: tint }}>Second pass</span>
+                      <span className="ar text-sm" dir="auto" style={{ color: "var(--muted)" }}>تمريرة ثانية</span>
+                      <span className="mono text-[0.6875rem]" style={{ color: "var(--faint)" }}>role = specifier</span>
+                    </div>
+                    <p className="mt-1.5 max-w-3xl text-sm leading-relaxed" style={{ color: "var(--muted)" }}>
+                      The first pass establishes <em>that</em> a supplier makes valves. The second establishes{" "}
+                      <em>which</em> valves: it reads the catalogues and datasheets, following PDF links one level
+                      below the product pages, and writes the sizes, ratings, materials and standards those
+                      documents actually state. It is the only thing that moves an order from declared at
+                      category level to verified at the stated specification.
+                    </p>
+                    <div className="mt-3 grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3 lg:grid-cols-5">
+                      <Stat value={fmtInt(spec.produced)} label="evidence records with stated specs" tone={tint} />
+                      <Stat value={fmtInt(spec.runs)} label="runs" />
+                      <Stat value={fmtInt(spec.ok)} label="completed" tone="var(--ok)" />
+                      <Stat value={fmtInt(spec.failed)} label="failed" tone={spec.failed ? "var(--bad)" : undefined} />
+                      <Stat value={spec.avg_seconds ? `${Math.round(spec.avg_seconds)}s` : "·"} label="average run" />
+                    </div>
+                  </div>
+                )}
 
                 {runs.length > 0 && (
                   <div className="mt-4 border-t pt-3" style={{ borderColor: "var(--line)" }}>
-                    <div className="eyebrow mb-2">See it for yourself — recent trajectories</div>
+                    <div className="eyebrow mb-2">See it for yourself · recent trajectories</div>
                     <div className="flex flex-wrap gap-1.5">
                       {runs.map((r) => (
                         <Link

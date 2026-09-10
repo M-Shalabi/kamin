@@ -74,6 +74,36 @@ function Supported({ n, of }: { n: number; of: number }) {
   );
 }
 
+/* Certificates and standards on record, from the relations graph — the
+   Specifier writes these as certified_by and meets_standard edges, each with
+   the page it read them from. Only a handful of suppliers carry any, so the
+   cell is empty far more often than not; an empty cell means nothing has been
+   established, never that the supplier holds nothing. */
+function Standards({ list }: { list: string[] }) {
+  if (!list.length) return <span className="text-[0.6875rem]" style={{ color: "var(--faint)" }} title="No certificate or standard on record yet. This is an absence of evidence, not evidence of absence.">not on record</span>;
+  const shown = list.slice(0, 3);
+  const rest = list.length - shown.length;
+  return (
+    <span className="flex flex-wrap items-center gap-1">
+      {shown.map((v) => (
+        <span
+          key={v}
+          className="mono inline-flex items-center rounded px-1.5 py-0.5 text-[0.6875rem] leading-tight"
+          style={{ background: "var(--chip)", color: "var(--ink-soft)" }}
+          title={v}
+        >
+          {v.length > 22 ? `${v.slice(0, 21)}…` : v}
+        </span>
+      ))}
+      {rest > 0 && (
+        <span className="mono text-[0.6875rem]" style={{ color: "var(--faint)" }} title={list.join(" · ")}>
+          +{rest}
+        </span>
+      )}
+    </span>
+  );
+}
+
 export default async function Page({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
   const f = await searchParams;
   const rows = await supplierList({ family: f.family, region: f.region, cls: f.cls, verdict: f.verdict, registry: f.registry, q: f.q });
@@ -108,10 +138,11 @@ export default async function Page({ searchParams }: { searchParams: Promise<Rec
           behind — which a flat grid of columns flattens away. */}
       <div className="card overflow-hidden">
         <div
-          className="hidden grid-cols-[minmax(0,1fr)_auto_190px_150px] items-center gap-6 border-b px-4 py-2 text-[0.6875rem] font-semibold uppercase tracking-wider lg:grid"
+          className="hidden grid-cols-[minmax(0,1fr)_220px_auto_180px_140px] items-center gap-6 border-b px-4 py-2 text-[0.6875rem] font-semibold uppercase tracking-wider lg:grid"
           style={{ background: "var(--sunken)", borderColor: "var(--line)", color: "var(--faint)" }}
         >
           <span>Supplier</span>
+          <span>Certificates and standards</span>
           <span>Registries</span>
           <span>Supported capabilities</span>
           <span>Investigated</span>
@@ -127,7 +158,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<Rec
           <Link
             key={r.id}
             href={`/suppliers/${encodeURIComponent(r.id)}`}
-            className="data-row grid grid-cols-1 items-center gap-x-6 gap-y-3 border-b px-4 py-3 transition-colors last:border-b-0 lg:grid-cols-[minmax(0,1fr)_auto_190px_150px]"
+            className="data-row grid grid-cols-1 items-center gap-x-6 gap-y-3 border-b px-4 py-3 transition-colors last:border-b-0 lg:grid-cols-[minmax(0,1fr)_220px_auto_180px_140px]"
             style={{ borderColor: "var(--line)" }}
           >
             <span className="flex min-w-0 items-center gap-3">
@@ -155,6 +186,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<Rec
               </span>
             </span>
 
+            <span><Standards list={r.standards} /></span>
             <span><Registry tarmeez={r.in_tarmeez} mlcp={r.in_mlcp} mis={r.in_made_in_saudi} source={r.source} /></span>
             <span><Supported n={r.supported_count} of={r.capability_count} /></span>
             <span><Investigated s={r.detective_status} /></span>

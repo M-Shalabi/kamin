@@ -17,7 +17,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
         <h1 className="cond mt-1 text-3xl font-semibold tracking-tight">{o.title}</h1>
         <p className="mt-1 text-sm"><GapKind k={o.gap_kind} /> · <SpecStatus s={o.spec_status} long /> · <Int v={o.portco_count} /> portfolio companies · <Int v={o.qty_now} /> {o.qty_unit} now, <Int v={o.qty_annual} /> a year · <Money v={o.annual_value_usd} /> a year · national imports 2024 <Money v={o.import_value_usd} />{o.mandatory ? " · on the announced Mandatory List tranche (1 August 2027)" : ""}</p>
         <div className="mt-3">
-          <div className="eyebrow mb-1.5">Spec envelope — the tightest thing any line demands</div>
+          <div className="eyebrow mb-1.5">Spec envelope · the tightest thing any line demands</div>
           <div className="flex flex-wrap gap-1.5">
             {Object.entries(env).filter(([, v]) => v !== null && v !== "").map(([k, v]) => (
               <span key={k} className="inline-flex items-baseline gap-1.5 rounded border px-2 py-0.5 text-xs" style={{ borderColor: "var(--line)", background: "var(--surface)" }}>
@@ -36,7 +36,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
         <Table head={["Company", "System", "As written", "Qty", "Annual factor", "Annual value", "Anchor", "Confidence", "Resolved by"]}>
           {o.lines.map((l) => (
             <Tr key={l.id}>
-              <Td>{l.portco}</Td><Td className="text-xs">{l.source_system}</Td><Td><Ar s={l.raw_text} /></Td><Td><Int v={l.qty} /> {l.qty_unit}</Td><Td>×<Int v={l.history_factor} /></Td><Td><Money v={l.annual_value_usd} /></Td><Td className="mono">{l.hs6}</Td><Td><Pct v={l.confidence} /></Td><Td>{l.run_id ? <Agent role="coordinator" runId={l.run_id} /> : <span className="text-[0.6875rem]" style={{ color: "var(--faint)" }}>—</span>}</Td>
+              <Td>{l.portco}</Td><Td className="text-xs">{l.source_system}</Td><Td><Ar s={l.raw_text} /></Td><Td><Int v={l.qty} /> {l.qty_unit}</Td><Td>×<Int v={l.history_factor} /></Td><Td><Money v={l.annual_value_usd} /></Td><Td className="mono">{l.hs6}</Td><Td><Pct v={l.confidence} /></Td><Td>{l.run_id ? <Agent role="coordinator" runId={l.run_id} /> : <span className="text-[0.6875rem]" style={{ color: "var(--faint)" }}>·</span>}</Td>
             </Tr>
           ))}
         </Table>

@@ -33,7 +33,7 @@ export default async function Page() {
         </div>
         <p className="mt-2 max-w-3xl text-xs leading-relaxed" style={{ color: "var(--muted)" }}>
           Coverage is spend-weighted and portfolio-level. Line coverage counts orders instead of riyals, which
-          treats a $23M order and a $40k one as equal — useful operationally, misleading as a headline.
+          treats a $23M order and a $40k one as equal. Useful operationally, misleading as a headline.
         </p>
       </section>
 
@@ -51,11 +51,11 @@ export default async function Page() {
         <div className="eyebrow">Not yet measured</div>
         <h2 className="cond mt-1 text-lg font-semibold">Incumbent coverage against full-map coverage</h2>
         <p className="mt-1.5 max-w-3xl text-sm leading-relaxed" style={{ color: "var(--muted)" }}>
-          The design brief calls the delta between these two — the same figure computed only over suppliers the
-          portfolio already knew, set against the figure over the whole map — the sourcing opportunity, and
-          &ldquo;the single most important number in the product.&rdquo; The incumbent baseline landed in the
-          codebase but nothing computes the delta yet, so it is not shown. An empty panel is the honest state;
-          a plausible number would not be.
+          The design brief calls the delta between these two figures the sourcing opportunity, and
+          &ldquo;the single most important number in the product&rdquo;. It is the same coverage computed only
+          over suppliers the portfolio already knew, set against the figure over the whole map. The incumbent
+          baseline landed in the codebase but nothing computes the delta yet, so it is not shown. An empty
+          panel is the honest state; a plausible number would not be.
         </p>
         <p className="mt-2 text-xs" style={{ color: "var(--faint)" }}>
           Pooled demand in scope: <span className="mono">{fmtMoney(c.spend_total)}</span> a year.

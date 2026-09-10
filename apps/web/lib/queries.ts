@@ -80,7 +80,7 @@ export async function orderDetail(id: string) {
   return { ...o, lines, matches };
 }
 
-export type SupplierRow = { id: string; name_ar: string | null; name_en: string | null; cr_number: string | null; city_en: string | null; region_en: string | null; source: string; in_tarmeez: boolean; in_mlcp: boolean; in_made_in_saudi: boolean; detective_status: string; capability_count: number; supported_count: number; best_class: string | null };
+export type SupplierRow = { id: string; name_ar: string | null; name_en: string | null; cr_number: string | null; city_en: string | null; region_en: string | null; source: string; in_tarmeez: boolean; in_mlcp: boolean; in_made_in_saudi: boolean; detective_status: string; capability_count: number; supported_count: number; best_class: string | null; standards: string[] };
 
 export async function supplierList(f: { family?: string; region?: string; cls?: string; verdict?: string; registry?: string; q?: string } = {}): Promise<SupplierRow[]> {
   const famLike = f.family === "valve" ? "8481%" : f.family === "pump" ? "8413%" : f.family === "fitting" ? "7307%" : f.family === "flange" ? "7307%" : "%";
@@ -92,7 +92,10 @@ export async function supplierList(f: { family?: string; region?: string; cls?: 
   return sql<SupplierRow[]>`
     select s.id, s.name_ar, s.name_en, s.cr_number, s.city_en, s.region_en, s.source, s.in_tarmeez, s.in_mlcp, s.in_made_in_saudi, s.detective_status,
            count(c.id)::int as capability_count, count(c.id) filter (where c.verdict = 'supported')::int as supported_count,
-           (array_agg(c.class order by case c.class when 'manufacturer' then 0 when 'assembler' then 1 when 'authorised_distributor' then 2 else 3 end))[1] as best_class
+           (array_agg(c.class order by case c.class when 'manufacturer' then 0 when 'assembler' then 1 when 'authorised_distributor' then 2 else 3 end))[1] as best_class,
+           coalesce((select array_agg(distinct r.object order by r.object)
+                     from relations r
+                     where r.subject_id = s.id and r.predicate in ('certified_by', 'meets_standard')), '{}') as standards
     from suppliers s join capabilities c on c.supplier_id = s.id
     where s.id not like 'test:%' and c.hs6 like ${famLike} ${registry} ${region} ${cls} ${verdict} ${q}
     group by s.id order by supported_count desc, (s.detective_status = 'ok') desc, capability_count desc, s.id limit 300`;
@@ -204,4 +207,26 @@ export async function recentRuns(role: string, limit = 6) {
            extract(epoch from (finished_at - started_at))::float as seconds
     from runs where role = ${role} and input_ref not like 'test%'
     order by started_at desc limit ${limit}`;
+}
+
+/* ── The relations graph ──────────────────────────────────────────────────── */
+
+export type GraphEdge = {
+  subject_id: string;
+  subject_name: string;
+  predicate: string;
+  object: string;
+  object_id: string | null;
+  source_url: string | null;
+  excerpt: string | null;
+};
+
+/** Every typed edge on the map, with the supplier it belongs to. */
+export async function graphEdges(): Promise<GraphEdge[]> {
+  return sql<GraphEdge[]>`
+    select r.subject_id, coalesce(s.name_en, s.name_ar, s.id) as subject_name,
+           r.predicate, r.object, r.object_id, r.source_url, r.excerpt
+    from relations r join suppliers s on s.id = r.subject_id
+    where s.id not like 'test:%'
+    order by r.predicate, lower(r.object), subject_name`;
 }

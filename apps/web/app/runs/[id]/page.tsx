@@ -20,7 +20,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           <span className="mono text-lg">{r.model}</span>
         </h1>
         <p className="mt-1 text-sm" style={{ color: "var(--muted)" }}>
-          Every step this agent took, in order — what it read, what it asked the model, what came back.
+          Every step this agent took, in order: what it read, what it asked the model, what came back.
         </p>
         <p className="text-sm" style={{ color: "var(--muted)" }}>{r.status}{r.error ? `: ${r.error}` : ""} · input <span className="mono">{r.input_ref}</span> · {r.started_at.slice(0, 19)} · {r.steps.length} steps · {tokens} tokens</p>
       </div>
