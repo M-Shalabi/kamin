@@ -47,8 +47,8 @@
    "page": "page-1"
   },
   {
-   "file": "TheWall.dc.html",
-   "title": "٥ جدار ٥ سنوات",
+   "file": "Solution.dc.html",
+   "title": "٥ والحل؟",
    "x": 0,
    "y": 1160,
    "w": 1600,
@@ -56,8 +56,8 @@
    "page": "page-1"
   },
   {
-   "file": "Solution.dc.html",
-   "title": "٦ والحل؟",
+   "file": "Intro.dc.html",
+   "title": "٦ وش هو كامن",
    "x": 1760,
    "y": 1160,
    "w": 1600,
@@ -65,8 +65,8 @@
    "page": "page-1"
   },
   {
-   "file": "TheTeam.dc.html",
-   "title": "٧ نوظّف فريق",
+   "file": "Agents.dc.html",
+   "title": "٧ الفريق والانكشاف",
    "x": 3520,
    "y": 1160,
    "w": 1600,
@@ -74,8 +74,8 @@
    "page": "page-1"
   },
   {
-   "file": "TheReveal.dc.html",
-   "title": "٨ الانكشاف",
+   "file": "TheWall.dc.html",
+   "title": "٨ الجدار وليش الحين",
    "x": 5280,
    "y": 1160,
    "w": 1600,
@@ -83,9 +83,18 @@
    "page": "page-1"
   },
   {
-   "file": "Discovery.dc.html",
-   "title": "٩ زووم الاكتشاف",
+   "file": "TheMapFirst.dc.html",
+   "title": "٩ الخريطة",
    "x": 0,
+   "y": 2320,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "Discovery.dc.html",
+   "title": "١٠ زووم الاكتشاف",
+   "x": 1760,
    "y": 2320,
    "w": 1600,
    "h": 900,
@@ -93,8 +102,8 @@
   },
   {
    "file": "Decisions.dc.html",
-   "title": "١٠ زووم القرار",
-   "x": 1760,
+   "title": "١١ زووم القرار",
+   "x": 3520,
    "y": 2320,
    "w": 1600,
    "h": 900,
@@ -102,16 +111,7 @@
   },
   {
    "file": "TheMap.dc.html",
-   "title": "١١ الخريطة",
-   "x": 3520,
-   "y": 2320,
-   "w": 1600,
-   "h": 900,
-   "page": "page-1"
-  },
-  {
-   "file": "Suppliers.dc.html",
-   "title": "١٢ قائمة الموردين",
+   "title": "١٢ الخريطة مرة ثانية",
    "x": 5280,
    "y": 2320,
    "w": 1600,
@@ -119,8 +119,8 @@
    "page": "page-1"
   },
   {
-   "file": "TheMath.dc.html",
-   "title": "١٣ الحساب",
+   "file": "Engine.dc.html",
+   "title": "١٣ خلف الكواليس",
    "x": 0,
    "y": 3480,
    "w": 1600,
@@ -128,8 +128,8 @@
    "page": "page-1"
   },
   {
-   "file": "TheClose.dc.html",
-   "title": "١٤ الختام",
+   "file": "Suppliers.dc.html",
+   "title": "١٤ قائمة الموردين",
    "x": 1760,
    "y": 3480,
    "w": 1600,
@@ -137,10 +137,37 @@
    "page": "page-1"
   },
   {
-   "file": "Team.dc.html",
-   "title": "١٥ الفريق",
+   "file": "TheMath.dc.html",
+   "title": "١٥ الحساب",
    "x": 3520,
    "y": 3480,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "Today.dc.html",
+   "title": "١٦ كامن اليوم",
+   "x": 5280,
+   "y": 3480,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "TheClose.dc.html",
+   "title": "١٧ الختام",
+   "x": 0,
+   "y": 4640,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "Team.dc.html",
+   "title": "١٨ الفريق",
+   "x": 1760,
+   "y": 4640,
    "w": 1600,
    "h": 900,
    "page": "page-1"
@@ -191,8 +218,8 @@
    "page": "page-1"
   },
   {
-   "file": "EN_TheWall.dc.html",
-   "title": "5 The 5-Year Wall",
+   "file": "EN_Solution.dc.html",
+   "title": "5 So What Now",
    "x": 0,
    "y": 9280,
    "w": 1600,
@@ -200,8 +227,8 @@
    "page": "page-1"
   },
   {
-   "file": "EN_Solution.dc.html",
-   "title": "6 So What Now",
+   "file": "EN_Intro.dc.html",
+   "title": "6 What KAMIN Is",
    "x": 1760,
    "y": 9280,
    "w": 1600,
@@ -209,8 +236,8 @@
    "page": "page-1"
   },
   {
-   "file": "EN_TheTeam.dc.html",
-   "title": "7 Hire A Team",
+   "file": "EN_Agents.dc.html",
+   "title": "7 The Team And The Reveal",
    "x": 3520,
    "y": 9280,
    "w": 1600,
@@ -218,8 +245,8 @@
    "page": "page-1"
   },
   {
-   "file": "EN_TheReveal.dc.html",
-   "title": "8 The Reveal",
+   "file": "EN_TheWall.dc.html",
+   "title": "8 The Wall And Why Now",
    "x": 5280,
    "y": 9280,
    "w": 1600,
@@ -227,9 +254,18 @@
    "page": "page-1"
   },
   {
-   "file": "EN_Discovery.dc.html",
-   "title": "9 Zoom · Discovery",
+   "file": "EN_TheMapFirst.dc.html",
+   "title": "9 The Map",
    "x": 0,
+   "y": 10440,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_Discovery.dc.html",
+   "title": "10 Zoom · Discovery",
+   "x": 1760,
    "y": 10440,
    "w": 1600,
    "h": 900,
@@ -237,8 +273,8 @@
   },
   {
    "file": "EN_Decisions.dc.html",
-   "title": "10 Zoom · The Decision",
-   "x": 1760,
+   "title": "11 Zoom · The Decision",
+   "x": 3520,
    "y": 10440,
    "w": 1600,
    "h": 900,
@@ -246,16 +282,7 @@
   },
   {
    "file": "EN_TheMap.dc.html",
-   "title": "11 The Map",
-   "x": 3520,
-   "y": 10440,
-   "w": 1600,
-   "h": 900,
-   "page": "page-1"
-  },
-  {
-   "file": "EN_Suppliers.dc.html",
-   "title": "12 The Supplier List",
+   "title": "12 The Map Again",
    "x": 5280,
    "y": 10440,
    "w": 1600,
@@ -263,8 +290,8 @@
    "page": "page-1"
   },
   {
-   "file": "EN_TheMath.dc.html",
-   "title": "13 The Math",
+   "file": "EN_Engine.dc.html",
+   "title": "13 Behind The Scenes",
    "x": 0,
    "y": 11600,
    "w": 1600,
@@ -272,8 +299,8 @@
    "page": "page-1"
   },
   {
-   "file": "EN_TheClose.dc.html",
-   "title": "14 The Close",
+   "file": "EN_Suppliers.dc.html",
+   "title": "14 The Supplier List",
    "x": 1760,
    "y": 11600,
    "w": 1600,
@@ -281,10 +308,37 @@
    "page": "page-1"
   },
   {
-   "file": "EN_Team.dc.html",
-   "title": "15 The Team",
+   "file": "EN_TheMath.dc.html",
+   "title": "15 The Math",
    "x": 3520,
    "y": 11600,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_Today.dc.html",
+   "title": "16 KAMIN Today",
+   "x": 5280,
+   "y": 11600,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_TheClose.dc.html",
+   "title": "17 The Close",
+   "x": 0,
+   "y": 12760,
+   "w": 1600,
+   "h": 900,
+   "page": "page-1"
+  },
+  {
+   "file": "EN_Team.dc.html",
+   "title": "18 The Team",
+   "x": 1760,
+   "y": 12760,
    "w": 1600,
    "h": 900,
    "page": "page-1"

@@ -3,11 +3,12 @@
 import re, json
 from tr_en import TR
 
-ORDER = ['Main','Question','Blind','Problem','TheWall','Solution','TheTeam',
-         'TheReveal','Discovery','Decisions','TheMap','Suppliers','TheMath','TheClose','Team']
-TITLES = ['1 Cover','2 The Question','3 Nobody Can Tell','4 The Problem','5 The 5-Year Wall','6 So What Now',
-          '7 Hire A Team','8 The Reveal','9 Zoom · Discovery','10 Zoom · The Decision','11 The Map',
-          '12 The Supplier List','13 The Math','14 The Close','15 The Team']
+ORDER = ['Main','Question','Blind','Problem','Solution','Intro','Agents','TheWall','TheMapFirst',
+         'Discovery','Decisions','TheMap','Engine','Suppliers','TheMath','Today','TheClose','Team']
+TITLES = ['1 Cover','2 The Question','3 Nobody Can Tell','4 The Problem','5 So What Now',
+          '6 What KAMIN Is','7 The Team And The Reveal','8 The Wall And Why Now','9 The Map',
+          '10 Zoom · Discovery','11 Zoom · The Decision','12 The Map Again','13 Behind The Scenes',
+          '14 The Supplier List','15 The Math','16 KAMIN Today','17 The Close','18 The Team']
 
 AR_FONT = "'Thmanyah','Geeza Pro',Tahoma,sans-serif"
 EN_FONT = "'Archivo','Geeza Pro','Helvetica Neue',Arial,sans-serif"
@@ -73,13 +74,28 @@ def mirror_themap(html):
     return head[:i] + mirror(head[i:]) + group + mirror(tail)
 
 
+# Arabic that is content, not copy: a supplier's registered legal name is the
+# same string in both decks and must not be part-translated by a shorter key.
+KEEP_AR = ['شركة رينبو للحلول الميكانيكية العربية السعودية',
+           'شركة تكنولوجيا الغاز للتصنيع شركة شخص واحد',
+           'شركة مصنع الغماس للصناعات الكهروميكانيكية',
+           'شركة السعوديه لصناعة الصمامات المحدوده']
+
+AR_ONLY = re.compile(r'<span class="ar-only"[^>]*>.*?</span>', re.S)
+
+
 def build(name):
     src = open(name + '.dc.html', encoding='utf-8').read()
     src = src.replace(LINK_OLD, LINK_NEW)
     src = re.sub(r"@font-face\{font-family:'Thmanyah';.*?\}", '', src, flags=re.S)
     src = src.replace('<div dir="rtl"', '<div dir="ltr"', 1)
+    src = AR_ONLY.sub('', src)                      # drops the Arabic half of a bilingual label
+    for i, k in enumerate(KEEP_AR):                 # park protected names out of reach
+        src = src.replace(k, '\x00KEEP%d\x00' % i)
     for k in KEYS:
         src = src.replace(k, TR[k])
+    for i, k in enumerate(KEEP_AR):
+        src = src.replace('\x00KEEP%d\x00' % i, k)
     body_at = src.index('<div dir="ltr"')
     head, body = src[:body_at], src[body_at:]
     body = body.translate(DIGITS)

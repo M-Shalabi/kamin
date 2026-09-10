@@ -10,14 +10,17 @@ import re
 import subprocess
 import sys
 
-ORDER = ['Main', 'Question', 'Blind', 'Problem', 'TheWall', 'Solution',
-         'TheTeam', 'TheReveal', 'Discovery', 'Decisions', 'TheMap', 'Suppliers', 'TheMath',
-         'TheClose', 'Team']
+ORDER = ['Main', 'Question', 'Blind', 'Problem', 'Solution', 'Intro', 'Agents',
+         'TheWall', 'TheMapFirst', 'Discovery', 'Decisions', 'TheMap', 'Engine', 'Suppliers', 'TheMath',
+         'Today', 'TheClose', 'Team']
 
 ASSETS = ['fig-coordinator.png', 'fig-detective.png', 'fig-auditor.png', 'fig-advisor.png',
           'logo-etimad.png', 'logo-mim.png', 'logo-saudimade.png', 'logo-lcgpa.png', 'logo-gastat.svg',
           'logo-hrsd.png', 'logo-moc.png', 'logo-sca.png',
-          'face-mohammed.jpg', 'face-ali.jpg', 'face-abdulaziz.jpg']
+          'face-mohammed.jpg', 'face-ali.jpg', 'face-abdulaziz.jpg', 'logo-kamin.svg',
+          'logo-qwen.jpg', 'logo-elevenlabs.png', 'logo-humain.svg',
+          'logo-bge.jpg', 'logo-tavily-icon.png', 'logo-pgvector.png',
+          'logo-langgraph.png', 'logo-nextjs.png']
 
 CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 OUT_DIR = '/Users/mohammedshalabi/workspace/personal'
