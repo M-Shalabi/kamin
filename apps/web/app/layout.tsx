@@ -47,18 +47,6 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           <div className="flex min-w-0 flex-1 flex-col">
             <TopBar />
             <main className="mx-auto w-full max-w-[1400px] flex-1 px-5 py-6 sm:px-7">{children}</main>
-            <footer className="border-t" style={{ borderColor: "var(--line)" }}>
-              <div className="mx-auto w-full max-w-[1400px] px-5 py-5 text-xs leading-relaxed sm:px-7" style={{ color: "var(--muted)" }}>
-                <p className="max-w-4xl">
-                  <span className="eyebrow">Provenance</span>
-                  <br />
-                  Demand is <strong style={{ color: "var(--ink-soft)" }}>simulated</strong> on real Comtrade import values for
-                  Saudi Arabia, 2024, at a portfolio share of 12%. Supply is <strong style={{ color: "var(--ink-soft)" }}>real</strong>:
-                  Tarmeez, MLCP, Made in Saudi and public evidence read by agents. Every claim carries its evidence and its
-                  auditor verdict.
-                </p>
-              </div>
-            </footer>
           </div>
         </div>
       </body>

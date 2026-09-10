@@ -80,9 +80,11 @@ export async function orderDetail(id: string) {
   return { ...o, lines, matches };
 }
 
-export type SupplierRow = { id: string; name_ar: string | null; name_en: string | null; cr_number: string | null; city_en: string | null; region_en: string | null; source: string; in_tarmeez: boolean; in_mlcp: boolean; in_made_in_saudi: boolean; detective_status: string; capability_count: number; supported_count: number; best_class: string | null; standards: string[] };
+export type SupplierRow = { id: string; name_ar: string | null; name_en: string | null; cr_number: string | null; city_en: string | null; region_en: string | null; source: string; in_tarmeez: boolean; in_mlcp: boolean; in_made_in_saudi: boolean; detective_status: string; capability_count: number; supported_count: number; best_class: string | null; standards: string[]; total: number };
 
-export async function supplierList(f: { family?: string; region?: string; cls?: string; verdict?: string; registry?: string; q?: string } = {}): Promise<SupplierRow[]> {
+export async function supplierList(f: { family?: string; region?: string; cls?: string; verdict?: string; registry?: string; q?: string; page?: number; perPage?: number } = {}): Promise<SupplierRow[]> {
+  const perPage = Math.min(Math.max(f.perPage ?? 100, 10), 300);
+  const offset = Math.max((f.page ?? 1) - 1, 0) * perPage;
   const famLike = f.family === "valve" ? "8481%" : f.family === "pump" ? "8413%" : f.family === "fitting" ? "7307%" : f.family === "flange" ? "7307%" : "%";
   const registry = f.registry === "tarmeez" ? sql`and s.in_tarmeez` : f.registry === "mlcp" ? sql`and s.in_mlcp` : f.registry === "made_in_saudi" ? sql`and s.in_made_in_saudi` : f.registry === "discovered" ? sql`and not s.in_tarmeez` : sql``;
   const region = f.region ? sql`and s.region_en = ${f.region}` : sql``;
@@ -93,12 +95,20 @@ export async function supplierList(f: { family?: string; region?: string; cls?: 
     select s.id, s.name_ar, s.name_en, s.cr_number, s.city_en, s.region_en, s.source, s.in_tarmeez, s.in_mlcp, s.in_made_in_saudi, s.detective_status,
            count(c.id)::int as capability_count, count(c.id) filter (where c.verdict = 'supported')::int as supported_count,
            (array_agg(c.class order by case c.class when 'manufacturer' then 0 when 'assembler' then 1 when 'authorised_distributor' then 2 else 3 end))[1] as best_class,
+           count(*) over ()::int as total,
            coalesce((select array_agg(distinct r.object order by r.object)
                      from relations r
                      where r.subject_id = s.id and r.predicate in ('certified_by', 'meets_standard')), '{}') as standards
     from suppliers s join capabilities c on c.supplier_id = s.id
     where s.id not like 'test:%' and c.hs6 like ${famLike} ${registry} ${region} ${cls} ${verdict} ${q}
-    group by s.id order by supported_count desc, (s.detective_status = 'ok') desc, capability_count desc, s.id limit 300`;
+    group by s.id
+    -- Certificates lead: a supplier with a certifier or a standard on record is
+    -- the one a buyer can actually act on, so those cluster at the top, deepest
+    -- first. Everything below keeps the old ranking by supported capabilities.
+    order by (select count(*) from relations r
+              where r.subject_id = s.id and r.predicate in ('certified_by', 'meets_standard')) desc,
+             supported_count desc, (s.detective_status = 'ok') desc, capability_count desc, s.id
+    limit ${perPage} offset ${offset}`;
 }
 
 export async function supplierDetail(id: string) {

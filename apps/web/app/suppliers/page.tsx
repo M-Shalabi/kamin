@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { supplierList } from "@/lib/queries";
-import { Ar, ClassBadge, Investigated, Legend, Registry, SectionHead } from "@/components/ui";
+import { stats, supplierList } from "@/lib/queries";
+import { Ar, ClassBadge, Investigated, Legend, Registry } from "@/components/ui";
+import { fmtInt } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Suppliers" };
@@ -106,16 +107,59 @@ function Standards({ list }: { list: string[] }) {
 
 export default async function Page({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
   const f = await searchParams;
-  const rows = await supplierList({ family: f.family, region: f.region, cls: f.cls, verdict: f.verdict, registry: f.registry, q: f.q });
+  const page = Math.max(Number(f.page ?? 1) || 1, 1);
+  const perPage = 100;
+  const [rows, s] = await Promise.all([
+    supplierList({ family: f.family, region: f.region, cls: f.cls, verdict: f.verdict, registry: f.registry, q: f.q, page, perPage }),
+    stats(),
+  ]);
+  const total = rows[0]?.total ?? 0;
+  const pages = Math.max(Math.ceil(total / perPage), 1);
+  const from = total === 0 ? 0 : (page - 1) * perPage + 1;
+  const to = Math.min(page * perPage, total);
+  const filtered = Boolean(f.family || f.cls || f.verdict || f.registry || f.q);
+
+  const qs = (p: number) => {
+    const u = new URLSearchParams();
+    for (const [k, v] of Object.entries(f)) if (v && k !== "page") u.set(k, v);
+    if (p > 1) u.set("page", String(p));
+    const str = u.toString();
+    return str ? `/suppliers?${str}` : "/suppliers";
+  };
 
   return (
     <div className="space-y-5">
-      <SectionHead eyebrow="Supply side" title="Capabilities in the valve, pump and fitting slice">
-        <p className="mono text-xs" style={{ color: "var(--muted)" }}>
-          {rows.length} result{rows.length === 1 ? "" : "s"}
-          {f.q ? <> for &ldquo;{f.q}&rdquo;</> : null}
-        </p>
-      </SectionHead>
+      {/* The headline: how big the map is, and how much of it this view holds.
+          A list that silently shows 300 of 14,329 invites the reader to think
+          that is all there is. */}
+      <section className="card flex flex-wrap items-end gap-x-10 gap-y-5 p-5">
+        <div>
+          <div className="eyebrow">Suppliers on the map</div>
+          <div className="mono mt-1 text-5xl font-semibold leading-none">{fmtInt(s.suppliers)}</div>
+          <p className="mt-1.5 text-xs" style={{ color: "var(--muted)" }}>
+            every company on record, from Tarmeez, MLCP, Made in Saudi and the hunt
+          </p>
+        </div>
+        <div>
+          <div className="eyebrow">{filtered ? "Matching these filters" : "With a capability on record"}</div>
+          <div className="mono mt-1 text-5xl font-semibold leading-none" style={{ color: "var(--accent)" }}>
+            {fmtInt(total)}
+          </div>
+          <p className="mt-1.5 text-xs" style={{ color: "var(--muted)" }}>
+            showing <span className="mono">{fmtInt(from)}</span>&ndash;<span className="mono">{fmtInt(to)}</span>
+            {pages > 1 ? <> · page <span className="mono">{page}</span> of <span className="mono">{pages}</span></> : null}
+          </p>
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="eyebrow">Investigated by a Detective</div>
+          <div className="mono mt-1 text-5xl font-semibold leading-none" style={{ color: "var(--ok)" }}>
+            {fmtInt(s.investigated)}
+          </div>
+          <p className="mt-1.5 max-w-md text-xs" style={{ color: "var(--muted)" }}>
+            the rest carry registry declarations that no agent has checked yet
+          </p>
+        </div>
+      </section>
 
       <form className="card flex flex-wrap items-end gap-4 p-4">
         <Sel name="family" label="Family" value={f.family} options={FAMILIES.map((x) => [x, x] as [string, string])} />
@@ -193,6 +237,63 @@ export default async function Page({ searchParams }: { searchParams: Promise<Rec
           </Link>
         ))}
       </div>
+
+      {/* The pager. The full sort over 14,329 suppliers runs in about 140ms, so
+          paging is a reading decision rather than a performance one: 100 rows is
+          what a person can scan, not what the database can manage. */}
+      {pages > 1 && (
+        <nav className="flex flex-wrap items-center justify-between gap-3" aria-label="Pagination">
+          <p className="text-xs" style={{ color: "var(--muted)" }}>
+            <span className="mono">{fmtInt(from)}</span>&ndash;<span className="mono">{fmtInt(to)}</span> of{" "}
+            <span className="mono">{fmtInt(total)}</span>
+          </p>
+          <div className="flex flex-wrap items-center gap-1.5">
+            <Pager href={qs(1)} disabled={page === 1} label="First" />
+            <Pager href={qs(page - 1)} disabled={page === 1} label="Previous" />
+            {pageWindow(page, pages).map((n, i) =>
+              n === null ? (
+                <span key={`gap-${i}`} className="mono px-1 text-xs" style={{ color: "var(--faint)" }}>…</span>
+              ) : (
+                <Link
+                  key={n}
+                  href={qs(n)}
+                  aria-current={n === page ? "page" : undefined}
+                  className="mono rounded border px-2.5 py-1 text-xs transition-colors"
+                  style={n === page
+                    ? { background: "var(--ink)", color: "var(--paper)", borderColor: "var(--ink)" }
+                    : { background: "var(--surface)", color: "var(--ink-soft)", borderColor: "var(--line)" }}
+                >
+                  {n}
+                </Link>
+              ),
+            )}
+            <Pager href={qs(page + 1)} disabled={page === pages} label="Next" />
+            <Pager href={qs(pages)} disabled={page === pages} label="Last" />
+          </div>
+        </nav>
+      )}
     </div>
   );
+}
+
+function Pager({ href, disabled, label }: { href: string; disabled: boolean; label: string }) {
+  const style = { borderColor: "var(--line)", background: "var(--surface)", color: disabled ? "var(--faint)" : "var(--ink-soft)" };
+  if (disabled) return <span className="rounded border px-2.5 py-1 text-xs" style={style}>{label}</span>;
+  return <Link href={href} className="rounded border px-2.5 py-1 text-xs transition-colors hover:bg-[var(--chip)]" style={style}>{label}</Link>;
+}
+
+/* First, last, and a window around the current page, with gaps marked null. */
+function pageWindow(page: number, pages: number): (number | null)[] {
+  const keep = new Set<number>([1, pages, page, page - 1, page + 1]);
+  if (page <= 3) [2, 3, 4].forEach((n) => keep.add(n));
+  if (page >= pages - 2) [pages - 1, pages - 2, pages - 3].forEach((n) => keep.add(n));
+  const list = [...keep].filter((n) => n >= 1 && n <= pages).sort((a, b) => a - b);
+  const out: (number | null)[] = [];
+  let prev = 0;
+  for (const n of list) {
+    if (prev && n - prev > 1) out.push(null);
+    out.push(n);
+    prev = n;
+  }
+  return out;
 }

@@ -23,10 +23,22 @@ const stroke = { fill: "none", stroke: "currentColor", strokeWidth: 1.6, strokeL
 
 const ITEMS: Item[] = [
   {
-    href: "/?kind=all",
+    href: "/suppliers",
+    label: "Suppliers",
+    arabic: "الموردون",
+    match: (p) => p === "/" || p.startsWith("/suppliers"),
+    icon: (
+      <svg viewBox="0 0 16 16" width="15" height="15" {...stroke}>
+        <path d="M2 13.5V6.2l6-3.7 6 3.7v7.3" />
+        <path d="M6.2 13.5V9h3.6v4.5" />
+      </svg>
+    ),
+  },
+  {
+    href: "/orders?kind=all",
     label: "Pooled orders",
     arabic: "الطلبات",
-    match: (p, k) => p === "/" && k === "all",
+    match: (p, k) => p.startsWith("/orders") && k === "all",
     icon: (
       <svg viewBox="0 0 16 16" width="15" height="15" {...stroke}>
         <path d="M2.5 4.5h11M2.5 8h11M2.5 11.5h7" />
@@ -34,26 +46,14 @@ const ITEMS: Item[] = [
     ),
   },
   {
-    href: "/?kind=manufacturing_gap",
+    href: "/orders?kind=manufacturing_gap",
     label: "Gap ledger",
     arabic: "الفجوات",
-    match: (p, k) => p === "/" && k !== "all" && k !== "covered",
+    match: (p, k) => p.startsWith("/orders") && k !== "all",
     icon: (
       <svg viewBox="0 0 16 16" width="15" height="15" {...stroke}>
         <path d="M8 2.2 14.4 13.4H1.6z" />
         <path d="M8 6.6v3.1M8 11.6h.01" />
-      </svg>
-    ),
-  },
-  {
-    href: "/suppliers",
-    label: "Suppliers",
-    arabic: "الموردون",
-    match: (p) => p.startsWith("/suppliers"),
-    icon: (
-      <svg viewBox="0 0 16 16" width="15" height="15" {...stroke}>
-        <path d="M2 13.5V6.2l6-3.7 6 3.7v7.3" />
-        <path d="M6.2 13.5V9h3.6v4.5" />
       </svg>
     ),
   },
@@ -106,7 +106,7 @@ export function Sidebar() {
       className="sticky top-0 hidden h-screen w-[228px] shrink-0 flex-col border-r lg:flex"
       style={{ background: "var(--sunken)", borderColor: "var(--line)" }}
     >
-      <Link href="/" className="group flex items-center gap-2.5 px-5 py-5">
+      <Link href="/suppliers" className="group flex items-center gap-2.5 px-5 py-5">
         <Image src="/kamin-mark.png" alt="" width={30} height={30} priority className="rounded-[22%]" style={{ width: 30, height: 30 }} />
         <span className="flex items-baseline gap-1.5 leading-none">
           <span className="cond text-lg font-semibold tracking-[-0.02em]">KAMIN</span>
