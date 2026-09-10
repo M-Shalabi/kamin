@@ -49,6 +49,56 @@ never per company.**
 
 Categories overlap: the same plant can be in Tarmeez *and* Made in Saudi.
 
+### Where the 15,025 came from
+
+`source` records which feed first introduced a supplier.
+
+| Source | Count | Share | Endpoint |
+|---|---:|---:|---|
+| **Tarmeez** (Ministry of Industry) | 14,873 | **98.99%** | `psnr.mim.gov.sa/CatalogApi/api/v1` |
+| **MLCP** (Madinah chamber) | 114 | 0.76% | `lc.mcci.org.sa` |
+| **Made in Saudi** | 28 | 0.19% | `saudimade.sa/en/members` |
+| **The long-tail hunt** | 10 | 0.07% | Tavily search, in no registry |
+
+One registry gives 99% of the map. The other 152 suppliers — 1.01% — arrived
+some other way.
+
+### Registry overlap
+
+The same plant can appear in more than one register. Every actual combination:
+
+| Combination | Count | Share |
+|---|---:|---:|
+| Tarmeez only | 14,318 | 95.29% |
+| Tarmeez + MLCP | 305 | 2.03% |
+| Tarmeez + Made in Saudi | 235 | 1.56% |
+| MLCP only | 113 | 0.75% |
+| Made in Saudi only | 28 | 0.19% |
+| All three | 15 | 0.10% |
+| **In no register at all** | **10** | 0.07% |
+| MLCP + Made in Saudi | 1 | 0.01% |
+
+Only 15 suppliers sit in all three registers. The registries barely corroborate
+each other — each is a partial window, which is the argument for a single map
+over them.
+
+### Where the evidence was actually read
+
+| Source type | Evidence records | Share | Tiers |
+|---|---:|---:|---|
+| Tarmeez plant page | 51,867 | **95.88%** | 2 |
+| Certifications | 1,679 | 3.10% | 1–3 |
+| Company websites | 234 | 0.43% | 2–3 |
+| Catalogues and datasheets | 206 | 0.38% | 3 |
+| Chamber directories | 90 | 0.17% | 2–3 |
+| Registry pages | 11 | 0.02% | 3 |
+| News | 3 | 0.01% | 2 |
+
+Two figures worth reading together: **Tarmeez supplies 99% of the names and 96%
+of the evidence.** The map's breadth and its depth both rest on one source, and
+that is where its fragility lives. Certifications are the only third-party layer
+at 3.1%, and Tier 1 is the only tier that carries independent weight.
+
 ### How far each has been investigated
 
 | `detective_status` | Count |
@@ -198,6 +248,7 @@ live Detective run in the browser over SSE, which writes back to the graph.
 
 ## 6. The one-line summary
 
-**15,025 suppliers · 51,992 capabilities · 4,836 registered tariff codes ·
+**15,025 suppliers (99% from one registry, 10 from no registry at all) ·
+51,992 capabilities · 4,836 registered tariff codes ·
 467 audited (0.9%) · 73 relations · 1,146 agent runs · 2.93M tokens in ·
 73 agent-hours over 4 days · zero riyals in model cost.**
