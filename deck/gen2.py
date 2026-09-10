@@ -41,7 +41,7 @@ def slide(num, cap, inner, center=False):
     foot = '' if center else (
       '  <div style="display: flex; justify-content: space-between; align-items: flex-end; '
       'border-top: 1px solid @L@; padding-top: 20px;">\n'
-      '    <div style="font-family: @MONO@; font-size: 14px; letter-spacing: 0.18em; color: @L@;"' + (' dir="ltr"' if num.isdigit() else '') + '>' + (num + ' / 18' if num.isdigit() else 'ملحق') + '</div>\n'
+      '    <div style="font-family: @MONO@; font-size: 14px; letter-spacing: 0.18em; color: @L@;"' + (' dir="ltr"' if num.isdigit() else '') + '>' + (num + ' / 16' if num.isdigit() else 'ملحق') + '</div>\n'
       '    <div style="font-family: @KUFI@; font-size: 16px; font-weight: 700; color: @M@;">كامن</div>\n'
       '  </div>\n')
     return sub(HEAD +
@@ -72,7 +72,7 @@ S['Main'] = sub(HEAD +
 '    <div style="font-family:@KUFI@;font-weight:700;font-size:52px;color:@T@;margin-top:44px;line-height:1.45;">خريطة حيّة للقدرات المحلية.</div>\n'
 '  </div>\n'
 '  <div style="display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid @L@;padding-top:24px;">\n'
-'    <div style="font-family:@MONO@;font-size:17px;letter-spacing:0.18em;color:@L@;" dir="ltr">01 / 18</div>\n'
+'    <div style="font-family:@MONO@;font-size:17px;letter-spacing:0.18em;color:@L@;" dir="ltr">01 / 16</div>\n'
 '    <div style="font-size:22px;color:@M@;">هاكاثون ابتكار · المسار الأول</div>\n'
 '  </div>\n</div>\n' + TAIL)
 
@@ -282,7 +282,7 @@ S['Problem'] = slide('04','المشكلة',
 # 07 the wall, and why it falls now: the arithmetic, then the reason it changed
 def wline(label, value, hot=False):
     return ('    <div style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;'
-      'border-top:1px solid @L@;padding:13px 0;">\n'
+      'border-top:1px solid @L@;padding:9px 0;">\n'
       '      <div style="font-size:21px;font-weight:300;color:@M@;">' + label + '</div>\n'
       '      <div style="font-family:@KUFI@;font-weight:700;font-size:30px;color:'
       + ('@A@' if hot else '@T@') + ';">' + value + '</div>\n'
@@ -337,7 +337,7 @@ S['Solution'] = sub(HEAD +
 '    <div style="font-family:@KUFI@;font-weight:900;font-size:200px;line-height:1.2;color:@G@;letter-spacing:-0.02em;">والحل؟</div>\n'
 '  </div>\n'
 '  <div style="display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid rgba(11,10,9,0.25);padding-top:22px;">\n'
-'    <div style="font-family:@MONO@;font-size:16px;letter-spacing:0.18em;color:rgba(11,10,9,0.45);" dir="ltr">05 / 18</div>\n'
+'    <div style="font-family:@MONO@;font-size:16px;letter-spacing:0.18em;color:rgba(11,10,9,0.45);" dir="ltr">05 / 16</div>\n'
 '    <div style="font-family:@KUFI@;font-size:18px;font-weight:700;color:rgba(11,10,9,0.55);">كامن</div>\n'
 '  </div>\n'
 '</div>\n' + TAIL)
@@ -355,7 +355,7 @@ agent_row = ('      <div style="display:flex;gap:10px;margin-top:14px;align-item
             for f in ['fig-coordinator.png', 'fig-detective.png', 'fig-auditor.png', 'fig-advisor.png'])
   + '      </div>\n')
 
-S['Intro'] = slide('06','وش هو كامن؟',
+S['Intro'] = slide('07','وش هو كامن؟',
   '  <div style="margin:auto 0;">\n'
   '  <div style="display:flex;gap:44px;align-items:center;">\n'
   # the mark and the name
@@ -407,7 +407,7 @@ for t, hot in [('وكلاء ذكاء اصطناعي',True),('دقيقتين لل
               + ('background:rgba(255,92,26,0.10);' if hot else '') + 'padding:9px 16px;font-size:19px;color:'
               + ('@A@' if hot else '@M@') + ';">' + t + '</div>\n')
 
-S['Agents'] = slide('07','طيب كيف نحلها؟',
+S['Agents'] = slide('06','طيب كيف نحلها؟',
   '  <div style="margin:auto 0;">\n' +
   H('ببساطة. <span style="color:@A@;">نوظّف فريق.</span>', 58) +
   '  <div style="display:flex;gap:30px;margin-top:26px;">\n' + team + '  </div>\n'
@@ -496,12 +496,6 @@ diagram = ('<svg viewBox="0 0 1392 340" style="width:100%;height:auto;">'
  + arrow('M175,164 H164')
  + '</svg>')
 
-map_body = ('  <div style="margin:auto 0;">\n'
-  '  <div style="font-family:@KUFI@;font-weight:900;font-size:52px;color:@T@;">خريطة كامن <span style="color:@A@;">للقدرات المحلية</span></div>\n'
-  '  <div style="margin-top:18px;">' + diagram + '</div>\n'
-  '  </div>\n')
-S['TheMapFirst'] = slide('09','ما الذي يبنونه', map_body)
-S['TheMap'] = slide('12','ما الذي يبنونه', map_body)
 
 # 12 the same map, wired to what powers it: the chat model, the embedding model
 # and web search. The dashed lines are emitted before the boxes so a shared bus
@@ -567,7 +561,7 @@ def stack_item(href, name, role, x, y=416):
     return (logo_tile(href, x, y, 32)
       + '<text x="%d" y="%d" direction="ltr" font-family="%s" font-size="14" fill="#7C766D">%s</text>'
         % (x + 40, y + 15, MO, name)
-      + '<text x="%d" y="%d" text-anchor="end" font-family="%s" font-size="13" fill="#4C463F">%s</text>'
+      + '<text x="%d" y="%d" text-anchor="end" class="rtl-end" font-family="%s" font-size="13" fill="#4C463F">%s</text>'
         % (x + 40, y + 32, BO, role))
 
 pgv = (stack_item('logo-langgraph.png', 'LangGraph.js', 'تنسيق الوكلاء', 20)
@@ -602,16 +596,15 @@ diagram2 = ('<svg viewBox="0 0 1392 512" style="width:100%;height:auto;">'
  + engine_boxes
  + '</svg>')
 
-S['Engine'] = slide('13','خلف الكواليس',
+S['TheMapFirst'] = slide('09','ما الذي يبنونه',
   '  <div style="margin:auto 0;">\n'
-  '  <div style="display:flex;align-items:baseline;gap:18px;">\n'
-  '    <div style="font-family:@KUFI@;font-weight:900;font-size:40px;color:@T@;">وش يشغّل <span style="color:@A@;">الخريطة</span>؟</div>\n'
-  '    <div style="font-size:18px;font-weight:300;color:@M@;">نفس الخريطة، والمنقّط تحتها هو اللي يغذّي الوكلاء</div>\n'
+  '  <div style="display:flex;align-items:baseline;gap:22px;">\n'
+  '    <div style="font-family:@KUFI@;font-weight:900;font-size:52px;color:@T@;">خريطة كامن <span style="color:@A@;">للقدرات المحلية</span></div>\n'
   '    <div style="flex:1 1 auto;text-align:left;font-size:17px;color:@M@;display:flex;align-items:center;gap:8px;">'
   '<svg width="26" height="20" viewBox="0 0 26 20">' + sparkle(9, 9, 8) + sparkle(20, 15, 4) + '</svg>'
   '<span>وكيل ذكاء اصطناعي</span></div>\n'
   '  </div>\n'
-  '  <div style="margin-top:2px;">' + diagram2 + '</div>\n'
+  '  <div style="margin-top:14px;">' + diagram2 + '</div>\n'
   '  </div>\n')
 
 # 14 the vetted list, drawn from the real product screen: dark, left to right,
@@ -678,7 +671,7 @@ def navitem(en, ar, active=False):
       '        <span class="ar-only" style="font-size:14px;color:' + (UX['acc'] if active else UX['faint']) + ';">' + ar + '</span>\n'
       '      </div>\n')
 
-S['Suppliers'] = slide('14','المُخرج',
+S['Suppliers'] = slide('12','المُخرج',
   '  <div style="margin:auto 0;">\n'
   '  <div dir="ltr" style="border-radius:12px;overflow:hidden;border:1px solid ' + UX['line'] + ';'
   'background:' + UX['page'] + ';box-shadow:0 18px 44px rgba(0,0,0,0.55);display:flex;">\n'
@@ -907,7 +900,7 @@ for k, a, b in [('الوقت','٣٥ سنة','أقل من ١٠ ساعات'),
              '      <div style="font-size:27px;font-weight:300;color:@M@;">' + a + '</div>\n'
              '      <div style="font-size:27px;font-weight:600;color:@T@;">' + b + '</div>\n'
              '    </div>\n')
-S['TheMath'] = slide('15','الحساب',
+S['TheMath'] = slide('13','الحساب',
   '  <div style="margin:auto 0;">\n'
   '  <div style="display:grid;grid-template-columns:200px 1fr 1fr;gap:30px;padding-bottom:12px;font-family:@BODY@;font-size:17px;">\n'
   '    <div></div><div style="color:@M@;">الطريقة القديمة</div><div style="color:@A@;">كامن</div>\n'
@@ -917,59 +910,69 @@ S['TheMath'] = slide('15','الحساب',
 
 # 16 what KAMIN has today, and what it cost. Every number is a query result
 # from COUNTS.md, and the bench prices the same token spend elsewhere.
-def stat(n, label, hero=False):
-    return ('    <div style="border-top:1px solid @L@;padding:18px 0;display:flex;align-items:baseline;gap:16px;">\n'
-            '      <div style="font-family:@BODY@;font-weight:700;font-size:' + ('44' if hero else '38')
+def stat(n, label, hero=False, under=''):
+    tail = ('' if not under else
+            '      <div style="font-family:@BODY@;font-size:17px;font-weight:300;color:#4C463F;'
+            'margin-top:10px;margin-inline-start:206px;">' + under + '</div>\n')
+    return ('    <div style="border-top:1px solid @L@;padding:18px 0;">\n'
+            '      <div style="display:flex;align-items:baseline;gap:16px;">\n'
+            '        <div style="font-family:@BODY@;font-weight:700;font-size:' + ('44' if hero else '38')
             + 'px;color:' + ('@A@' if hero else '@T@') + ';min-width:190px;">' + n + '</div>\n'
-            '      <div style="font-size:21px;font-weight:300;color:@M@;">' + label + '</div>\n'
+            '        <div style="font-size:21px;font-weight:300;color:@M@;">' + label + '</div>\n'
+            '      </div>\n' + tail +
             '    </div>\n')
 
 def bench(name, price, hot=False):
     return ('    <div style="display:flex;align-items:center;justify-content:space-between;'
-            'border-top:1px solid @L@;padding:13px 0;">\n'
+            'border-top:1px solid @L@;padding:9px 0;">\n'
             '      <div style="font-family:@MONO@;font-size:17px;color:' + ('@T@' if hot else '@M@')
             + ';" dir="ltr">' + name + '</div>\n'
             '      <div style="font-family:@MONO@;font-size:18px;color:' + ('@A@' if hot else '@T@')
             + ';font-weight:500;" dir="ltr">' + price + '</div>\n'
             '    </div>\n')
 
-S['Today'] = slide('16','كامن اليوم',
+S['Today'] = slide('14','كامن اليوم',
   '  <div style="margin:auto 0;">\n'
-  + H('كامن اليوم.', 62) +
+  + H('كامن اليوم.', 54) +
   '  <div style="font-size:24px;font-weight:300;color:@M@;margin-top:10px;">'
   'الأرقام من قاعدة البيانات، والتكلفة من الفواتير.</div>\n'
-  '  <div style="display:flex;gap:64px;margin-top:38px;">\n'
+  '  <div style="display:flex;gap:64px;margin-top:26px;">\n'
   # what it has built
   '    <div style="flex:1 1 0;">\n'
   '      <div style="font-family:@BODY@;font-size:17px;color:@A@;margin-bottom:14px;">وش بناه</div>\n'
-  + stat('١٥,٠٢٥', 'مورّد على الخريطة، منهم ١٥٢ ما هم في ترميز', True)
-  + stat('٥١,٩٩٢', 'قدرة موثّقة: مورّد واحد، منتج واحد، بمواصفة')
-  + stat('٤,٨٣٦', 'رمز تعريفة مسجّل، من ١٠,٧٩٤ في التصنيف')
-  + stat('١,١٤٦', 'تشغيلة وكيل، في ٧٣ ساعة تشغيل')
+  + stat('١٥,٠٢٥', 'مورّد. شركة وحدة.', True,
+         'ترميز ١٤,٨٧٣ · غرفة المدينة ١١٤ · صنع في السعودية ٢٨ · بلا سجل ١٠')
+  + stat('٥١,٩٩٢', 'قدرة. مورّد واحد. منتج واحد. بمواصفات محددة.')
+  + stat('١,١٤٦', 'تشغيلة وكيل.')
   + '    </div>\n'
   '    <div style="flex:0 0 1px;background:@L@;"></div>\n'
   # what it cost
   '    <div style="flex:1 1 0;">\n'
   '      <div style="font-family:@BODY@;font-size:17px;color:@A@;margin-bottom:14px;">وش كلّف</div>\n'
   '      <div style="border-top:1px solid @L@;padding:18px 0;display:flex;align-items:baseline;gap:16px;">\n'
-  '        <div style="font-family:@KUFI@;font-weight:700;font-size:64px;color:@A@;">صفر ريال</div>\n'
+  '        <div style="font-family:@KUFI@;font-weight:700;font-size:52px;color:@A@;">صفر ريال</div>\n'
   '        <div style="font-size:21px;font-weight:300;color:@M@;">على ٢.٩٣ مليون توكن دخل</div>\n'
   '      </div>\n'
-  '      <div style="font-size:21px;font-weight:300;color:@M@;line-height:1.75;margin-bottom:26px;">'
-  '<span style="color:@T@;">qwen3.5:9b</span> يشتغل محلياً على Ollama، و<span style="color:@T@;">Tavily</span> '
-  'على باقته المجانية ونتائجه مخزّنة، فإعادة التشغيل ما تكلف شي.</div>\n'
-  '      <div style="font-family:@BODY@;font-size:17px;color:@M@;margin-bottom:2px;">ولو شغّلناها عند مزوّد ثاني، نفس التوكنات:</div>\n'
+  '      <div style="font-size:19px;font-weight:300;color:@M@;line-height:1.7;margin-bottom:20px;">'
+  '<span style="color:@T@;">qwen3.5:9b</span> محلي على Ollama، و<span style="color:@T@;">Tavily</span> '
+  'على باقته المجانية. وما اتصلنا بأحد بعد.</div>\n'
+  '      <div style="font-family:@BODY@;font-size:16px;color:@A@;margin-bottom:2px;">النموذج · نفس ٢.٩٣ مليون توكن دخل</div>\n'
   + bench('Ollama · qwen3.5:9b', '$0', True)
   + bench('Gemini Flash', '$2')
   + bench('GPT-4o', '$12')
   + bench('Claude Opus', '$81')
+  + '      <div style="font-family:@BODY@;font-size:16px;color:@A@;margin:20px 0 2px;">البحث والمكالمات</div>\n'
+  + bench('Tavily · 507 searches', '$4')
+  + bench('Voice call · per call', '$0.90')
+  + '      <div style="font-family:@BODY@;font-size:15px;color:#4C463F;margin-top:14px;line-height:1.6;">'
+  'أسعار قوائم تقريبية. والمكالمة تقدير لثلاث دقايق.</div>\n'
   + '    </div>\n'
   '  </div>\n'
   '  </div>\n')
 
 
 # 17 close
-S['TheClose'] = slide('17','الختام',
+S['TheClose'] = slide('15','الختام',
   '  <div style="width:340px;height:12px;background:@A@;margin-bottom:44px;"></div>\n'
   '  <div style="font-family:@KUFI@;font-weight:900;font-size:86px;line-height:1.3;color:@M@;">مساهمة تعرف <span style="color:@T@;">مين سجّل</span>.</div>\n'
   '  <div style="font-family:@KUFI@;font-weight:900;font-size:86px;line-height:1.3;color:@T@;">كامن يعرف <span style="color:@A@;">اللي ما رفع يده</span>.</div>\n'
@@ -1008,7 +1011,7 @@ S['AsIs'] = slide('بدوننا','كيف يُجاب السؤال اليوم',
   '  <div style="font-family:@KUFI@;font-weight:700;font-size:42px;color:@A@;margin-top:28px;">و«محد يصنعه محلياً» مو حقيقة، بل «محد في لستتي».</div>\n'
   '  </div>\n')
 
-S['Team'] = slide('18','من نحن',
+S['Team'] = slide('16','من نحن',
   '  <div style="margin:auto 0;">\n'
   '  <div style="width:180px;height:10px;background:@A@;margin-bottom:26px;"></div>\n'
   '  <div style="font-family:@KUFI@;font-weight:900;font-size:76px;line-height:1.3;color:@T@;letter-spacing:-0.01em;">ثلاثة أشخاص. <span style="color:@A@;">وآلاف الوكلاء</span>.</div>\n'
@@ -1041,11 +1044,10 @@ S['Team'] = slide('18','من نحن',
 for name, src in S.items():
     open(name + '.dc.html', 'w', encoding='utf-8').write(src)
 
-order = ['Main','Question','Blind','Problem','Solution','Intro','Agents','TheWall','TheMapFirst',
-         'Discovery','Decisions','TheMap','Engine','Suppliers','TheMath','Today','TheClose','Team']
-titles = ['١ الغلاف','٢ السؤال','٣ لا أحد يفرّق','٤ المشكلة','٥ والحل؟','٦ وش هو كامن','٧ الفريق والانكشاف',
-          '٨ الجدار وليش الحين','٩ الخريطة','١٠ زووم الاكتشاف','١١ زووم القرار','١٢ الخريطة مرة ثانية',
-          '١٣ خلف الكواليس','١٤ قائمة الموردين','١٥ الحساب','١٦ كامن اليوم','١٧ الختام','١٨ الفريق']
+order = ['Main','Question','Blind','Problem','Solution','Agents','Intro','TheWall','TheMapFirst',
+         'Discovery','Decisions','Suppliers','TheMath','Today','TheClose','Team']
+titles = ['١ الغلاف','٢ السؤال','٣ لا أحد يفرّق','٤ المشكلة','٥ والحل؟','٦ الفريق والانكشاف','٧ وش هو كامن',
+          '٨ الجدار وليش الحين','٩ الخريطة','١٠ زووم الاكتشاف','١١ زووم القرار','١٢ قائمة الموردين','١٣ الحساب','١٤ كامن اليوم','١٥ الختام','١٦ الفريق']
 abs_=[]
 for i, f in enumerate(order):
     col, row = i % 4, i // 4

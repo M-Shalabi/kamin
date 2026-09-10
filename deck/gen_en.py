@@ -3,12 +3,12 @@
 import re, json
 from tr_en import TR
 
-ORDER = ['Main','Question','Blind','Problem','Solution','Intro','Agents','TheWall','TheMapFirst',
-         'Discovery','Decisions','TheMap','Engine','Suppliers','TheMath','Today','TheClose','Team']
+ORDER = ['Main','Question','Blind','Problem','Solution','Agents','Intro','TheWall','TheMapFirst',
+         'Discovery','Decisions','Suppliers','TheMath','Today','TheClose','Team']
 TITLES = ['1 Cover','2 The Question','3 Nobody Can Tell','4 The Problem','5 So What Now',
-          '6 What KAMIN Is','7 The Team And The Reveal','8 The Wall And Why Now','9 The Map',
-          '10 Zoom · Discovery','11 Zoom · The Decision','12 The Map Again','13 Behind The Scenes',
-          '14 The Supplier List','15 The Math','16 KAMIN Today','17 The Close','18 The Team']
+          '6 The Team And The Reveal','7 What KAMIN Is','8 The Wall And Why Now','9 The Map',
+          '10 Zoom · Discovery','11 Zoom · The Decision',
+          '12 The Supplier List','13 The Math','14 KAMIN Today','15 The Close','16 The Team']
 
 AR_FONT = "'Thmanyah','Geeza Pro',Tahoma,sans-serif"
 EN_FONT = "'Archivo','Geeza Pro','Helvetica Neue',Arial,sans-serif"
@@ -89,7 +89,9 @@ def build(name):
     src = src.replace(LINK_OLD, LINK_NEW)
     src = re.sub(r"@font-face\{font-family:'Thmanyah';.*?\}", '', src, flags=re.S)
     src = src.replace('<div dir="rtl"', '<div dir="ltr"', 1)
-    src = AR_ONLY.sub('', src)                      # drops the Arabic half of a bilingual label
+    src = AR_ONLY.sub('', src)
+    # an anchor that reads outward in RTL has to be flipped for LTR
+    src = src.replace('text-anchor="end" class="rtl-end"', 'text-anchor="start" class="rtl-end"')                      # drops the Arabic half of a bilingual label
     for i, k in enumerate(KEEP_AR):                 # park protected names out of reach
         src = src.replace(k, '\x00KEEP%d\x00' % i)
     for k in KEYS:

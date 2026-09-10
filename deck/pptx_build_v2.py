@@ -58,7 +58,7 @@ def blank(prs, num=None, cap=None, foot=True):
         txt(s, 1096, 84, 400, cap or '', 18, M, align='l')
     if foot and num:
         rect(s, 104, 800, 1392, 1, L)
-        txt(s, 104, 812, 400, num + ' / 18', 14, L, font=MONO, align='r')
+        txt(s, 104, 812, 400, num + ' / 16', 14, L, font=MONO, align='r')
         txt(s, 1096, 810, 400, 'كامن', 16, M, bold=True, align='l')
     return s
 
@@ -139,7 +139,7 @@ def build():
     TX(s, 508, 'K A M I N', 24, A, font=MONO)
     TX(s, 566, 'خريطة حيّة للقدرات المحلية.', 52, T, True, KUFI, h=80)
     rect(s, 104, 776, 1392, 1, L)
-    txt(s, 104, 790, 400, '01 / 18', 17, L, font=MONO, align='r')
+    txt(s, 104, 790, 400, '01 / 16', 17, L, font=MONO, align='r')
     TX(s, 788, 'هاكاثون ابتكار · المسار الأول', 22, M, w=600, x=896, align='l')
 
     # 02 the question
@@ -177,11 +177,31 @@ def build():
     txt(s, 1096, 84, 400, 'الفصل الثاني', 18, D, align='l')
     txt(s, 200, 320, 1200, 'والحل؟', 200, G, bold=True, font=KUFI, align='c', h=270, line=1.2)
     rect(s, 104, 800, 1392, 1, RGBColor(0x8A, 0x3A, 0x10))
-    txt(s, 104, 812, 400, '05 / 18', 16, D, font=MONO, align='r')
+    txt(s, 104, 812, 400, '05 / 16', 16, D, font=MONO, align='r')
     txt(s, 1096, 810, 400, 'كامن', 18, D, bold=True, align='l')
 
-    # 06 what KAMIN is
-    s = blank(prs, '06', 'وش هو كامن؟')
+    # 06 the team, and the turn
+    s = blank(prs, '06', 'طيب كيف نحلها؟')
+    TX(s, 168, 'ببساطة. نوظّف فريق.', 58, T, True, KUFI, h=84)
+    for i, (img, name) in enumerate([('fig-coordinator.png', 'المنسّق'), ('fig-detective.png', 'المحقّق'),
+                                     ('fig-auditor.png', 'المدقّق'), ('fig-advisor.png', 'المستشار')]):
+        x = 1163 - i * 353
+        rect(s, x, 268, 333, 3, A)
+        pic(s, img, x + 96, 286, 141)
+        txt(s, x, 484, 333, name, 32, T, bold=True, font=KUFI, align='c', h=46)
+    rect(s, 104, 566, 1392, 1, L)
+    txt(s, 1000, 592, 496, 'احنا ما نوظّفهم.', 46, M, bold=True, font=KUFI, align='r', h=66)
+    txt(s, 640, 578, 340, 'نشغّلهم.', 84, A, bold=True, font=KUFI, align='r', h=112, line=1.1)
+    xr = 1496
+    for chip, hot, w in [('وكلاء ذكاء اصطناعي', True, 216), ('دقيقتين للمصنع بدل يوم', False, 250),
+                         ('٢٤ ساعة بلا توقف', False, 196), ('ما ينسون ولا معلومة', False, 214)]:
+        xr -= w
+        rect(s, xr, 706, w, 46, RGBColor(0x2A, 0x14, 0x0B) if hot else None, A if hot else L)
+        txt(s, xr, 719, w, chip, 19, A if hot else M, align='c')
+        xr -= 12
+
+    # 07 what KAMIN is
+    s = blank(prs, '07', 'وش هو كامن؟')
     pic(s, '../KAMIN.png', 1364, 232, 132, 132)
     txt(s, 944, 240, 400, 'كامن', 88, T, bold=True, font=KUFI, align='r', h=110, line=1.05)
     txt(s, 944, 350, 400, 'الموجود الغير مكتشف', 22, M, align='r')
@@ -206,26 +226,6 @@ def build():
         rect(s, x, 720, 404, 62, RGBColor(0x1E, 0x10, 0x0A), A)
         txt(s, x, 736, 404, t, 26, A, bold=True, font=KUFI, align='c')
 
-    # 07 the team, and the turn
-    s = blank(prs, '07', 'طيب كيف نحلها؟')
-    TX(s, 168, 'ببساطة. نوظّف فريق.', 58, T, True, KUFI, h=84)
-    for i, (img, name) in enumerate([('fig-coordinator.png', 'المنسّق'), ('fig-detective.png', 'المحقّق'),
-                                     ('fig-auditor.png', 'المدقّق'), ('fig-advisor.png', 'المستشار')]):
-        x = 1163 - i * 353
-        rect(s, x, 268, 333, 3, A)
-        pic(s, img, x + 96, 286, 141)
-        txt(s, x, 484, 333, name, 32, T, bold=True, font=KUFI, align='c', h=46)
-    rect(s, 104, 566, 1392, 1, L)
-    txt(s, 1000, 592, 496, 'احنا ما نوظّفهم.', 46, M, bold=True, font=KUFI, align='r', h=66)
-    txt(s, 640, 578, 340, 'نشغّلهم.', 84, A, bold=True, font=KUFI, align='r', h=112, line=1.1)
-    xr = 1496
-    for chip, hot, w in [('وكلاء ذكاء اصطناعي', True, 216), ('دقيقتين للمصنع بدل يوم', False, 250),
-                         ('٢٤ ساعة بلا توقف', False, 196), ('ما ينسون ولا معلومة', False, 214)]:
-        xr -= w
-        rect(s, xr, 706, w, 46, RGBColor(0x2A, 0x14, 0x0B) if hot else None, A if hot else L)
-        txt(s, xr, 719, w, chip, 19, A if hot else M, align='c')
-        xr -= 12
-
     # 08 the wall, and why now
     s = blank(prs, '08', 'فلماذا محد سواها؟')
     txt(s, 900, 246, 596, 'وليه محد سواها للآن؟', 36, T, bold=True, font=KUFI, align='r', h=52)
@@ -249,10 +249,11 @@ def build():
     rect(s, 150, 556, 680, 1, A)
     txt(s, 150, 578, 680, 'و٣٥ سنة تصير أقل من عشر ساعات.', 34, A, bold=True, font=KUFI, align='r', h=52)
 
-    # 09 the map
+    # 09 the map, wired to what powers it
     s = blank(prs, '09', 'ما الذي يبنونه')
-    TX(s, 228, 'خريطة كامن للقدرات المحلية', 52, T, True, KUFI, h=74)
-    pic(s, 'map.png', 104, 320, 1392)
+    TX(s, 168, 'خريطة كامن للقدرات المحلية', 52, T, True, KUFI, h=74)
+    txt(s, 104, 186, 300, '✦  وكيل ذكاء اصطناعي', 17, M, align='r')
+    pic(s, 'map.png', 104, 248, 1392)
 
     # 10 zoom, discovery
     s = blank(prs, '10', 'زووم · الاكتشاف')
@@ -306,24 +307,12 @@ def build():
         rect(s, x + 22, y + 30, 152, 42, None, A if hot else L)
         txt(s, x + 22, y + 42, 152, tool, 18, A if hot else T, align='c')
 
-    # 12 the map again
-    s = blank(prs, '12', 'ما الذي يبنونه')
-    TX(s, 228, 'خريطة كامن للقدرات المحلية', 52, T, True, KUFI, h=74)
-    pic(s, 'map.png', 104, 320, 1392)
-
-    # 13 behind the scenes
-    s = blank(prs, '13', 'خلف الكواليس')
-    TX(s, 168, 'وش يشغّل الخريطة؟', 40, T, True, KUFI, h=56)
-    txt(s, 380, 178, 600, 'نفس الخريطة، والمنقّط تحتها هو اللي يغذّي الوكلاء', 18, M, align='l')
-    txt(s, 104, 178, 260, '●  وكيل ذكاء اصطناعي', 17, M, align='r')
-    pic(s, 'engine.png', 104, 226, 1392)
-
-    # 14 the supplier list
-    s = blank(prs, '14', 'المُخرج')
+    # 12 the supplier list
+    s = blank(prs, '12', 'المُخرج')
     pic(s, 'suppliers.png', 104, 147, 1392)
 
-    # 15 the math
-    s = blank(prs, '15', 'الحساب')
+    # 13 the math
+    s = blank(prs, '13', 'الحساب')
     txt(s, 1096, 244, 400, 'الطريقة القديمة', 17, M, align='l')
     txt(s, 596, 244, 400, 'كامن', 17, A, align='l')
     for i, (k, a_, b_) in enumerate([('الوقت', '٣٥ سنة', 'أقل من ١٠ ساعات'),
@@ -336,39 +325,49 @@ def build():
         txt(s, 496, y + 28, 380, b_, 27, T, bold=True, align='l')
     TX(s, 596, 'نفس الشغل. بس بساعات، مو بسنوات.', 56, T, True, KUFI, h=84)
 
-    # 16 KAMIN today: what it built, and what it cost
-    s = blank(prs, '16', 'كامن اليوم')
+    # 14 KAMIN today: what it built, and what it cost
+    s = blank(prs, '14', 'كامن اليوم')
     TX(s, 160, 'كامن اليوم.', 62, T, True, KUFI, h=88)
     TX(s, 252, 'الأرقام من قاعدة البيانات، والتكلفة من الفواتير.', 24, M)
     rect(s, 796, 316, 1, 452, L)
     txt(s, 1096, 318, 400, 'وش بناه', 17, A, align='l')
-    for i, (n, lab) in enumerate([
-            ('١٥,٠٢٥', 'مورّد على الخريطة، منهم ١٥٢ ما هم في ترميز'),
-            ('٥١,٩٩٢', 'قدرة موثّقة: مورّد واحد، منتج واحد، بمواصفة'),
-            ('٤,٨٣٦', 'رمز تعريفة مسجّل، من ١٠,٧٩٤ في التصنيف'),
-            ('١,١٤٦', 'تشغيلة وكيل، في ٧٣ ساعة تشغيل')]):
-        y = 352 + i * 96
+    for i, (n, lab, under) in enumerate([
+            ('١٥,٠٢٥', 'مورّد. شركة وحدة.',
+             'ترميز ١٤,٨٧٣ · غرفة المدينة ١١٤ · صنع في السعودية ٢٨ · بلا سجل ١٠'),
+            ('٥١,٩٩٢', 'قدرة. مورّد واحد. منتج واحد. بمواصفات محددة.', ''),
+            ('١,١٤٦', 'تشغيلة وكيل.', '')]):
+        y = 352 + i * 108
         rect(s, 836, y, 660, 1, L)
         txt(s, 1306, y + 20, 190, n, 42, A if i == 0 else T, bold=True, align='r')
         txt(s, 836, y + 32, 450, lab, 21, M, align='l', h=60, line=1.5)
+        if under:
+            txt(s, 836, y + 70, 460, under, 17, RGBColor(0x4C, 0x46, 0x3F), align='l', h=44, line=1.5)
 
     txt(s, 396, 318, 360, 'وش كلّف', 17, A, align='l')
     rect(s, 104, 352, 660, 1, L)
-    txt(s, 424, 366, 340, 'صفر ريال', 64, A, bold=True, font=KUFI, align='r', h=88)
-    txt(s, 104, 396, 310, 'على ٢.٩٣ مليون توكن دخل', 21, M, align='l')
-    txt(s, 104, 460, 660, 'qwen3.5:9b يشتغل محلياً على Ollama، وTavily على باقته المجانية '
-        'ونتائجه مخزّنة، فإعادة التشغيل ما تكلف شي.', 21, M, h=76, line=1.7)
-    txt(s, 104, 556, 660, 'ولو شغّلناها عند مزوّد ثاني، نفس التوكنات:', 17, M)
-    for i, (name, price, hot) in enumerate([('Ollama · qwen3.5:9b', '$0', True),
-                                            ('Gemini Flash', '$2', False),
-                                            ('GPT-4o', '$12', False),
-                                            ('Claude Opus', '$81', False)]):
-        y = 592 + i * 46
+    txt(s, 448, 366, 316, 'صفر ريال', 52, A, bold=True, font=KUFI, align='r', h=72)
+    txt(s, 104, 388, 330, 'على ٢.٩٣ مليون توكن دخل', 21, M, align='l')
+    txt(s, 104, 438, 660, 'qwen3.5:9b محلي على Ollama، وTavily على باقته المجانية. '
+        'وما اتصلنا بأحد بعد.', 19, M, h=60, line=1.7)
+    txt(s, 104, 498, 660, 'النموذج · نفس ٢.٩٣ مليون توكن دخل', 16, A)
+    ROWS = [('Ollama · qwen3.5:9b', '$0', True), ('Gemini Flash', '$2', False),
+            ('GPT-4o', '$12', False), ('Claude Opus', '$81', False),
+            (None, None, None),
+            ('Tavily · 507 searches', '$4', False), ('Voice call · per call', '$0.90', False)]
+    y = 524
+    for name, price, hot in ROWS:
+        if name is None:
+            txt(s, 104, y + 14, 660, 'البحث والمكالمات', 16, A)
+            y += 40
+            continue
         rect(s, 104, y, 660, 1, L)
-        txt(s, 404, y + 12, 360, name, 17, T if hot else M, font=MONO, align='r', rtl=False)
-        txt(s, 104, y + 11, 200, price, 18, A if hot else T, bold=True, font=MONO, align='l', rtl=False)
+        txt(s, 404, y + 10, 360, name, 17, T if hot else M, font=MONO, align='r', rtl=False)
+        txt(s, 104, y + 9, 200, price, 18, A if hot else T, bold=True, font=MONO, align='l', rtl=False)
+        y += 40
+    txt(s, 104, y + 8, 660, 'أسعار قوائم تقريبية. والمكالمة تقدير لثلاث دقايق.', 15,
+        RGBColor(0x4C, 0x46, 0x3F), align='l')
 
-    # 17 the close
+    # 15 the close
     s = prs.slides.add_slide(prs.slide_layouts[6])
     rect(s, 0, 0, W, H, G)
     rect(s, 1156, 236, 340, 12, A)
@@ -376,8 +375,8 @@ def build():
     TX(s, 404, 'كامن يعرف اللي ما رفع يده.', 86, T, True, KUFI, h=120, line=1.3)
     TX(s, 556, 'احنا مو بديل للمنصة. احنا الطبقة اللي تحتها.', 30, M)
 
-    # 18 who we are
-    s = blank(prs, '18', 'من نحن')
+    # 16 who we are
+    s = blank(prs, '16', 'من نحن')
     rect(s, 1316, 158, 180, 10, A)
     TX(s, 186, 'ثلاثة أشخاص. وآلاف الوكلاء.', 76, T, True, KUFI, h=112, line=1.3)
     TX(s, 298, 'الفريق اللي يبني كامن.', 26, M)
