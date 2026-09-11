@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { graphEdges } from "@/lib/queries";
 import { SectionHead } from "@/components/ui";
+import { GraphMap } from "@/components/GraphMap";
 import { fmtInt } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
@@ -57,6 +58,8 @@ export default async function Page() {
         </p>
       </section>
 
+      <GraphMap edges={edges} />
+
       {/* The one honest caveat, stated where it is relevant rather than hidden. */}
       <section className="card p-4" style={{ borderColor: "var(--line-strong)" }}>
         <div className="eyebrow">Known limitation</div>
@@ -68,6 +71,8 @@ export default async function Page() {
           So this is currently a star of supplier to free text, not a network you can walk.
         </p>
       </section>
+
+      <SectionHead eyebrow="Every edge" title="The same graph, read as a list" />
 
       {ORDER.filter((p) => grouped.has(p)).map((predicate) => {
         const byObject = grouped.get(predicate)!;
