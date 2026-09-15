@@ -15,7 +15,7 @@
 - TypeScript end to end; Bun is the runtime for scripts and tests. No Python in `packages/`.
 - Names come from `CONTEXT.md`: the node is `Supplier`, never `Factory`; class lives on the `Capability`; every `Evidence` has a `tier` 1 to 4; a `Capability.verdict` is `pending`, `supported` or `refuted`; `class` is `manufacturer`, `assembler`, `authorised_distributor` or `trader`.
 - Agent workflows are called **runs** in code and prose, never graphs. The graph is only the capability graph.
-- Models are chosen per role from env: `COORDINATOR_MODEL=ollama:qwen3:8b`, `EMBEDDING_MODEL=ollama:bge-m3`. Ollama is reached at `OLLAMA_HOST=http://100.97.185.20:11434` (this machine binds Ollama to its Tailscale address).
+- Models are chosen per role from env: `COORDINATOR_MODEL=ollama:qwen3:8b`, `EMBEDDING_MODEL=ollama:bge-m3`. Ollama is reached at `OLLAMA_HOST=http://<ollama-host>:11434` (this machine binds Ollama to its Tailscale address).
 - Postgres runs in Docker on port **5433** (`DATABASE_URL=postgres://kamin:kamin@localhost:5433/kamin`) so it never collides with the Homebrew Postgres on 5432.
 - Every run writes `runs` and `run_steps` rows and prints each step to the terminal. Nothing is logged only to a file.
 - Tarmeez is a public government API: at most 4 concurrent requests, 200 ms between requests, 3 retries with backoff, a descriptive User-Agent, and every raw response cached under `data/raw/` (gitignored) so re-runs never re-fetch.
@@ -192,7 +192,7 @@ packages/core/eval/results/
 Then add the two lines the machine needs to the real `.env` (it already holds `TAVILY_API_KEY`; do not print it):
 
 ```bash
-printf 'DATABASE_URL=postgres://kamin:kamin@localhost:5433/kamin\nOLLAMA_HOST=http://100.97.185.20:11434\nCOORDINATOR_MODEL=ollama:qwen3:8b\nEMBEDDING_MODEL=ollama:bge-m3\n' >> .env
+printf 'DATABASE_URL=postgres://kamin:kamin@localhost:5433/kamin\nOLLAMA_HOST=http://<ollama-host>:11434\nCOORDINATOR_MODEL=ollama:qwen3:8b\nEMBEDDING_MODEL=ollama:bge-m3\n' >> .env
 ```
 
 - [ ] **Step 2: Install dependencies**

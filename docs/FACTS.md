@@ -129,7 +129,7 @@ capability of any class. Definitions in `CONTEXT.md`, mechanics in `BUILD_PLAN.m
   the KAMIN rename, the interstitial, the team slide and the English deck, so it is a rebuild rather
   than a touch-up. Resets monthly, or upgrade to a Full/Dev seat for 200/day.
 - **`figma-work` MCP server is a duplicate.** `whoami` shows the original `figma` connection is
-  already sh414bi@gmail.com. Either authenticate `figma-work` to a genuinely different account
+  already the same personal account. Either authenticate `figma-work` to a genuinely different account
   (use a private window) or remove it.
 - **`codegraph` MCP server fails to start**, executable not found in `$PATH`. Unrelated to this
   project, but it errors on every session start.
