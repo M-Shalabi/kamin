@@ -288,14 +288,55 @@ def wline(label, value, hot=False):
       + ('@A@' if hot else '@T@') + ';">' + value + '</div>\n'
       '    </div>\n')
 
+# the icons the real screen carries, traced off it: a nav glyph per
+# destination, the magnifier, the theme toggle and the plant mark on a row.
+def _svg(body, n=16, sw='1.5'):
+    return ('<svg viewBox="0 0 16 16" width="%d" height="%d" fill="none" stroke="currentColor" '
+            'stroke-width="%s" stroke-linecap="round" stroke-linejoin="round">%s</svg>' % (n, n, sw, body))
+
+ICON = {
+ # one for each thing an agent does, on slide 08
+ 'act_search':  '<circle cx="7" cy="7" r="4.6"/><path d="m10.5 10.5 3.4 3.4"/>',
+ 'act_read':    '<path d="M3.4 2.4h6.2l3 3v8.2H3.4z"/><path d="M9.4 2.4v3.2h3.2"/><path d="M5.6 8.4h5M5.6 11h3.4"/>',
+ 'act_extract': '<path d="M8 2.6v7.2"/><path d="m5.2 7.2 2.8 2.8 2.8-2.8"/><path d="M2.8 11.4v2h10.4v-2"/>',
+ 'act_reach':   '<path d="M2.4 4.2h11.2v7.6H2.4z"/><path d="m2.4 4.6 5.6 4 5.6-4"/>',
+ 'act_verify':  '<circle cx="8" cy="8" r="5.8"/><path d="m5.4 8.1 1.9 1.9 3.4-3.8"/>',
+ 'act_class':   '<path d="M2.6 5.2h10.8M2.6 8h10.8M2.6 10.8h10.8"/><circle cx="5.4" cy="5.2" r="1.2"/>'
+                '<circle cx="10.2" cy="8" r="1.2"/><circle cx="6.6" cy="10.8" r="1.2"/>',
+ 'act_record':  '<path d="M3.6 2.4h8.8v11.2H3.6z"/><path d="M6 5.6h4M6 8h4M6 10.4h2.6"/>',
+ 'act_decide':  '<path d="M4.6 13.6V2.4M11.4 13.6V2.4"/><path d="M4.6 4.8h6.8M4.6 8h6.8M4.6 11.2h6.8"/>',
+ 'suppliers': '<path d="M2 7.2 8 2.6l6 4.6V14H2z"/><path d="M8 14v-3.2"/>',
+ 'orders':    '<path d="M2 4.4h12M2 8h12M2 11.6h7"/>',
+ 'gaps':      '<path d="M8 2.4 14.6 13.6H1.4z"/><path d="M8 6.6v3M8 11.6v.2"/>',
+ 'relations': '<circle cx="8" cy="3.2" r="1.6"/><circle cx="3.2" cy="11.4" r="1.6"/>'
+              '<circle cx="12.8" cy="11.4" r="1.6"/><path d="M6.8 4.6 4.2 9.9M9.2 4.6l2.6 5.3M4.8 11.4h6.4"/>',
+ 'agents':    '<circle cx="8" cy="5" r="2.3"/><path d="M3.4 13.6c0-2.5 2.1-4 4.6-4s4.6 1.5 4.6 4"/>',
+ 'coverage':  '<path d="M2 13.4V3"/><path d="M2 13.4h12"/><path d="M3.6 11 6.8 7.6 9.4 9.6 13.6 4.6"/>',
+ 'search':    '<circle cx="7.2" cy="7.2" r="4.4"/><path d="m10.6 10.6 3 3"/>',
+ 'sun':       '<circle cx="8" cy="8" r="3"/><path d="M8 1.4v1.6M8 13v1.6M14.6 8H13M3 8H1.4M12.7 3.3l-1.1 1.1'
+              'M4.4 11.6l-1.1 1.1M12.7 12.7l-1.1-1.1M4.4 4.4 3.3 3.3"/>',
+ 'plant':     '<path d="M2.6 13.4V6.6l3.2 2.2V6.6L9 8.8V3.4l1.2 10z" stroke-linejoin="round"/>'
+              '<path d="M2.6 13.4h8.8"/>',
+}
+
+def icon(k, n=16, color=None, sw='1.5'):
+    st = ('color:' + color + ';') if color else ''
+    return ('<span style="' + st + 'display:inline-flex;flex:0 0 auto;">' + _svg(ICON[k], n, sw) + '</span>')
+
 whys = ''
-for t in ['يقرأ الموقع والسجل والترسيات والكتالوجات', 'دقيقتين للمصنع بدل يوم كامل',
-          '٢٤ ساعة بلا توقف، وبالتوازي', 'وما ينسى ولا معلومة لقاها']:
-    whys += ('    <div style="display:flex;align-items:center;gap:12px;padding:6px 0;">\n'
-             '      <div style="flex:0 0 auto;width:20px;height:20px;border-radius:50%;border:1px solid @A@;color:@A@;'
-             'font-size:13px;display:flex;align-items:center;justify-content:center;">✓</div>\n'
-             '      <div style="font-size:21px;font-weight:300;color:@T@;">' + t + '</div>\n'
+for g, t in [('act_search', 'يبحث'), ('act_read', 'يقرأ'), ('act_extract', 'يستخرج'),
+             ('act_reach', 'يتواصل'), ('act_verify', 'يتحقّق'), ('act_class', 'يصنّف'),
+             ('act_record', 'يوثّق'), ('act_decide', 'يقرّر')]:
+    whys += ('    <div style="display:flex;align-items:center;gap:11px;border:1px solid @L@;background:@P@;'
+             'padding:13px 14px;">\n'
+             '      ' + icon(g, 22, '@A@', '1.4') + '\n'
+             '      <div style="font-family:@KUFI@;font-weight:700;font-size:24px;color:@T@;">' + t + '</div>\n'
              '    </div>\n')
+
+calls = ''
+for t in ['نشتري؟', 'نقسّم؟', 'نستثمر؟', 'نشارك؟', 'نوطّن؟', 'نستورد؟']:
+    calls += ('      <div style="font-family:@KUFI@;font-weight:700;font-size:22px;color:@A@;'
+              'background:rgba(255,92,26,0.08);border:1px solid @A@;padding:9px 16px;">' + t + '</div>\n')
 
 S['TheWall'] = slide('08','فلماذا محد سواها؟',
   '  <div style="margin:auto 0;display:flex;gap:34px;align-items:stretch;">\n'
@@ -317,8 +358,8 @@ S['TheWall'] = slide('08','فلماذا محد سواها؟',
   # and why it is possible now
   '  <div style="flex:1 1 0;display:flex;flex-direction:column;">\n'
   '    <div style="font-family:@KUFI@;font-weight:900;font-size:36px;color:@A@;">وليش الحين؟</div>\n'
-  '    <div style="font-size:22px;font-weight:300;color:@M@;line-height:1.6;margin-top:14px;">لأن اللي كان يحتاج باحث ليوم كامل، صار <span style="color:@T@;">وكيل ذكاء اصطناعي</span> يسويه:</div>\n'
-  '    <div style="margin-top:14px;">\n' + whys + '    </div>\n'
+  '    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px;">\n' + whys + '    </div>\n'
+  '    <div style="display:flex;flex-wrap:wrap;gap:9px;margin-top:12px;">\n' + calls + '    </div>\n'
   '    <div style="margin-top:auto;padding-top:20px;border-top:1px solid @A@;">\n'
   '      <div style="font-family:@KUFI@;font-weight:900;font-size:34px;color:@A@;line-height:1.35;">و٣٥ سنة تصير أقل من عشر ساعات.</div>\n'
   '    </div>\n'
@@ -614,6 +655,7 @@ UX = {'page':'#1A1714','panel':'#211D19','line':'#292421','chip':'#292421',
       'acc':'#EE7544','accbg':'#2F180E','ok':'#76BE83','okbg':'#1A2E1E','okline':'#305032',
       'amber':'#D3B762'}
 
+
 def chip(t, kind='plain'):
     st = {'plain': 'background:' + UX['chip'] + ';color:' + UX['mut'] + ';',
           'ok':    'background:' + UX['okbg'] + ';color:' + UX['ok'] + ';',
@@ -636,13 +678,15 @@ def bar(n, of, good):
       '          <span style="font-family:@MONO@;font-size:13px;color:' + UX['dim'] + ';">of ' + str(of) + '</span>\n'
       '        </div>\n')
 
-COLS = 'grid-template-columns:1fr 190px 236px 172px 150px;'
+COLS = 'grid-template-columns:1fr 198px 212px 168px 148px;'
 
-def srow(name_en, name_ar, city, cr, certs, regs, n, of, good, last=False):
+def srow(name_en, name_ar, city, cr, certs, regs, n, of, good, last=False, sourced=True):
     return ('      <div style="display:grid;' + COLS + 'gap:16px;align-items:center;padding:13px 20px;'
       + ('' if last else 'border-bottom:1px solid ' + UX['line'] + ';') + '">\n'
       '        <div style="display:flex;align-items:center;gap:12px;min-width:0;">\n'
-      '          <span style="flex:0 0 auto;width:30px;height:30px;border-radius:6px;background:' + UX['chip'] + ';"></span>\n'
+      '          <span style="flex:0 0 auto;width:30px;height:30px;border-radius:7px;background:' + UX['chip'] + ';'
+      'display:flex;align-items:center;justify-content:center;color:' + UX['mut'] + ';">'
+      + _svg(ICON['plant'], 16, '1.3') + '</span>\n'
       '          <div style="min-width:0;">\n'
       '            <div style="font-family:@BODY@;font-size:17px;color:' + UX['ink'] + ';white-space:nowrap;'
       'overflow:hidden;text-overflow:ellipsis;" dir="ltr">' + name_en + '</div>\n'
@@ -650,29 +694,37 @@ def srow(name_en, name_ar, city, cr, certs, regs, n, of, good, last=False):
       'text-overflow:ellipsis;">' + name_ar + '</div>\n'
       '            <div style="font-family:@MONO@;font-size:12px;color:' + UX['faint'] + ';margin-top:3px;'
       'white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" dir="ltr">'
-      + city + ' · manufacturer · CR ' + cr + '</div>\n'
+      + city + ' · <span style="background:' + UX['chip'] + ';color:' + UX['mut']
+      + ';padding:2px 6px;border-radius:4px;">manufacturer</span> · CR ' + cr + '</div>\n'
       '          </div>\n'
       '        </div>\n'
       '        <div style="display:flex;gap:6px;flex-wrap:wrap;">' + ''.join(chip(c) for c in certs) + '</div>\n'
       '        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">'
       + ''.join(chip(r, 'ok' if r == 'Made in Saudi' else 'plain') for r in regs)
-      + '<span style="font-family:@MONO@;font-size:12px;color:' + UX['acc'] + ';white-space:nowrap;">Sourced by KAMIN</span>'
+      + ('<span style="font-family:@MONO@;font-size:12px;color:' + UX['acc'] + ';white-space:nowrap;">Sourced by KAMIN</span>'
+         if sourced else '')
       + '</div>\n'
       + bar(n, of, good) +
       '        <div>' + verified() + '</div>\n'
       '      </div>\n')
 
-def navitem(en, ar, active=False):
-    return ('      <div style="display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:7px;'
+def navitem(en, ar, glyph, active=False):
+    return ('      <div style="display:flex;align-items:center;gap:11px;padding:9px 14px;border-radius:7px;'
       + ('background:' + UX['accbg'] + ';' if active else '') + '">\n'
-      '        <span style="width:15px;height:15px;border-radius:3px;border:1.4px solid '
-      + (UX['acc'] if active else UX['dim']) + ';flex:0 0 auto;"></span>\n'
+      '        ' + icon(glyph, 17, UX['acc'] if active else UX['dim']) + '\n'
       '        <span style="font-family:@BODY@;font-size:16px;color:' + (UX['acc'] if active else UX['mut']) + ';">' + en + '</span>\n'
       '        <span class="ar-only" style="font-size:14px;color:' + (UX['acc'] if active else UX['faint']) + ';">' + ar + '</span>\n'
       '      </div>\n')
 
+def obox(t):
+    return ('    <div style="flex:0 0 auto;font-family:@KUFI@;font-weight:700;font-size:24px;color:@A@;'
+            'background:rgba(255,92,26,0.08);border:1px solid @A@;padding:10px 22px;">' + t + '</div>\n')
+
 S['Suppliers'] = slide('12','المُخرج',
   '  <div style="margin:auto 0;">\n'
+  '  <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">\n'
+  + obox('موردون') + obox('قدرات') + obox('شهادات') + obox('سجلات') + obox('منتجات') +
+  '  </div>\n'
   '  <div dir="ltr" style="border-radius:12px;overflow:hidden;border:1px solid ' + UX['line'] + ';'
   'background:' + UX['page'] + ';box-shadow:0 18px 44px rgba(0,0,0,0.55);display:flex;">\n'
   # the sidebar
@@ -682,15 +734,24 @@ S['Suppliers'] = slide('12','المُخرج',
   '        <span style="font-family:@BODY@;font-weight:700;font-size:19px;color:' + UX['ink'] + ';">KAMIN</span>\n'
   '        <span class="ar-only" style="font-family:@KUFI@;font-size:15px;color:' + UX['dim'] + ';">كامن</span>\n'
   '      </div>\n'
-  + navitem('Pooled orders', 'الطلبات') + navitem('Gap ledger', 'الفجوات')
-  + navitem('Suppliers', 'الموردون', True) + navitem('Agents', 'الوكلاء')
-  + navitem('Coverage', 'التغطية') +
+  + navitem('Suppliers', 'الموردون', 'suppliers', True)
+  + navitem('Pooled orders', 'الطلبات', 'orders')
+  + navitem('Gap ledger', 'الفجوات', 'gaps')
+  + navitem('Relations', 'العلاقات', 'relations')
+  + navitem('Agents', 'الوكلاء', 'agents')
+  + navitem('Coverage', 'التغطية', 'coverage') +
   '    </div>\n'
   # the main pane
   '    <div style="flex:1 1 auto;min-width:0;">\n'
-  '      <div style="padding:16px 20px;border-bottom:1px solid ' + UX['line'] + ';">\n'
-  '        <div style="border:1px solid ' + UX['line'] + ';border-radius:8px;padding:9px 14px;'
-  'font-family:@BODY@;font-size:15px;color:' + UX['dim'] + ';">Search a supplier or a CR number…</div>\n'
+  '      <div style="display:flex;align-items:center;gap:14px;padding:16px 20px;'
+  'border-bottom:1px solid ' + UX['line'] + ';">\n'
+  '        <div style="flex:1 1 auto;display:flex;align-items:center;gap:10px;border:1px solid '
+  + UX['line'] + ';border-radius:8px;padding:9px 14px;color:' + UX['dim'] + ';">'
+  + _svg(ICON['search'], 15, '1.4')
+  + '<span style="font-family:@BODY@;font-size:15px;">Search a supplier or a CR number…</span></div>\n'
+  '        <div style="flex:0 0 auto;width:34px;height:34px;border-radius:8px;border:1px solid '
+  + UX['line'] + ';display:flex;align-items:center;justify-content:center;color:' + UX['mut'] + ';">'
+  + _svg(ICON['sun'], 16, '1.4') + '</div>\n'
   '      </div>\n'
   '      <div style="display:grid;' + COLS + 'gap:16px;padding:10px 20px;background:' + UX['panel'] + ';'
   'border-bottom:1px solid ' + UX['line'] + ';font-family:@BODY@;font-size:12px;letter-spacing:0.12em;color:'
@@ -698,13 +759,16 @@ S['Suppliers'] = slide('12','المُخرج',
   '        <div>SUPPLIER</div><div>CERTIFICATES AND STANDARDS</div><div>REGISTRIES</div>'
   '<div>SUPPORTED CAPABILITIES</div><div>INVESTIGATED</div>\n'
   '      </div>\n'
-  + srow('rainbow lilhulul almeikanikiyah alarabiyah Co…', 'شركة رينبو للحلول الميكانيكية العربية السعودية',
-         'Dammam', '2050114656', ['API 5CT, 5B', 'ISO 14001:2015'], ['Tarmeez'], 5, 7, True)
-  + srow('tknwlwjat alghaz Company For manufacturing…', 'شركة تكنولوجيا الغاز للتصنيع شركة شخص واحد',
-         'Dammam', '1010680298', ['WRAS'], ['Tarmeez'], 5, 5, True)
-  + srow('masna alghamas Company industries alkahru…', 'شركة مصنع الغماس للصناعات الكهروميكانيكية',
-         'buraydah', '1131007346', ['Vision 2030'], ['Tarmeez'], 4, 17, False)
-  + srow('Al Saudiyyah Li Sinaat Al Samam…', 'شركة السعوديه لصناعة الصمامات المحدوده',
+  + srow('Newtesol Company Industrial', 'شركة نيوتيسول الصناعية',
+         'Dammam', '2050155963', ['ASME III Stamp', 'ASME Nuclear Stamp', 'ASME U Stamp', '+6'],
+         ['Tarmeez'], 2, 5, False)
+  + srow('alalyan diskun Company engineering', 'شركة العليان ديسكون الهندسية',
+         'Yanbu', '4700007965', ['ANSI', 'ANSI B31.1', 'API', '+5'], ['Tarmeez', 'MLCP'], 2, 12, False,
+         sourced=False)
+  + srow('rainbow lilhulul almeikanikiyah alarabiyah Com…', 'شركة رينبو للحلول الميكانيكية العربية السعودية',
+         'Dammam', '2050114656', ['API licenses 5CT, 5B,…', 'ISO 14001:2015', 'ISO 45001: 2018', '+2'],
+         ['Tarmeez'], 5, 7, True)
+  + srow('Al Saudiyyah Li Sinaat Al Samamat …', 'شركة السعوديه لصناعة الصمامات المحدوده',
          'Jeddah', '4030042954', ['ISO 9001'], ['Tarmeez', 'Made in Saudi'], 3, 11, False, last=True)
   + '    </div>\n'
   '  </div>\n'
@@ -741,6 +805,18 @@ minimap = ('<svg viewBox="0 0 1392 92" style="width:100%;height:auto;">'
   + '<line x1="1392" y1="48" x2="1390" y2="88" stroke="#FF5C1A" stroke-width="1" stroke-dasharray="5 5" opacity="0.5"/>'
   + '</svg>')
 
+def zchip(t):
+    return ('        <div style="font-family:@KUFI@;font-weight:700;font-size:22px;color:@T@;'
+            'background:@P2@;border:1px solid @L@;padding:8px 18px;">' + t + '</div>\n')
+
+def zlogos(names):
+    out = ''
+    for n in names:
+        out += ('        <div style="width:34px;height:34px;border-radius:7px;background:#F2EEE7;'
+                'display:flex;align-items:center;justify-content:center;">'
+                '<img src="' + n + '" style="width:23px;height:23px;object-fit:contain;"></div>\n')
+    return out
+
 def zcard(title, sub, lines, out, dashed=False, img=None):
     head = ('      <div style="display:flex;align-items:center;gap:12px;">\n'
             + (('        <img src="' + img + '" style="width:50px;height:50px;object-fit:contain;">\n') if img else '')
@@ -748,10 +824,8 @@ def zcard(title, sub, lines, out, dashed=False, img=None):
             '          <div style="font-family:@KUFI@;font-weight:900;font-size:30px;color:@T@;">' + title + '</div>\n'
             + (('          <div style="font-size:16px;color:@A@;margin-top:2px;">' + sub + '</div>\n') if sub else '')
             + '        </div>\n      </div>\n')
-    body = ''
-    for ln in lines:
-        body += ('      <div style="font-size:20px;font-weight:300;color:@T@;line-height:1.45;margin-top:8px;">'
-                 '<span style="color:@A@;">·</span> ' + ln + '</div>\n')
+    body = ('      <div style="display:flex;flex-wrap:wrap;gap:8px;">\n'
+            + ''.join(lines) + '      </div>\n')
     return ('    <div style="flex:1 1 0;display:flex;flex-direction:column;border:1px '
       + ('dashed #6E6259' if dashed else 'solid @L@') + ';background:' + ('transparent' if dashed else '@P@')
       + ';padding:18px 20px;">\n' + head
@@ -798,15 +872,16 @@ S['Discovery'] = slide('10','زووم · الاكتشاف',
   '  <div style="margin-top:8px;">' + minimap + '</div>\n'
   '  <div style="display:flex;gap:16px;align-items:stretch;">\n'
   + zcard('مصادر عامة','',
-          ['منافسات · ترميز · صنع في السعودية', 'التجارة · الموارد البشرية · المقاولين'],
+          [zlogos(['logo-etimad.png', 'logo-mim.png', 'logo-saudimade.png', 'logo-lcgpa.png',
+                   'logo-gastat.svg', 'logo-hrsd.png', 'logo-moc.png', 'logo-sca.png'])],
           'اسم ورقم سجل', dashed=True)
   + darrow
-  + zcard('المحقّق','يبحث، ويتواصل',
-          ['يقرأ الموقع والسجل والترسيات', 'ويتواصل مع اللي يلقاه'],
+  + zcard('المحقّق','',
+          [zchip('يبحث'), zchip('يقرأ'), zchip('يستخرج'), zchip('يتواصل')],
           'مورّد ومعه أدلته', img='bust-detective.png')
   + darrow
-  + zcard('المدقّق','يتحقّق',
-          ['يدقّق في معلومات المحقّق', 'يصنّف ويوثّق المورّد'],
+  + zcard('المدقّق','',
+          [zchip('يتحقّق'), zchip('يصنّف'), zchip('يوثّق')],
           'قدرة موثّقة تدخل الخريطة', img='bust-auditor.png')
   + '  </div>\n'
   '  <div style="display:flex;align-items:baseline;gap:16px;margin-top:16px;">\n'
@@ -892,15 +967,15 @@ S['Decisions'] = slide('11','زووم · القرار',
 
 # 15 the math
 rows = ''
-for k, a, b in [('الوقت','٣٥ سنة','أقل من ١٠ ساعات'),
-                ('التكلفة','ملايين الريالات','أقل من ٤ آلاف دولار'),
+for k, a, b in [('الوقت','35 سنة','أقل من 10 ساعات'),
+                ('التكلفة','ملايين الريالات','أقل من 4 آلاف دولار'),
                 ('الحداثة','تقرير يطلع قديم','يحدّث نفسه')]:
     rows += ('    <div style="display:grid;grid-template-columns:200px 1fr 1fr;gap:30px;align-items:center;border-top:1px solid @L@;padding:24px 0;">\n'
              '      <div style="font-family:@KUFI@;font-weight:700;font-size:29px;color:@M@;">' + k + '</div>\n'
              '      <div style="font-size:27px;font-weight:300;color:@M@;">' + a + '</div>\n'
              '      <div style="font-size:27px;font-weight:600;color:@T@;">' + b + '</div>\n'
              '    </div>\n')
-S['TheMath'] = slide('13','الحساب',
+S['TheMath'] = slide('14','الحساب',
   '  <div style="margin:auto 0;">\n'
   '  <div style="display:grid;grid-template-columns:200px 1fr 1fr;gap:30px;padding-bottom:12px;font-family:@BODY@;font-size:17px;">\n'
   '    <div></div><div style="color:@M@;">الطريقة القديمة</div><div style="color:@A@;">كامن</div>\n'
@@ -908,68 +983,49 @@ S['TheMath'] = slide('13','الحساب',
   '  <div style="font-family:@KUFI@;font-weight:700;font-size:56px;color:@T@;margin-top:46px;line-height:1.4;">نفس الشغل. بس <span style="color:@A@;">بساعات، مو بسنوات.</span></div>\n'
   '  </div>\n')
 
-# 16 what KAMIN has today, and what it cost. Every number is a query result
-# from COUNTS.md, and the bench prices the same token spend elsewhere.
-def stat(n, label, hero=False, under=''):
-    tail = ('' if not under else
-            '      <div style="font-family:@BODY@;font-size:17px;font-weight:300;color:#4C463F;'
-            'margin-top:10px;margin-inline-start:206px;">' + under + '</div>\n')
-    return ('    <div style="border-top:1px solid @L@;padding:18px 0;">\n'
-            '      <div style="display:flex;align-items:baseline;gap:16px;">\n'
-            '        <div style="font-family:@BODY@;font-weight:700;font-size:' + ('44' if hero else '38')
-            + 'px;color:' + ('@A@' if hero else '@T@') + ';min-width:190px;">' + n + '</div>\n'
-            '        <div style="font-size:21px;font-weight:300;color:@M@;">' + label + '</div>\n'
-            '      </div>\n' + tail +
+# 14 what KAMIN has today, and what it cost. Two rows, stacked: the counts
+# first, then the bill. Every figure is a query result from docs/COUNTS.md.
+def big(n, label):
+    return ('    <div style="flex:1 1 0;">\n'
+            '      <div style="font-family:@BODY@;font-weight:700;font-size:64px;line-height:1.1;color:@T@;">'
+            + n + '</div>\n'
+            '      <div style="font-size:22px;font-weight:300;color:@M@;margin-top:6px;">' + label + '</div>\n'
             '    </div>\n')
 
-def bench(name, price, hot=False):
-    return ('    <div style="display:flex;align-items:center;justify-content:space-between;'
-            'border-top:1px solid @L@;padding:9px 0;">\n'
-            '      <div style="font-family:@MONO@;font-size:17px;color:' + ('@T@' if hot else '@M@')
-            + ';" dir="ltr">' + name + '</div>\n'
-            '      <div style="font-family:@MONO@;font-size:18px;color:' + ('@A@' if hot else '@T@')
-            + ';font-weight:500;" dir="ltr">' + price + '</div>\n'
+def price(name, amount, hot=False):
+    return ('    <div style="flex:1 1 0;border-inline-start:1px solid @L@;padding-inline-start:20px;">\n'
+            '      <div style="font-family:@MONO@;font-size:15px;color:@M@;" dir="ltr">' + name + '</div>\n'
+            '      <div style="font-family:@MONO@;font-size:28px;font-weight:500;color:'
+            + ('@A@' if hot else '@T@') + ';margin-top:6px;" dir="ltr">' + amount + '</div>\n'
             '    </div>\n')
 
-S['Today'] = slide('14','كامن اليوم',
+S['Today'] = slide('13','كامن اليوم',
   '  <div style="margin:auto 0;">\n'
   + H('كامن اليوم.', 54) +
-  '  <div style="font-size:24px;font-weight:300;color:@M@;margin-top:10px;">'
-  'الأرقام من قاعدة البيانات، والتكلفة من الفواتير.</div>\n'
-  '  <div style="display:flex;gap:64px;margin-top:26px;">\n'
-  # what it has built
-  '    <div style="flex:1 1 0;">\n'
-  '      <div style="font-family:@BODY@;font-size:17px;color:@A@;margin-bottom:14px;">وش بناه</div>\n'
-  + stat('١٥,٠٢٥', 'مورّد. شركة وحدة.', True,
-         'ترميز ١٤,٨٧٣ · غرفة المدينة ١١٤ · صنع في السعودية ٢٨ · بلا سجل ١٠')
-  + stat('٥١,٩٩٢', 'قدرة. مورّد واحد. منتج واحد. بمواصفات محددة.')
-  + stat('١,١٤٦', 'تشغيلة وكيل.')
-  + '    </div>\n'
-  '    <div style="flex:0 0 1px;background:@L@;"></div>\n'
+  # what it built
+  '  <div style="font-family:@BODY@;font-size:17px;color:@A@;margin-top:30px;">وش بناه</div>\n'
+  '  <div style="display:flex;gap:40px;border-top:1px solid @L@;margin-top:10px;padding-top:20px;">\n'
+  + big('15,025', 'مورّد') + big('51,992', 'قدرة') + big('1,146', 'تشغيلة وكيل') +
+  '  </div>\n'
+  '  <div style="font-size:17px;font-weight:300;color:#4C463F;margin-top:14px;">'
+  'ترميز 14,873 · غرفة المدينة 114 · صنع في السعودية 28 · بلا سجل 10</div>\n'
   # what it cost
-  '    <div style="flex:1 1 0;">\n'
-  '      <div style="font-family:@BODY@;font-size:17px;color:@A@;margin-bottom:14px;">وش كلّف</div>\n'
-  '      <div style="border-top:1px solid @L@;padding:18px 0;display:flex;align-items:baseline;gap:16px;">\n'
-  '        <div style="font-family:@KUFI@;font-weight:700;font-size:52px;color:@A@;">صفر ريال</div>\n'
-  '        <div style="font-size:21px;font-weight:300;color:@M@;">على ٢.٩٣ مليون توكن دخل</div>\n'
-  '      </div>\n'
-  '      <div style="font-size:19px;font-weight:300;color:@M@;line-height:1.7;margin-bottom:20px;">'
-  '<span style="color:@T@;">qwen3.5:9b</span> محلي على Ollama، و<span style="color:@T@;">Tavily</span> '
-  'على باقته المجانية. وما اتصلنا بأحد بعد.</div>\n'
-  '      <div style="font-family:@BODY@;font-size:16px;color:@A@;margin-bottom:2px;">النموذج · نفس ٢.٩٣ مليون توكن دخل</div>\n'
-  + bench('Ollama · qwen3.5:9b', '$0', True)
-  + bench('Gemini Flash', '$2')
-  + bench('GPT-4o', '$12')
-  + bench('Claude Opus', '$81')
-  + '      <div style="font-family:@BODY@;font-size:16px;color:@A@;margin:20px 0 2px;">البحث والمكالمات</div>\n'
-  + bench('Tavily · 507 searches', '$4')
-  + bench('Voice call · per call', '$0.90')
-  + '      <div style="font-family:@BODY@;font-size:15px;color:#4C463F;margin-top:14px;line-height:1.6;">'
-  'أسعار قوائم تقريبية. والمكالمة تقدير لثلاث دقايق.</div>\n'
-  + '    </div>\n'
+  '  <div style="font-family:@BODY@;font-size:17px;color:@A@;margin-top:44px;">وش كلّف</div>\n'
+  '  <div style="display:flex;align-items:baseline;gap:18px;border-top:1px solid @L@;margin-top:10px;padding-top:20px;">\n'
+  '    <div style="font-family:@KUFI@;font-weight:700;font-size:58px;color:@A@;">صفر ريال</div>\n'
+  '    <div style="font-size:22px;font-weight:300;color:@M@;">نموذج محلي، وبحث على الباقة المجانية</div>\n'
+  '  </div>\n'
+  '  <div style="font-size:17px;font-weight:300;color:@M@;margin-top:20px;">'
+  'ولو كان مدفوعاً، نفس 2.93 مليون توكن ونفس 507 عمليات بحث:</div>\n'
+  '  <div style="display:flex;gap:20px;margin-top:14px;">\n'
+  + price('Ollama · qwen3.5:9b', '$0', True)
+  + price('Gemini Flash', '$2')
+  + price('GPT-4o', '$12')
+  + price('Claude Opus', '$81')
+  + price('Tavily · search', '$4')
+  + price('Voice · per call', '$0.90') +
   '  </div>\n'
   '  </div>\n')
-
 
 # 17 close
 S['TheClose'] = slide('15','الختام',
@@ -1045,9 +1101,9 @@ for name, src in S.items():
     open(name + '.dc.html', 'w', encoding='utf-8').write(src)
 
 order = ['Main','Question','Blind','Problem','Solution','Agents','Intro','TheWall','TheMapFirst',
-         'Discovery','Decisions','Suppliers','TheMath','Today','TheClose','Team']
+         'Discovery','Decisions','Suppliers','Today','TheMath','TheClose','Team']
 titles = ['١ الغلاف','٢ السؤال','٣ لا أحد يفرّق','٤ المشكلة','٥ والحل؟','٦ الفريق والانكشاف','٧ وش هو كامن',
-          '٨ الجدار وليش الحين','٩ الخريطة','١٠ زووم الاكتشاف','١١ زووم القرار','١٢ قائمة الموردين','١٣ الحساب','١٤ كامن اليوم','١٥ الختام','١٦ الفريق']
+          '٨ الجدار وليش الحين','٩ الخريطة','١٠ زووم الاكتشاف','١١ زووم القرار','١٢ قائمة الموردين','١٣ كامن اليوم','١٤ الحساب','١٥ الختام','١٦ الفريق']
 abs_=[]
 for i, f in enumerate(order):
     col, row = i % 4, i // 4

@@ -119,8 +119,8 @@
    "page": "page-1"
   },
   {
-   "file": "TheMath.dc.html",
-   "title": "١٣ الحساب",
+   "file": "Today.dc.html",
+   "title": "١٣ كامن اليوم",
    "x": 0,
    "y": 3480,
    "w": 1600,
@@ -128,8 +128,8 @@
    "page": "page-1"
   },
   {
-   "file": "Today.dc.html",
-   "title": "١٤ كامن اليوم",
+   "file": "TheMath.dc.html",
+   "title": "١٤ الحساب",
    "x": 1760,
    "y": 3480,
    "w": 1600,
@@ -272,8 +272,8 @@
    "page": "page-1"
   },
   {
-   "file": "EN_TheMath.dc.html",
-   "title": "13 The Math",
+   "file": "EN_Today.dc.html",
+   "title": "13 KAMIN Today",
    "x": 0,
    "y": 11600,
    "w": 1600,
@@ -281,8 +281,8 @@
    "page": "page-1"
   },
   {
-   "file": "EN_Today.dc.html",
-   "title": "14 KAMIN Today",
+   "file": "EN_TheMath.dc.html",
+   "title": "14 The Math",
    "x": 1760,
    "y": 11600,
    "w": 1600,

@@ -11,8 +11,8 @@ import subprocess
 import sys
 
 ORDER = ['Main', 'Question', 'Blind', 'Problem', 'Solution', 'Agents', 'Intro',
-         'TheWall', 'TheMapFirst', 'Discovery', 'Decisions', 'Suppliers', 'TheMath',
-         'Today', 'TheClose', 'Team']
+         'TheWall', 'TheMapFirst', 'Discovery', 'Decisions', 'Suppliers', 'Today',
+         'TheMath', 'TheClose', 'Team']
 
 ASSETS = ['fig-coordinator.png', 'fig-detective.png', 'fig-auditor.png', 'fig-advisor.png',
           'logo-etimad.png', 'logo-mim.png', 'logo-saudimade.png', 'logo-lcgpa.png', 'logo-gastat.svg',
@@ -23,7 +23,8 @@ ASSETS = ['fig-coordinator.png', 'fig-detective.png', 'fig-auditor.png', 'fig-ad
           'logo-langgraph.png', 'logo-nextjs.png']
 
 CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
-OUT_DIR = '/Users/mohammedshalabi/workspace/personal'
+HERE = os.path.dirname(os.path.abspath(__file__))
+OUT_DIR = os.path.join(HERE, 'out')  # rendered PDFs, committed
 PAGE_CSS = """
 <style>@page{size:1600px 900px;margin:0}html,body{margin:0;padding:0;background:#0B0A09}
 .page{width:1600px;height:900px;overflow:hidden;position:relative;break-after:page;page-break-after:always}
@@ -66,6 +67,7 @@ def render(names, head, out_path):
     open(tmp, 'w', encoding='utf-8').write(
         '<!doctype html><html><head><meta charset="utf-8">' + head + PAGE_CSS
         + '\n'.join(page(n) for n in names) + '\n</body></html>')
+    os.makedirs(os.path.dirname(out_path) or '.', exist_ok=True)
     if os.path.exists(out_path):
         os.remove(out_path)
     subprocess.run([CHROME, '--headless', '--disable-gpu', '--no-sandbox', '--hide-scrollbars',

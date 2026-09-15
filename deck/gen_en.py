@@ -4,11 +4,11 @@ import re, json
 from tr_en import TR
 
 ORDER = ['Main','Question','Blind','Problem','Solution','Agents','Intro','TheWall','TheMapFirst',
-         'Discovery','Decisions','Suppliers','TheMath','Today','TheClose','Team']
+         'Discovery','Decisions','Suppliers','Today','TheMath','TheClose','Team']
 TITLES = ['1 Cover','2 The Question','3 Nobody Can Tell','4 The Problem','5 So What Now',
           '6 The Team And The Reveal','7 What KAMIN Is','8 The Wall And Why Now','9 The Map',
           '10 Zoom · Discovery','11 Zoom · The Decision',
-          '12 The Supplier List','13 The Math','14 KAMIN Today','15 The Close','16 The Team']
+          '12 The Supplier List','13 KAMIN Today','14 The Math','15 The Close','16 The Team']
 
 AR_FONT = "'Thmanyah','Geeza Pro',Tahoma,sans-serif"
 EN_FONT = "'Archivo','Geeza Pro','Helvetica Neue',Arial,sans-serif"
@@ -76,7 +76,9 @@ def mirror_themap(html):
 
 # Arabic that is content, not copy: a supplier's registered legal name is the
 # same string in both decks and must not be part-translated by a shorter key.
-KEEP_AR = ['شركة رينبو للحلول الميكانيكية العربية السعودية',
+KEEP_AR = ['شركة نيوتيسول الصناعية',
+           'شركة العليان ديسكون الهندسية',
+           'شركة رينبو للحلول الميكانيكية العربية السعودية',
            'شركة تكنولوجيا الغاز للتصنيع شركة شخص واحد',
            'شركة مصنع الغماس للصناعات الكهروميكانيكية',
            'شركة السعوديه لصناعة الصمامات المحدوده']
