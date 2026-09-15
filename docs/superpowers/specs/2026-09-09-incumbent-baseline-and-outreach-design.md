@@ -2,7 +2,7 @@
 
 Design, 2026-09-09. Status: proposed.
 
-Read with `CONTEXT.md` (the glossary this spec extends) and `DATA_SOURCES.md`.
+Read with `docs/CONTEXT.md` (the glossary this spec extends) and `docs/DATA_SOURCES.md`.
 
 ---
 
@@ -220,7 +220,7 @@ Getting this backwards silently produces orders that look servable and are not, 
 
 ## 8. The outreach cascade
 
-A discovered supplier who never hears from anyone changes nothing. The cascade is how a capability on the map becomes a supplier in the room, and it is the answer to the "and then what?" question logged as open in `FACTS.md` item 4.
+A discovered supplier who never hears from anyone changes nothing. The cascade is how a capability on the map becomes a supplier in the room, and it is the answer to the "and then what?" question logged as open in `docs/FACTS.md` item 4.
 
 Three stages, cheapest channel first, each running **only on who did not answer the last**.
 
@@ -254,7 +254,7 @@ Now take the pessimistic case, the one where the funnel barely narrows and nearl
 
 Two more things to get right rather than discover later:
 
-- **Response rates are unmeasured**, and per the above they should not be guessed at on a slide. Show reachability, which is real, and the cost bound, which holds regardless. This goes in `FACTS.md`.
+- **Response rates are unmeasured**, and per the above they should not be guessed at on a slide. Show reachability, which is real, and the cost bound, which holds regardless. This goes in `docs/FACTS.md`.
 - **WhatsApp Business API requires pre-approved message templates and has opt-in rules**, and outbound voice at scale has its own regulatory surface in the Kingdom. Both are ordinary B2B procurement outreach, and both have a compliance shape that should be named in the plan rather than found in week two.
 
 What the supplier is asked is not "please register". It is **"we believe you can supply this, is that right?"**, with the pooled volume attached. The link hands them to MUSAHAMA. KAMIN keeps no login, no upload, and no approval queue.
@@ -265,7 +265,7 @@ What the supplier is asked is not "please register". It is **"we believe you can
 
 ## 9. The supplier record
 
-`supplier_data_point.md` and `supplier_schema.md` are re-scoped from an onboarding form to **the interchange shape KAMIN populates**, aligned field-for-field with MUSAHAMA so records can move both ways.
+`docs/design/supplier_data_point.md` and `docs/design/supplier_schema.md` are re-scoped from an onboarding form to **the interchange shape KAMIN populates**, aligned field-for-field with MUSAHAMA so records can move both ways.
 
 Removed, because they belong to a registration portal and not to us: per-contact login credentials, `profile_completion_pct`, and the `draft → submitted → under_review → approved` status machine.
 
@@ -293,11 +293,11 @@ Nineteen slides become twenty. Outreach earns its own slide because it answers t
 
 The English deck derives from the Arabic through `deck/gen_en.py` and `deck/tr_en.py`, so every new Arabic string needs a translation entry or the build fails loudly. That is the intended behaviour and not a problem to route around.
 
-Logos are in the project root and confirmed: `the_ministry_of_human_resources_and_social_development_logo.png` (512², transparent), `ministry_of_commerce_logo.jpg` (1024×768), `saudi_contractors_authority_logo.jpeg` (200²).
+Logos are in `assets/logos/` and confirmed: `the_ministry_of_human_resources_and_social_development_logo.png` (512², transparent), `ministry_of_commerce_logo.jpg` (1024×768), `saudi_contractors_authority_logo.jpeg` (200²).
 
 ---
 
-## 11. Glossary additions to `CONTEXT.md`
+## 11. Glossary additions to `docs/CONTEXT.md`
 
 **Engagement**: a record that one supplier supplied one portco, past or current. Tier 0 evidence and the substance of the incumbent baseline. _Avoid_: contract, relationship, history.
 
@@ -348,7 +348,7 @@ Sequenced so each step is independently verifiable and nothing later invalidates
 6. **Pass B, request audit.** The new run mode and the four fit states.
 7. **The option ladder.** `volume_status`, the `options` table, and rungs 1 and 2 computed from the map. Rungs 3 to 5 produce their questions and their economics; the answers arrive through outreach. This is the largest single build in the spec because it makes the Advisor stateful.
 8. **Outreach.** Stage 1 real, stages 2 and 3 designed and costed. Carries both the Auditor's confirmation and the Advisor's rung 3 and 4 questions. The most independently shippable piece and the most defensible to leave partly on the roadmap.
-9. **Deck and docs.** All twelve markdown files, `CONTEXT.md`, both supplier files, the deck in both languages (17 slides after the 2026-09-09 cut), the three PDFs, the canvas.
+9. **Deck and docs.** All twelve markdown files, `docs/CONTEXT.md`, both supplier files, the deck in both languages (17 slides after the 2026-09-09 cut), the three PDFs, the canvas.
 
 Steps 1 to 8 are the build. Step 9 is the deliverable, and can proceed in parallel with the build from the moment this spec is approved.
 

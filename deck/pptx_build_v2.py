@@ -202,7 +202,7 @@ def build():
 
     # 07 what KAMIN is
     s = blank(prs, '07', 'وش هو كامن؟')
-    pic(s, '../KAMIN.png', 1364, 232, 132, 132)
+    pic(s, '../assets/KAMIN.png', 1364, 232, 132, 132)
     txt(s, 944, 240, 400, 'كامن', 88, T, bold=True, font=KUFI, align='r', h=110, line=1.05)
     txt(s, 944, 350, 400, 'الموجود الغير مكتشف', 22, M, align='r')
     txt(s, 944, 384, 400, 'K A M I N', 17, A, font=MONO, align='r', rtl=False)
@@ -393,7 +393,8 @@ def build():
 
 if __name__ == '__main__':
     here = os.path.dirname(os.path.abspath(__file__))
-    out = os.path.join(here, '..', 'KAMIN-Deck-editable_v2.pptx')
+    out = os.path.join(here, 'out', 'KAMIN-Deck-editable_v2.pptx')
+    os.makedirs(os.path.dirname(out), exist_ok=True)
     out = os.path.normpath(out)
     build().save(out)
     print('wrote', out, os.path.getsize(out), 'bytes')

@@ -33,7 +33,7 @@ tiered supplier model makes the scoring *more* methodology-aligned, not less.
 
 **Action taken.** The Auditor now **classifies instead of eliminating**: manufacturer, assembler,
 authorised distributor, or trader, each carrying its own local-content weight. This is live in the
-deck (AR slide 12 and EN slide 12), `SUBMISSION.md`, `SUBMISSION_AR.md`, `ANSWERS.md`, both story
+deck (AR slide 12 and EN slide 12), `docs/submission/SUBMISSION.md`, `docs/submission/SUBMISSION_AR.md`, `docs/submission/ANSWERS.md`, both story
 files, both pitch files, and `BUILD_PLAN.md`.
 
 **Resolved 2026-09-02:** two named gaps. *Manufacturing gap* = no supported manufacturer or
@@ -168,7 +168,7 @@ capability of any class. Definitions in `CONTEXT.md`, mechanics in `BUILD_PLAN.m
   `deck/gen2.py` propagates to both languages, and any new Arabic string fails loudly until it is
   translated. Do not hand-edit `EN_*.dc.html`. `deck/render.py` builds the three PDFs, and
   `python3 deck/render.py --only Blind,TheMap` spot-checks single slides while iterating.
-- **PDFs:** `KAMIN-Pitch-Deck.pdf` (30 pages, AR then EN), `-AR.pdf` and `-EN.pdf` (15 each), fonts
+- **PDFs:** `deck/out/KAMIN-Pitch-Deck.pdf` (30 pages, AR then EN), `-AR.pdf` and `-EN.pdf` (15 each), fonts
   embedded so exports keep their typography.
 - **Canonical name:** كامن / KAMIN, "the thing that exists but has never been found".
   Positioning line on the deck: **خريطة حيّة للقدرات المحلية.** (the old slogan موجود. بس ما أحد شافه. was dropped 2026-09-09)
@@ -198,7 +198,7 @@ Every decision below is written into `CONTEXT.md` (names), `docs/adr/` (reasonin
   strips the unsubstantiated attributes and keeps it supported at category level with discounted
   confidence; a claim that states no attributes has no spec lens to fail. Is-it-local outputs a class.
   `bun run reverdict` recomputes stored verdicts from saved lenses when this rule changes.
-- **Evidence:** tiers 1 to 4 from `SUBMISSION.md` are canonical. BUILD_PLAN's
+- **Evidence:** tiers 1 to 4 from `docs/submission/SUBMISSION.md` are canonical. BUILD_PLAN's
   primary/secondary/marketing and STORY's strongest-to-weakest are retired as names.
 - **Threshold:** a capability counts toward coverage only when supported and backed by Tier 1 or 2,
   at the order's own subheading and with no stated attribute in conflict (refined 2026-09-02 after the
@@ -218,7 +218,7 @@ Every decision below is written into `CONTEXT.md` (names), `docs/adr/` (reasonin
 **Deck drift to fix at the next regeneration** (`deck/gen2.py` + `deck/tr_en.py`): the English map
 and decision slides say "Gap register", canonical is "Gap ledger". The `Strategist`, `Coordinator`,
 `Detective`, `Auditor`, `Roles`, `Journey` and `Outreach` artboards were deleted on 2026-09-09 and
-their content folded into slides 9, 12 and 13. `SUBMISSION.md` §5 said "Scout" and "Resolver";
+their content folded into slides 9, 12 and 13. `docs/submission/SUBMISSION.md` §5 said "Scout" and "Resolver";
 fixed to Detective and Coordinator on 2026-09-02.
 
 **Machine note:** the data volume was at 96% on 2026-09-02. Langfuse is deferred until space is
@@ -250,8 +250,8 @@ matters beyond the deck:
   project; it now says KAMIN is an investment case, not just a product.
 - **The product screens are light.** Slides 5 and 15 both render as real application windows on the
   dark deck, sharing one light palette. That palette is the starting point for the actual UI and is
-  written down in `prompt.md`.
-- **`prompt.md` is new**: the English design brief for the product UI, screen by screen, with the
+  written down in `docs/design/ui-brief.md`.
+- **`docs/design/ui-brief.md` is new**: the English design brief for the product UI, screen by screen, with the
   rules the interface must not break.
 
 Still open from this pass: nothing in the code changed, so the agent work listed in section 8

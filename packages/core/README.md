@@ -87,4 +87,4 @@ Raw responses from Tarmeez, MLCP, Made in Saudi, Comtrade and Tavily are cached 
 - `eval` the twenty demand lines with expected answers and the spike runner
 - `scripts` one file per command in the tables above
 
-Names follow `CONTEXT.md` at the repository root. Agent workflows are runs, never graphs.
+Names follow `docs/CONTEXT.md`. Agent workflows are runs, never graphs.

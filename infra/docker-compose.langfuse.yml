@@ -1,6 +1,6 @@
 # Langfuse v3 self-hosted, the developer trace viewer beside KAMIN's own trajectory store (ADR 0003).
 # Not started by default; it pulls about four gigabytes of images. When disk allows:
-#   docker compose -f docker-compose.langfuse.yml up -d
+#   docker compose -f infra/docker-compose.langfuse.yml up -d
 # then open http://localhost:3001, create a project, put LANGFUSE_PUBLIC_KEY, LANGFUSE_SECRET_KEY and
 # LANGFUSE_BASEURL=http://localhost:3001 in .env, and add the Langfuse callback handler beside the
 # TrajectoryHandler in packages/core/src/trajectory/handler.ts (`withRun` accepts extra callbacks).

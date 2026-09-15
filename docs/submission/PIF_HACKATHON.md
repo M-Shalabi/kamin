@@ -42,7 +42,7 @@ Your solution can take any form, an app, platform, tool, model, prototype, etc. 
 ## Submission form, required answers
 
 > **Answers are drafted.** See `SUBMISSION.md` (English) and `SUBMISSION_AR.md` (Arabic).
-> Execution plan in `BUILD_PLAN.md`. Data inventory in `DATA_SOURCES.md`.
+> Execution plan in `docs/BUILD_PLAN.md`. Data inventory in `docs/DATA_SOURCES.md`.
 
 **Chosen track:** Track 1, Live Map of National Capabilities.
 

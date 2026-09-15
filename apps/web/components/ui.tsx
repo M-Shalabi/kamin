@@ -163,7 +163,7 @@ export const Investigated = ({ s }: { s: string | null }) => {
    it, so "which agent did this?" is answerable in one click from anywhere. */
 
 /* The four roles the deck presents. The Specifier is deliberately not a fifth:
-   CONTEXT.md defines it as "the Detective's second pass over one supplier", so
+   docs/CONTEXT.md defines it as "the Detective's second pass over one supplier", so
    it carries the Detective's colour and says so in its name. Its runs are real
    and its evidence rows still resolve here — the deck's four is a grouping, not
    a deletion. */

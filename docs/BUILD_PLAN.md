@@ -1,7 +1,7 @@
 # KAMIN, 48-Hour Build Plan
 
 > Track 1, Live Map of National Capabilities.
-> Read with `DATA_SOURCES.md` (every endpoint, access caveat and risk), `SUBMISSION.md` (the pitch), `CONTEXT.md` (the glossary, canonical names) and `docs/adr/` (engineering decisions).
+> Read with `DATA_SOURCES.md` (every endpoint, access caveat and risk), `docs/submission/SUBMISSION.md` (the pitch), `CONTEXT.md` (the glossary, canonical names) and `docs/adr/` (engineering decisions).
 > Written for the team of three (Mohammed, Ali, Abdulaziz). Four-person split and a two-person collapse at the end.
 > Decided 2026-09-02: the window is weeks away and pre-building is allowed, so the hour numbers are a build order, not a clock. Code is written by Claude Code in this repo; the three own what a human must do.
 
@@ -56,7 +56,7 @@
   VETTED LIST · OPTION LADDER · GAP LEDGER · COVERAGE (incumbent vs map)
 ```
 
-**Design rule:** the graph is the product. Agents write into it; the UI reads from it. A cold miss triggers a live detective that *writes back*. Never query-time-only, see the reasoning in `SUBMISSION.md`.
+**Design rule:** the graph is the product. Agents write into it; the UI reads from it. A cold miss triggers a live detective that *writes back*. Never query-time-only, see the reasoning in `docs/submission/SUBMISSION.md`.
 
 ---
 

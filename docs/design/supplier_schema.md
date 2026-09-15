@@ -1,6 +1,6 @@
 # Supplier Data Schema
 
-The interchange shape KAMIN populates and exchanges with MUSAHAMA. Not a submission form: there is no login, no upload and no approval queue, because a supplier never fills this in. See `supplier_data_point.md` for what fills each field, and `CONTEXT.md` for the vocabulary.
+The interchange shape KAMIN populates and exchanges with MUSAHAMA. Not a submission form: there is no login, no upload and no approval queue, because a supplier never fills this in. See `supplier_data_point.md` for what fills each field, and `docs/CONTEXT.md` for the vocabulary.
 
 Naming: snake_case, one object per section. Repeatable groups are arrays.
 

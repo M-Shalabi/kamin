@@ -11,7 +11,7 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 
 :root {
-  /* Palette is fixed by the UI design brief (prompt.md §4). The deck is
+  /* Palette is fixed by the UI design brief (docs/design/ui-brief.md §4). The deck is
      near-black with a hot orange; the product is light, and that contrast is
      deliberate — product screens read as real software precisely because they
      are not the deck. The deck orange appears only in the mark itself. */

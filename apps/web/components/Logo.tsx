@@ -4,11 +4,11 @@ import Image from "next/image";
  * The KAMIN lockup: the mark, then the wordmark.
  *
  * The mark is the product logo — a faceted black gem on the orange ground,
- * from KAMIN.png at the repo root. It is the name made literal: كامن is
+ * from assets/KAMIN.png. It is the name made literal: كامن is
  * "latent, hidden", and the deck opens on "What exists but has never been
  * found". A gem nobody has dug up yet.
  *
- * Served from a 128px raster rather than KAMIN.svg because that SVG is a
+ * Served from a 128px raster rather than assets/KAMIN.svg because that SVG is a
  * VTracer auto-trace — 187KB across several hundred near-identical orange
  * paths, which is both heavier and blurrier at 36px than the bitmap it came
  * from. The full-resolution original stays in the repo as the source of truth.

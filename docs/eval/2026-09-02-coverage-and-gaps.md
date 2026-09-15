@@ -62,4 +62,4 @@ The Coordinator's 66 s against the 47 s of the milestone-1 spike is the machine,
 
 - Coverage at specification is 0.0% after the Specifier pass as well: Saudi plants publish product types, not datasheets. The next pass should follow PDF catalogue links one level deeper and, beyond that, ask the plant.
 - The `qwen3:8b` A/B for the Coordinator did not run.
-- The Tarmeez plant count (14,873) still needs reconciling with the 12,946 operating-factories headline; see `FACTS.md` section 2.
+- The Tarmeez plant count (14,873) still needs reconciling with the 12,946 operating-factories headline; see `docs/FACTS.md` section 2.

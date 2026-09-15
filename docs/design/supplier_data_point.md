@@ -2,7 +2,7 @@
 
 **What this is.** The target shape of one supplier record on the map, aligned field for field with MUSAHAMA so records can move both ways.
 
-**What this is not.** A form. KAMIN never asks a supplier for anything and holds no registration: no login, no upload, no approval queue. The agents populate every field below from internal and public evidence, and a supplier's only destination is MUSAHAMA's own registration, reached through the outreach cascade. See `CONTEXT.md` for the vocabulary.
+**What this is not.** A form. KAMIN never asks a supplier for anything and holds no registration: no login, no upload, no approval queue. The agents populate every field below from internal and public evidence, and a supplier's only destination is MUSAHAMA's own registration, reached through the outreach cascade. See `docs/CONTEXT.md` for the vocabulary.
 
 **Every populated field carries three things:** the value, the source that asserted it, and that source's evidence tier. A field with no source is not on the record.
 

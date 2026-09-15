@@ -1,7 +1,7 @@
 # KAMIN, the pitch deck
 
 > 15 slides, matching the published deck. Arabic version: `PITCH_AR.md`
-> Story: `STORY.md` · Formal submission: `SUBMISSION.md`
+> Story: `STORY.md` · Formal submission: `docs/submission/SUBMISSION.md`
 
 ---
 

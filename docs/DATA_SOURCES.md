@@ -266,4 +266,4 @@ Every host below was probed from Mohammed's machine in Riyadh (STC). Datacenter-
 - Method: live web fetches + search across Saudi government portals, statistics authorities, corporate localization programs, and competing commercial platforms. 66 tool invocations, ~80k tokens, ~12 min wall clock.
 - Every claim is tagged **[verified]** (fetched directly during research) or **[unverified]** (search results / third-party pages only). Nothing here is speculation; unverified items are flagged rather than dropped so they can be re-tested from a Saudi IP.
 - Known limitation: research ran from a datacenter IP outside KSA. Geo-restriction, DNS filtering and WAF bot-protection produced several failures that are **not** proof the sources are down. Re-test the flagged hosts locally before ruling anything out.
-- Companion file: `PIF_HACKATHON.md` (the hackathon brief itself).
+- Companion file: `docs/submission/PIF_HACKATHON.md` (the hackathon brief itself).

@@ -1,7 +1,7 @@
 # PIF Innovate Hackathon, Submission Answers
 
 > Track 1, Live Map of National Capabilities / الخريطة الحية للقدرات الوطنية
-> Companion files: `PIF_HACKATHON.md` (brief) · `DATA_SOURCES.md` (data inventory) · `BUILD_PLAN.md` (48h execution)
+> Companion files: `PIF_HACKATHON.md` (brief) · `docs/DATA_SOURCES.md` (data inventory) · `docs/BUILD_PLAN.md` (48h execution)
 
 ---
 
@@ -182,4 +182,4 @@ The build rests on data that is public and verifiable today, the demo can be che
 
 ## Optional: supporting materials
 
-Recommended attachments: architecture diagram (four agent roles over the two-sided map), gap ledger screenshot, one worked evidence chain for a single supplier claim, and the data provenance table from `DATA_SOURCES.md` showing verified vs. unverified sources.
+Recommended attachments: architecture diagram (four agent roles over the two-sided map), gap ledger screenshot, one worked evidence chain for a single supplier claim, and the data provenance table from `docs/DATA_SOURCES.md` showing verified vs. unverified sources.
