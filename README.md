@@ -274,7 +274,16 @@ bun run db:snapshot                          # writes data/snapshots/<timestamp>
 bun run db:restore data/snapshots/<file>     # into a clean schema, about a minute
 ```
 
-Snapshots are gitignored. Ask the team for the latest one.
+A full dump of the graph is committed at `data/dump/kamin.sql.gz` (taken
+2026-09-15: 15,034 suppliers, 52,000 capabilities, 54,096 evidence rows,
+10,794 HS codes with embeddings, 1,235 runs). Restore it with:
+
+```bash
+bun run db:restore data/dump/kamin.sql.gz
+```
+
+To refresh it, run `bun run db:snapshot data/dump/kamin.sql.gz` and commit.
+Ad-hoc snapshots in `data/snapshots/` stay gitignored.
 
 ### Checks
 

@@ -32,7 +32,7 @@ Seven minutes, seven steps, one laptop. Everything below is local: Postgres in D
 
 - **Network down:** step 6 plays the recording. Say so: "this is the recording of the same run, made this morning".
 - **Ollama slow or down:** every screen reads from Postgres and works without it; only step 6 needs the model.
-- **Database empty or wrong:** `bun run db:restore data/snapshots/<latest>.sql.gz`, about a minute, then refresh.
+- **Database empty or wrong:** `bun run db:restore data/dump/kamin.sql.gz`, about a minute, then refresh.
 - **Port 3000 taken:** `pkill -f "next dev"` and `bun run demo` again.
 
 ## The three questions
